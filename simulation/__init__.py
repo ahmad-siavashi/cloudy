@@ -29,7 +29,7 @@ def init(user: User, datacenter: DataCenter, clock_resolution: int = 1) -> None:
         Event.register(request.ARRIVAL, new_event)
 
     _handler_dc_process.num_requests: int = 0
-    _handler_dc_process.finished_vms: list[Vm, ...] = []
+    _handler_dc_process.finished_vms: list[tuple[int, Vm], ...] = []
 
     new_event = Event(Event.Type.DC_PROCESS, (Clock.now(), _datacenter))
     Event.register(Clock.now(), new_event)
@@ -70,15 +70,15 @@ def _handler_dc_process(event: Event) -> None:
     for server in datacenter.SERVERS:
         finished_vms = server.VMM.process(duration)
         server.VMM.deallocate(finished_vms)
-        _handler_dc_process.finished_vms += finished_vms
+        _handler_dc_process.finished_vms += [(Clock.now(), finished_vm) for finished_vm in finished_vms]
         _handler_dc_process.num_requests -= len(finished_vms)
 
     if _handler_dc_process.num_requests:
         next_event = Event(Event.Type.DC_PROCESS, (Clock.now(), datacenter))
         Event.register(Clock.now() + _clock_resolution, next_event)
     else:
-        for finished_vm in _handler_dc_process.finished_vms:
-            Logger.log(Clock.now(), '+', 'vm finished', finished_vm.NAME)
+        for clock, finished_vm in _handler_dc_process.finished_vms:
+            Logger.log(clock, '+', 'vm finished', finished_vm.NAME)
 
 
 def start() -> None:
