@@ -1,5 +1,4 @@
-from components import App
-from management import Os
+from module import Os, App
 
 
 class OsFcfs(Os):

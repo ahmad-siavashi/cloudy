@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from components import Vm
-from management import Vmm
+from module import Vmm, Vm
 
 
 @dataclass
@@ -14,7 +13,7 @@ class VmmSpaceShared(Vmm):
         """
         The __post_init__ function is called after the object has been initialized.
         This function is used to set up any additional attributes that are not part of the initialization process.
-        In this case, we want to keep track of available CPUs and RAM on each host.
+        In this case, we want to keep track of available CPUs and RAM of the host.
 
         :param self: Represent the instance of the class
         :return: None

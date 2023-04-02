@@ -21,7 +21,7 @@ $ git clone https://github.com/ahmad-siavashi/cloudy.git
 3. Run the example
 
 ```bash
-$ python3 main.py
+$ python3 example.py
 ```
 
 That's all. The code is minimal, self-documented and easy to read. You can quickly start coding by reading
