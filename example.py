@@ -1,10 +1,11 @@
 import simulation
-from components import App, Vm, Pm, User, Request, DataCenter
-from management.os.fcfs import OsFcfs
-from management.placement.firstfit import PlacementFirstFit
-from management.vmm.spaceshared import VmmSpaceShared
 
 # Creating an application called 'nginx' with 2 threads each 2 cycles length.
+from module import App, Vm, Request, User, Pm, DataCenter
+from module.os import OsFcfs
+from module.placement import PlacementFirstFit
+from module.vmm import VmmSpaceShared
+
 app = App('nginx', (4, 4, 4))
 
 # Creating a virtual machine called 'web server' with 2 cores and 1024 MB of RAM, using the OsFcfs operating system,

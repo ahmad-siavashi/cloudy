@@ -1,5 +1,4 @@
-from components import Vm
-from management import Placement
+from module import Placement, Vm
 
 
 class PlacementFirstFit(Placement):

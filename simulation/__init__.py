@@ -1,4 +1,4 @@
-from components import User, DataCenter, Vm
+from module import User, DataCenter, Vm
 from simulation.clock import Clock
 from simulation.event import Event
 from simulation.log import Logger
