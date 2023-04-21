@@ -48,17 +48,20 @@
                             </ul>
 
                         </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#EventQueue">EventQueue</a>
+                            <ul class="memberlist">
                         <li>
-                                <a class="function" href="#Event.register">register</a>
+                                <a class="function" href="#EventQueue.put">put</a>
                         </li>
                         <li>
-                                <a class="function" href="#Event.list">list</a>
+                                <a class="function" href="#EventQueue.empty">empty</a>
                         </li>
                         <li>
-                                <a class="function" href="#Event.empty">empty</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Event.get">get</a>
+                                <a class="function" href="#EventQueue.get">get</a>
                         </li>
                 </ul>
 
@@ -100,7 +103,7 @@
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>TYPE (<a href="#Event.Type">Event.Type</a>): the type of the event which helps in the interpretation and processing of the event</li>
+<li>TYPE (<a href="#Event.Type">Event.Type</a>): the event of the event which helps in the interpretation and processing of the event</li>
 <li>DATA (object): the data that is associated with the event</li>
 </ul>
 </div>
@@ -116,107 +119,6 @@
     <a class="headerlink" href="#Event.__init__"></a>
     
     
-
-                            </div>
-                            <div id="Event.register" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">register</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">tick</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">event</span><span class="p">:</span> <span class="n"><a href="#Event">cloudy.simulation.event.Event</a></span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.register"></a>
-    
-            <div class="docstring"><p>The register function is used to register an event with the Event class.
-The function takes two arguments: a tick and an event. The tick argument is
-the number of ticks that must pass before the event will be executed, and the
-event argument will be consumed when it's time for the event to execute.
-The register function then inserts the tuple containing these two arguments
-into Event's list attribute at an index such that all events in this list are
-sorted by their respective ticks, with earlier events appearing first.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>tick: int</strong>:  Tell the register function when to run the event</li>
-<li><strong>event: Event</strong>:  Specify the event that is to be registered</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>None</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                            <div id="Event.list" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">list</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.simulation.event.Event</a></span><span class="p">]]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.list"></a>
-    
-            <div class="docstring"><p>The list function returns a list of all registered events that are not executed yet.</p>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A list of all the events in the system</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                            <div id="Event.empty" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">empty</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.empty"></a>
-    
-            <div class="docstring"><p>The empty function checks if the Event list is empty.</p>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>True if the event list is empty, otherwise it returns false</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                            <div id="Event.get" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.simulation.event.Event</a></span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.get"></a>
-    
-            <div class="docstring"><p>The get function returns the first event in the list of events.</p>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A single event</p>
-</blockquote>
-</div>
-
 
                             </div>
                 </section>
@@ -274,6 +176,98 @@ sorted by their respective ticks, with earlier events appearing first.</p>
 
             </div>
                                 </dl>
+                            </div>
+                </section>
+                <section id="EventQueue">
+                    <div class="attr class">
+                    <div class="decorator">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">EventQueue</span>:
+
+        
+    </div>
+    <a class="headerlink" href="#EventQueue"></a>
+    
+            <div class="docstring"><p>This class represents an event queue to hold registered events during simulation</p>
+</div>
+
+
+                            <div id="EventQueue.put" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">put</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">tick</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">event</span><span class="p">:</span> <span class="n"><a href="#Event">cloudy.simulation.event.Event</a></span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventQueue.put"></a>
+    
+            <div class="docstring"><p>The put function is used to register an event with the EventQueue class.
+The function takes two arguments: a tick and an event. The tick argument is
+the number of ticks that must pass before the event will be executed, and the
+event argument will be consumed when it's time for the event to execute.
+The register function then inserts the tuple containing these two arguments
+into Event's list attribute at an index such that all events in this list are
+sorted by their respective ticks, with earlier events appearing first.</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>tick: int</strong>:  Tell the register function when to run the event</li>
+<li><strong>event: Event</strong>:  Specify the event that is to be registered</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>None</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="EventQueue.empty" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">empty</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventQueue.empty"></a>
+    
+            <div class="docstring"><p>The empty function checks if the Event list is empty.</p>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>True if the event list is empty, otherwise it returns false</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="EventQueue.get" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.simulation.event.Event</a></span><span class="p">]</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventQueue.get"></a>
+    
+            <div class="docstring"><p>The get function returns the first event in the list of events.</p>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>A single event</p>
+</blockquote>
+</div>
+
+
                             </div>
                 </section>
     </main>

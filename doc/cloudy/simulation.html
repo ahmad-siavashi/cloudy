@@ -37,10 +37,16 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#init">init</a>
-            </li>
-            <li>
-                    <a class="function" href="#start">start</a>
+                    <a class="class" href="#Simulation">Simulation</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Simulation.__init__">Simulation</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Simulation.start">start</a>
+                        </li>
+                </ul>
+
             </li>
     </ul>
 
@@ -63,50 +69,46 @@
                 
                 
             </section>
-                <section id="init">
-                    <div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">init</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">user</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">User</span>,</span><span class="param">	<span class="n">datacenter</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">DataCenter</span>,</span><span class="param">	<span class="n">clock_resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+                <section id="Simulation">
+                    <div class="attr class">
+                    <div class="decorator">@dataclass</div>
+
+    <span class="def">class</span>
+    <span class="name">Simulation</span>:
 
         
     </div>
-    <a class="headerlink" href="#init"></a>
+    <a class="headerlink" href="#Simulation"></a>
     
-            <div class="docstring"><p>The init function initializes the simulation. The clock_resolution sets the minimum interval between event processing.
-The default value is one time unit. A higher value reduces simulation time at the cost of simulation accuracy. The caller
-should provide a proper value based on its requirements.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>user: User</strong>:  Access the user's requests</li>
-<li><strong>datacenter: DataCenter</strong>:  Pass the data center object to the init function</li>
-<li><strong>clock_resolution: int</strong>:  Set the clock resolution of simulation</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>None</p>
-</blockquote>
+            <div class="docstring"><p>This class represents a simulation.</p>
 </div>
 
 
-                </section>
-                <section id="start">
-                    <div class="attr function">
+                            <div id="Simulation.__init__" class="classattr">
+                                <div class="attr function">
             
-        <span class="def">def</span>
-        <span class="name">start</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">Simulation</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">_user</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">User</span>,</span><span class="param">	<span class="n">_datacenter</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">DataCenter</span>,</span><span class="param">	<span class="n">_clock_resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span>)</span>
 
         
     </div>
-    <a class="headerlink" href="#start"></a>
+    <a class="headerlink" href="#Simulation.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Simulation.start" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">start</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Simulation.start"></a>
     
             <div class="docstring"><p>The start function is the main function of this simulation.
 It will run until there are no more events in the event queue.
-Each time it runs, it will get an event from the queue and call a handler for that type of event.
+Each time it runs, it will get an event from the queue and call a handler for that event of event.
 The handlers are responsible for creating new events to be added to the queue.</p>
 
 <h6 id="returns">Returns</h6>
@@ -117,6 +119,7 @@ The handlers are responsible for creating new events to be added to the queue.</
 </div>
 
 
+                            </div>
                 </section>
     </main>
 <script>
