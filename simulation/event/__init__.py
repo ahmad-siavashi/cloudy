@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Tuple, ClassVar
 
 
@@ -12,7 +12,7 @@ class Event:
 
     Attributes
     ==========
-    - TYPE (Event.Type): the type of the event which helps in the interpretation and processing of the event
+    - TYPE (Event.Type): the event of the event which helps in the interpretation and processing of the event
     - DATA (object): the data that is associated with the event
     """
 
@@ -31,12 +31,18 @@ class Event:
     TYPE: Event.Type
     DATA: object
 
-    _events: ClassVar[List[Tuple[int, Event]]] = []
 
-    @staticmethod
-    def register(tick: int, event: Event) -> None:
+@dataclass
+class EventQueue:
+    """
+    This class represents an event queue to hold registered events during simulation
+    """
+
+    _events: ClassVar[List[Tuple[int, Event]]] = field(init=False, default=[])
+
+    def put(self, tick: int, event: Event) -> None:
         """
-        The register function is used to register an event with the Event class.
+        The put function is used to register an event with the EventQueue class.
         The function takes two arguments: a tick and an event. The tick argument is
         the number of ticks that must pass before the event will be executed, and the
         event argument will be consumed when it's time for the event to execute.
@@ -49,36 +55,25 @@ class Event:
         :return: None
         """
         index = 0
-        for t, e in Event.list():
+        for t, e in self._events:
             if t > tick:
                 break
             index += 1
-        Event.list().insert(index, (tick, event))
+        self._events.insert(index, (tick, event))
         return index
 
-    @staticmethod
-    def list() -> List[Tuple[int, Event]]:
-        """
-        The list function returns a list of all registered events that are not executed yet.
-
-        :return: A list of all the events in the system
-        """
-        return Event._events
-
-    @staticmethod
-    def empty() -> bool:
+    def empty(self) -> bool:
         """
         The empty function checks if the Event list is empty.
 
         :return: True if the event list is empty, otherwise it returns false
         """
-        return len(Event.list()) == 0
+        return len(self._events) == 0
 
-    @staticmethod
-    def get() -> Tuple[int, Event]:
+    def get(self) -> Tuple[int, Event]:
         """
         The get function returns the first event in the list of events.
 
         :return: A single event
         """
-        return Event.list().pop(0)
+        return self._events.pop(0)

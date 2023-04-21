@@ -34,6 +34,9 @@
                     <a class="class" href="#Logger">Logger</a>
                             <ul class="memberlist">
                         <li>
+                                <a class="function" href="#Logger.__init__">Logger</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#Logger.begin">begin</a>
                         </li>
                         <li>
@@ -80,12 +83,27 @@
 </div>
 
 
+                            <div id="Logger.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Logger</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Logger.__init__"></a>
+    
+            <div class="docstring"><p>The __init__ function initializes the class with a dictionary of column names and their widths.
+If no arguments are passed, it defaults to the following:
+    {'Clock': 5, 'Event': 15, 'Description': 25}</p>
+</div>
+
+
+                            </div>
                             <div id="Logger.begin" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">begin</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">begin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
@@ -104,10 +122,9 @@
                             </div>
                             <div id="Logger.end" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">end</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">end</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
@@ -126,29 +143,21 @@
                             </div>
                             <div id="Logger.log" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">log</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">clock</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">sign</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">description</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">log</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
     <a class="headerlink" href="#Logger.log"></a>
     
             <div class="docstring"><p>The log function is used to print out the event log.
-It takes in a clock, sign, event type and description as parameters.
-The clock parameter is an integer that represents the current time of the simulation.
-The sign parameter is a character that visualizes the type of event (e.g. error, info, etc)
-The type parameter is a string that describes the type of event
-The description parameter provides more information about the event</p>
+It takes the values to print in a log.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>clock: int</strong>:  Keep track of the time</li>
-<li><strong>sign: str</strong>:  Visual indicator for the event</li>
-<li><strong>type: str</strong>:  Specify the type of event</li>
-<li><strong>description: str</strong>:  Describe the event that is being logged</li>
+<li><strong>*args: tuple[str]</strong>:  Values to be logged</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
