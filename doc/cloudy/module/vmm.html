@@ -164,20 +164,21 @@ It returns a list of booleans indicating whether each VM was successfully remove
     </div>
     <a class="headerlink" href="#VmmSpaceShared.process"></a>
     
-            <div class="docstring"><p>The process function is the main function of the Host class. It takes a duration as an argument, and processes
-the guest vms OS for that amount of time. Then it checks if any VMs have finished running, and returns them in a list.</p>
+            <div class="docstring"><p>The process function is the main function of the scheduler. It takes a duration
+parameter and processes all VMs for that amount of time. The return value is a list
+of finished VMs, which are removed from the scheduler.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>self</strong>:  Represent the instance of a class</li>
-<li><strong>duration: int</strong>:  Specify the amount of time that the vms will run for</li>
+<li><strong>self</strong>:  Refer to the object itself</li>
+<li><strong>duration: int</strong>:  Determine how long the cpu should be processing for</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>A list of finished vms</p>
+  <p>A list of vms that have finished their execution</p>
 </blockquote>
 </div>
 

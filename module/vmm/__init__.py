@@ -65,6 +65,15 @@ class VmmSpaceShared(Vmm):
         return results
 
     def process(self, duration: int) -> tuple[Vm, ...]:
+        """
+        The process function is the main function of the scheduler. It takes a duration
+        parameter and processes all VMs for that amount of time. The return value is a list
+        of finished VMs, which are removed from the scheduler.
+
+        :param self: Refer to the object itself
+        :param duration: int: Determine how long the cpu should be processing for
+        :return: A list of vms that have finished their execution
+        """
         finished = []
         for vm in self.guests:
             vm_cpu = list(self._HOST.CPU[index] for index in self._vm_cpu[id(vm)])
