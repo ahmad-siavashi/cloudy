@@ -31,22 +31,22 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
+                    <a class="class" href="#EventType">EventType</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#EventType.VM_ARRIVAL">VM_ARRIVAL</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#EventType.DC_PROCESS">DC_PROCESS</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
                     <a class="class" href="#Event">Event</a>
                             <ul class="memberlist">
                         <li>
                                 <a class="function" href="#Event.__init__">Event</a>
-                        </li>
-                        <li>
-                                <a class="class" href="#Event.Type">Event.Type</a>
-                                        <ul class="memberlist">
-                                    <li>
-                                            <a class="variable" href="#Event.Type.VM_ARRIVAL">VM_ARRIVAL</a>
-                                    </li>
-                                    <li>
-                                            <a class="variable" href="#Event.Type.DC_PROCESS">DC_PROCESS</a>
-                                    </li>
-                            </ul>
-
                         </li>
                 </ul>
 
@@ -87,6 +87,62 @@
                 
                 
             </section>
+                <section id="EventType">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">EventType</span><wbr>(<span class="base">enum.Enum</span>):
+
+        
+    </div>
+    <a class="headerlink" href="#EventType"></a>
+    
+            <div class="docstring"><p>The Type class is an enum class that defines the available types af Events in the simulation.</p>
+
+<h1 id="attributes">Attributes</h1>
+
+<ul>
+<li>VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider</li>
+<li>DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center</li>
+</ul>
+</div>
+
+
+                            <div id="EventType.VM_ARRIVAL" class="classattr">
+                                <div class="attr variable">
+            <span class="name">VM_ARRIVAL</span><span class="annotation">: str</span>        =
+<span class="default_value">&lt;<a href="#EventType.VM_ARRIVAL">EventType.VM_ARRIVAL</a>: &#39;vm_arrival&#39;&gt;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventType.VM_ARRIVAL"></a>
+    
+    
+
+                            </div>
+                            <div id="EventType.DC_PROCESS" class="classattr">
+                                <div class="attr variable">
+            <span class="name">DC_PROCESS</span><span class="annotation">: str</span>        =
+<span class="default_value">&lt;<a href="#EventType.DC_PROCESS">EventType.DC_PROCESS</a>: &#39;dc_process&#39;&gt;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventType.DC_PROCESS"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt>enum.Enum</dt>
+                                <dd id="EventType.name" class="variable">name</dd>
+                <dd id="EventType.value" class="variable">value</dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
                 <section id="Event">
                     <div class="attr class">
                     <div class="decorator">@dataclass</div>
@@ -103,7 +159,7 @@
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>TYPE (<a href="#Event.Type">Event.Type</a>): the event of the event which helps in the interpretation and processing of the event</li>
+<li>TYPE (Event.Type): the event of the event which helps in the interpretation and processing of the event</li>
 <li>DATA (object): the data that is associated with the event</li>
 </ul>
 </div>
@@ -112,7 +168,7 @@
                             <div id="Event.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">Event</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">TYPE</span><span class="p">:</span> <span class="n"><a href="#Event.Type">cloudy.simulation.event.Event.Type</a></span>, </span><span class="param"><span class="n">DATA</span><span class="p">:</span> <span class="nb">object</span></span>)</span>
+        <span class="name">Event</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">TYPE</span><span class="p">:</span> <span class="n"><a href="#EventType">cloudy.simulation.event.EventType</a></span>, </span><span class="param"><span class="n">DATA</span><span class="p">:</span> <span class="nb">object</span></span>)</span>
 
         
     </div>
@@ -120,62 +176,6 @@
     
     
 
-                            </div>
-                </section>
-                <section id="Event.Type">
-                    <div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">Event.Type</span><wbr>(<span class="base">enum.Enum</span>):
-
-        
-    </div>
-    <a class="headerlink" href="#Event.Type"></a>
-    
-            <div class="docstring"><p>The Type class is an enum class that defines the available types af Events in the simulation.</p>
-
-<h1 id="attributes">Attributes</h1>
-
-<ul>
-<li>VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider</li>
-<li>DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center</li>
-</ul>
-</div>
-
-
-                            <div id="Event.Type.VM_ARRIVAL" class="classattr">
-                                <div class="attr variable">
-            <span class="name">VM_ARRIVAL</span><span class="annotation">: str</span>        =
-<span class="default_value">&lt;Type.VM_ARRIVAL: &#39;vm_arrival&#39;&gt;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.Type.VM_ARRIVAL"></a>
-    
-    
-
-                            </div>
-                            <div id="Event.Type.DC_PROCESS" class="classattr">
-                                <div class="attr variable">
-            <span class="name">DC_PROCESS</span><span class="annotation">: str</span>        =
-<span class="default_value">&lt;Type.DC_PROCESS: &#39;dc_process&#39;&gt;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#Event.Type.DC_PROCESS"></a>
-    
-    
-
-                            </div>
-                            <div class="inherited">
-                                <h5>Inherited Members</h5>
-                                <dl>
-                                    <div><dt>enum.Enum</dt>
-                                <dd id="Event.Type.name" class="variable">name</dd>
-                <dd id="Event.Type.value" class="variable">value</dd>
-
-            </div>
-                                </dl>
                             </div>
                 </section>
                 <section id="EventQueue">
