@@ -229,6 +229,14 @@ class Os(ABC):
 
 @dataclass
 class Vmm(ABC):
+    """
+    This class provides a template for implementing virtual machine managers that can allocate and deallocate VMs on a host and process.
+
+    Attributes
+    ==========
+    _HOST(Pm, private): the physical machine on which the virtual machines managed by the Vmm instance are running
+    guests (list[Vm, ...]): the list of allocated VMs
+    """
     _HOST: Pm
     guests: list[Vm, ...] = field(init=False, default_factory=list)
 
