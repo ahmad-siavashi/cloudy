@@ -1,4 +1,3 @@
-# Creating an application called 'nginx' with 2 threads each 2 cycles length.
 from module import App, Vm, Request, User, Pm, DataCenter
 from module.os import OsFcfs
 from module.placement import PlacementFirstFit
