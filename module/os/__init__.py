@@ -23,7 +23,7 @@ class OsFcfs(Os):
             results += [True]
         return results
 
-    def process(self, cpu: tuple[int, ...], duration) -> tuple[int, ...]:
+    def process(self, cpu: tuple[int, ...], duration: int) -> tuple[int, ...]:
         """
         The process function takes a list of integers representing the number of
         cores available on each CPU and an integer representing the duration for which
@@ -33,7 +33,7 @@ class OsFcfs(Os):
 
         :param self: Represent the instance of the class
         :param cpu: list[int, ...]: Represent the number of cores in each cpu
-        :param duration: Determine how long the process should run for
+        :param duration: int: Determine how long the process should run for
         :return: The remaining cycles of processors
         """
         cycles = [core * duration for core in cpu]
