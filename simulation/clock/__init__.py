@@ -25,12 +25,12 @@ class Clock:
         return Clock.now()
 
     @staticmethod
-    def increment(ticks=1) -> int:
+    def increment(ticks: int = 1) -> int:
         """
         The increment function is used to increment the clock by a given number of ticks where each tick represents one simulation time unit.
         The default value for ticks is 1, so if no argument is passed in, the clock will be incremented by 1 tick.
 
-        :param ticks: Increment the clock by a certain number of ticks
+        :param ticks: int: Increment the clock by a certain number of ticks
         :return: The new current time
         """
         Clock._tick += ticks
