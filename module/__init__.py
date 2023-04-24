@@ -176,7 +176,7 @@ class User:
     """
     The User class represents a cloud user.
 
-    Attribtues
+    Attributes
     ==========
     - NAME (str): name of the user
     - REQUESTS (list[Request, ...]): list of user requrests (e.g., vm provisioning)
