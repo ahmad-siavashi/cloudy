@@ -1,8 +1,21 @@
 from __future__ import annotations
 
-import enum
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import List, Tuple, ClassVar
+
+
+class EventType(Enum):
+    """
+    The Type class is an enum class that defines the available types af Events in the simulation.
+
+    Attributes
+    ==========
+    - VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider
+    - DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center
+    """
+    VM_ARRIVAL: str = 'vm_arrival'
+    DC_PROCESS: str = 'dc_process'
 
 
 @dataclass
@@ -15,20 +28,7 @@ class Event:
     - TYPE (Event.Type): the event of the event which helps in the interpretation and processing of the event
     - DATA (object): the data that is associated with the event
     """
-
-    class Type(enum.Enum):
-        """
-        The Type class is an enum class that defines the available types af Events in the simulation.
-
-        Attributes
-        ==========
-        - VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider
-        - DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center
-        """
-        VM_ARRIVAL: str = 'vm_arrival'
-        DC_PROCESS: str = 'dc_process'
-
-    TYPE: Event.Type
+    TYPE: EventType
     DATA: object
 
 
@@ -60,7 +60,6 @@ class EventQueue:
                 break
             index += 1
         self._events.insert(index, (tick, event))
-        return index
 
     def empty(self) -> bool:
         """
