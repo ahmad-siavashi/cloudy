@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 from module import User, DataCenter, Vm
 from simulation.clock import Clock
-from simulation.event import Event, EventQueue
+from simulation.event import Event, EventQueue, EventType
 from simulation.log import Logger
 
 
@@ -38,13 +38,13 @@ class Simulation:
         # event queue. It is also initializing two variables, `_num_requests` and `_finished_vms`, which will be used to
         # keep track of the number of requests and finished VMs during the simulation.
         for request in self._user.REQUESTS:
-            new_event = Event(Event.Type.VM_ARRIVAL, request.VM)
+            new_event = Event(EventType.VM_ARRIVAL, request.VM)
             self._events.put(request.ARRIVAL, new_event)
 
         self._num_requests: int = 0
         self._finished_vms: list[tuple[int, Vm], ...] = []
 
-        new_event = Event(Event.Type.DC_PROCESS, (self._clock.now(), self._datacenter))
+        new_event = Event(EventType.DC_PROCESS, (self._clock.now(), self._datacenter))
         self._events.put(self._clock.now(), new_event)
 
     def _handler_vm_arrival(self, event: Event) -> None:
@@ -86,7 +86,7 @@ class Simulation:
             self._finished_vms += [(self._clock.now(), finished_vm) for finished_vm in finished_vms]
 
         if self._num_requests:
-            next_event = Event(Event.Type.DC_PROCESS, (self._clock.now(), datacenter))
+            next_event = Event(EventType.DC_PROCESS, (self._clock.now(), datacenter))
             self._events.put(self._clock.now() + self._clock_resolution, next_event)
         else:
             for clock, finished_vm in self._finished_vms:
@@ -105,9 +105,9 @@ class Simulation:
         self._logger.log(self._clock.now(), 'simulation', 'begin')
         while not self._events.empty():
             tick, event = self._events.get()
-            if event.TYPE == Event.Type.VM_ARRIVAL:
+            if event.TYPE == EventType.VM_ARRIVAL:
                 self._handler_vm_arrival(event)
-            elif event.TYPE == Event.Type.DC_PROCESS:
+            elif event.TYPE == EventType.DC_PROCESS:
                 self._handler_dc_process(event)
             else:
                 raise ValueError('unknown event ' + event.TYPE.value)
