@@ -512,7 +512,7 @@ It takes a list of App objects as input and returns a list of booleans indicatin
                     <div class="decorator">@abstractmethod</div>
 
         <span class="def">def</span>
-        <span class="name">process</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">cpu</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>, </span><span class="param"><span class="n">duration</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+        <span class="name">process</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">cpu</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>, </span><span class="param"><span class="n">duration</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
 
         
     </div>
@@ -527,7 +527,7 @@ all processes.</p>
 <ul>
 <li><strong>self</strong>:  Represent the instance of the class</li>
 <li><strong>cpu: tuple[int, ...]</strong>:  Indicate the processors that are available</li>
-<li><strong>duration</strong>:  Determine how long the cpu can run uninterrupted</li>
+<li><strong>duration: int</strong>:  Determine how long the cpu can run uninterrupted</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
