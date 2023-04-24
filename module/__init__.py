@@ -203,7 +203,7 @@ class Os(ABC):
         pass
 
     @abstractmethod
-    def process(self, cpu: tuple[int, ...], duration) -> tuple[int, ...]:
+    def process(self, cpu: tuple[int, ...], duration: int) -> tuple[int, ...]:
         """
         The process function is the main function of the scheduler. It takes in a list of processors and an amount
         of time that they can run uninterrupted, and returns an integer representing how much time it will take to finish
@@ -211,7 +211,7 @@ class Os(ABC):
 
         :param self: Represent the instance of the class
         :param cpu: tuple[int, ...]: Indicate the processors that are available
-        :param duration: Determine how long the cpu can run uninterrupted
+        :param duration: int: Determine how long the cpu can run uninterrupted
         :return: The remaining cycles of processors
         """
         pass

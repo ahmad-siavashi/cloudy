@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Logger:
     """
     A class that logs messages to stdout.
@@ -31,12 +34,12 @@ class Logger:
         """
         print(self.SEPARATOR)
 
-    def log(self, *args: tuple[str, ...]) -> None:
+    def log(self, *args: Any) -> None:
         """
         The log function is used to print out the event log.
         It takes the values to print in a log.
 
-        :param *args: tuple[str, ...]: Values to be logged
+        :param *args: Any: Values to be logged
         :return: None
         """
         print(self.ROW.format(*args))
