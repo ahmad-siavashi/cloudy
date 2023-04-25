@@ -16,7 +16,7 @@ app = App('nginx', (4, 4, 4))
 
 # Creating a virtual machine called 'webserver' with 2 cores and 1 GB of RAM, using the OsFcfs operating system,
 # and scheduling the application 'nginx' on it.
-vm = Vm('webserver', 2, 1024, OsFcfs)
+vm = Vm('webserver', 2, 1024, None, OsFcfs)
 vm.OS.schedule([app])
 
 # Creating a request for a VM and a user that will request that VM.
@@ -26,7 +26,7 @@ user = User('portal', [req])
 
 # Creating a physical machine with the name 'hpe gen10', with 2 cores (each 2 cycles per simulation time unit)
 # and 2 GB of RAM, and using the VmmSpaceShared virtual machine manager.
-pm = Pm('hpe gen10', (2, 2), 2048, VmmSpaceShared)
+pm = Pm('hpe gen10', (2, 2), 2048, None, VmmSpaceShared)
 
 # Creating a data center called 'boston region' with a single physical machine called 'hpe gen10' which uses the
 # PlacementFirstFit placement algorithm.

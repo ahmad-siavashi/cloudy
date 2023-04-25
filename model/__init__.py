@@ -90,11 +90,13 @@ class Vm:
     - NAME (str): name of the virtual machine
     - CPU (int): number of cores; core speed depends on the host machine
     - RAM (int): amount of RAM
+    - GPU (None|tuple[int, int]): (no. of compute engines, no. of memory blocks)
     - OS (Type[Os]): operating system which determines creation and execution of applications
     """
     NAME: str
     CPU: int
     RAM: int
+    GPU: None | tuple[int, int]
     OS: Type[policy.Os]
 
     def __post_init__(self):
@@ -117,11 +119,13 @@ class Pm:
     - NAME (str): name of the physical machine
     - CPU (tuple[int, ...]): cycles of cores per simulation time unit
     - RAM (int): amount of RAM
+    - GPU (None|tuple[tuple(int, int), ...]): list of GPUs in the form of [(no. of compute engines, no. of memory blocks), ...]
     - VMM (Type[Vmm]): hypervisor which determines creation and execution of virtual machines
     """
     NAME: str
     CPU: tuple[int, ...]
     RAM: int
+    GPU: None | tuple[tuple[int, int], ...]
     VMM: Type[policy.Vmm]
 
     def __post_init__(self):
