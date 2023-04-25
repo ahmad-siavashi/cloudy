@@ -82,17 +82,16 @@ one tick equals one second.</p>
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>_tick (ClassVar[int], private): a private static class variable to keep the current time</li>
+<li>_tick (int, private): a private class variable to keep the current time</li>
 </ul>
 </div>
 
 
                             <div id="Clock.reset" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">reset</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">reset</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
@@ -111,10 +110,9 @@ one tick equals one second.</p>
                             </div>
                             <div id="Clock.increment" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">increment</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">ticks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">increment</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ticks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
@@ -140,23 +138,20 @@ The default value for ticks is 1, so if no argument is passed in, the clock will
                             </div>
                             <div id="Clock.now" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@staticmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">now</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+        <span class="name">now</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
     <a class="headerlink" href="#Clock.now"></a>
     
-            <div class="docstring"><p>The now function is a static method of the Clock class.
-It returns the current time, which is stored in a private variable called _tick.
-The now function can be used to get the current time without having to create an instance of Clock.</p>
+            <div class="docstring"><p>The now function returns the current time, which is stored in a private variable called _tick.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>The value of the _tick attribute in the clock class</p>
+  <p>The value of the _tick attribute</p>
 </blockquote>
 </div>
 
