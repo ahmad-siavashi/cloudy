@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Tuple, ClassVar
+from typing import List, Tuple
 
 
 class EventType(Enum):
@@ -38,7 +38,7 @@ class EventQueue:
     This class represents an event queue to hold registered events during simulation
     """
 
-    _events: ClassVar[List[Tuple[int, Event]]] = field(init=False, default=[])
+    _events: List[Tuple[int, Event]] = field(init=False, default_factory=list)
 
     def put(self, tick: int, event: Event) -> None:
         """
