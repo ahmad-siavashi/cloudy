@@ -87,7 +87,7 @@ class Vm:
     ==========
     - NAME (str): name of the virtual machine
     - CPU (int): number of cores; core speed depends on the host machine
-    - RAM (int): amount of RAM, in megabytes
+    - RAM (int): amount of RAM
     - OS (Type[Os]): operating system which determines creation and execution of applications
     """
     NAME: str
@@ -114,7 +114,7 @@ class Pm:
     ==========
     - NAME (str): name of the physical machine
     - CPU (tuple[int, ...]): cycles of cores per simulation time unit
-    - RAM (int): amount of RAM in megabytes
+    - RAM (int): amount of RAM
     - VMM (Type[Vmm]): hypervisor which determines creation and execution of virtual machines
     """
     NAME: str
