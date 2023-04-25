@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 
-from module import Vmm, Vm
+import model
+import policy
 
 
 @dataclass
-class VmmSpaceShared(Vmm):
+class VmmSpaceShared(policy.Vmm):
     """
     A space-shared VM scheduler in which each VM receives dedicated slices of resources.
     """
@@ -22,7 +23,7 @@ class VmmSpaceShared(Vmm):
         self._vm_cpu: dict[int, tuple[int, ...]] = dict()
         self._free_ram: int = self._HOST.RAM
 
-    def allocate(self, vms: list[Vm, ...]) -> list[bool, ...]:
+    def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """
         The allocate function takes a list of VMs and attempts to allocate them on the host.
         It returns a list of booleans indicating whether each VM was successfully allocated or not.
@@ -43,7 +44,7 @@ class VmmSpaceShared(Vmm):
                 results += [False]
         return results
 
-    def deallocate(self, vms: list[Vm, ...]) -> list[bool, ...]:
+    def deallocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """
         The deallocate function takes a list of VMs and removes them from the host.
         It returns a list of booleans indicating whether each VM was successfully removed.
@@ -64,7 +65,7 @@ class VmmSpaceShared(Vmm):
                 results += [False]
         return results
 
-    def process(self, duration: int) -> tuple[Vm, ...]:
+    def process(self, duration: int) -> tuple[model.Vm, ...]:
         """
         The process function is the main function of the scheduler. It takes a duration
         parameter and processes all VMs for that amount of time. The return value is a list

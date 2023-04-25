@@ -1,8 +1,15 @@
-from module import App, Vm, Request, User, Pm, DataCenter
-from module.os import OsFcfs
-from module.placement import PlacementFirstFit
-from module.vmm import VmmSpaceShared
-from simulation import Simulation
+""" This is a simple example to demonestrate the use of the simulator. In this example, a data center with one
+physical machine (PM) receives one request (a virtual machine) from a user. The virtual machine (VM) which contains
+one application to run, arrives at time zero, i.e. the beginning of the simulation. The VM uses a
+first-come-first-served (FCFS) scheduling policy to execute its processes. The PM uses a space-shared policy to
+allocate resources for the virtual machine. Furthermore, the data center uses a first-fit (FF) policy to find a
+suitable host for the request. """
+
+from model import App, Vm, Request, User, Pm, DataCenter
+from module import Simulation
+from policy.os import OsFcfs
+from policy.placement import PlacementFirstFit
+from policy.vmm import VmmSpaceShared
 
 # Creating an application object called 'nginx' with 3 threads, each 4 cycles length.
 app = App('nginx', (4, 4, 4))
