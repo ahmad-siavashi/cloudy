@@ -1,13 +1,14 @@
-from module import Os, App
+import model
+import policy
 
 
-class OsFcfs(Os):
+class OsFcfs(policy.Os):
     """
     This class is a subclass of the Os class and it implements the first-come-first-served algorithm for
     application, i.e. process, scheduling.
     """
 
-    def schedule(self, apps: list[App, ...]) -> list[bool, ...]:
+    def schedule(self, apps: list[model.App, ...]) -> list[bool, ...]:
         """
         The schedule function takes a list of apps and schedules them on the
             scheduler. It returns a list of booleans indicating whether each app was

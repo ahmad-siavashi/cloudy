@@ -1,13 +1,14 @@
-from module import Placement, Vm
+import model
+import policy
 
 
-class PlacementFirstFit(Placement):
+class PlacementFirstFit(policy.Placement):
     """
     A class that inherits from the Placement class. It is a placement algorithm that attempts to allocate VMs to
     the first server that has enough resources to allocate the VM.
     """
 
-    def allocate(self, vms: list[Vm, ...]) -> list[bool, ...]:
+    def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """
         The allocate function takes a list of VMs and attempts to allocate them on the servers in the data center.
         It returns a list of booleans, where each boolean corresponds to whether or not that VM was successfully allocated.

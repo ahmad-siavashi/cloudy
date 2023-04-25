@@ -27,116 +27,86 @@
                    pattern=".+" required>
 
 
-            <h2>Submodules</h2>
-            <ul>
-                    <li><a href="module/os.html">os</a></li>
-                    <li><a href="module/placement.html">placement</a></li>
-                    <li><a href="module/vmm.html">vmm</a></li>
-            </ul>
 
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="class" href="#App">App</a>
+                    <a class="class" href="#Clock">Clock</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#App.__init__">App</a>
+                                <a class="function" href="#Clock.reset">reset</a>
                         </li>
                         <li>
-                                <a class="function" href="#App.remained">remained</a>
+                                <a class="function" href="#Clock.increment">increment</a>
                         </li>
                         <li>
-                                <a class="function" href="#App.process">process</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#App.finished">finished</a>
+                                <a class="function" href="#Clock.now">now</a>
                         </li>
                 </ul>
 
             </li>
             <li>
-                    <a class="class" href="#Vm">Vm</a>
+                    <a class="class" href="#Logger">Logger</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#Vm.__init__">Vm</a>
+                                <a class="function" href="#Logger.__init__">Logger</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Logger.begin">begin</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Logger.end">end</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Logger.log">log</a>
                         </li>
                 </ul>
 
             </li>
             <li>
-                    <a class="class" href="#Pm">Pm</a>
+                    <a class="class" href="#EventType">EventType</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#Pm.__init__">Pm</a>
+                                <a class="variable" href="#EventType.VM_ARRIVAL">VM_ARRIVAL</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#EventType.DC_PROCESS">DC_PROCESS</a>
                         </li>
                 </ul>
 
             </li>
             <li>
-                    <a class="class" href="#DataCenter">DataCenter</a>
+                    <a class="class" href="#Event">Event</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#DataCenter.__init__">DataCenter</a>
+                                <a class="function" href="#Event.__init__">Event</a>
                         </li>
                 </ul>
 
             </li>
             <li>
-                    <a class="class" href="#Request">Request</a>
+                    <a class="class" href="#EventQueue">EventQueue</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#Request.__init__">Request</a>
+                                <a class="function" href="#EventQueue.put">put</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#EventQueue.empty">empty</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#EventQueue.get">get</a>
                         </li>
                 </ul>
 
             </li>
             <li>
-                    <a class="class" href="#User">User</a>
+                    <a class="class" href="#Simulation">Simulation</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="function" href="#User.__init__">User</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
-                    <a class="class" href="#Os">Os</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="function" href="#Os.schedule">schedule</a>
+                                <a class="function" href="#Simulation.__init__">Simulation</a>
                         </li>
                         <li>
-                                <a class="function" href="#Os.process">process</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Os.finished">finished</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
-                    <a class="class" href="#Vmm">Vmm</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="function" href="#Vmm.allocate">allocate</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Vmm.deallocate">deallocate</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Vmm.process">process</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Vmm.idle">idle</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
-                    <a class="class" href="#Placement">Placement</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="function" href="#Placement.allocate">allocate</a>
+                                <a class="function" href="#Simulation.start">start</a>
                         </li>
                 </ul>
 
@@ -157,594 +127,435 @@
                     <h1 class="modulename">
 <a href="./../cloudy.html">cloudy</a><wbr>.module    </h1>
 
-                
+                        <div class="docstring"><p>The components of the simulator.</p>
+</div>
+
                 
                 
                 
             </section>
-                <section id="App">
+                <section id="Clock">
                     <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
+            
     <span class="def">class</span>
-    <span class="name">App</span>:
+    <span class="name">Clock</span>:
 
         
     </div>
-    <a class="headerlink" href="#App"></a>
+    <a class="headerlink" href="#Clock"></a>
     
-            <div class="docstring"><p>The App class represent a single application instance in cloud.</p>
+            <div class="docstring"><p>The simulator uses a clock to keep track of time. One tick equals one time unit. To make things easy, assume
+one tick equals one second.</p>
 
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>NAME (str): name of the application</li>
-<li>LENGTH (tuple[int, ...]): length of application threads, in cycles</li>
-<li>_remained (list[int, ...], private): remained length of application threads, in cycles</li>
+<li>_tick (int, private): a private class variable to keep the current time</li>
 </ul>
 </div>
 
 
-                            <div id="App.__init__" class="classattr">
-                                <div class="attr function">
-            
-        <span class="name">App</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">LENGTH</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span>)</span>
-
-        
-    </div>
-    <a class="headerlink" href="#App.__init__"></a>
-    
-    
-
-                            </div>
-                            <div id="App.remained" class="classattr">
+                            <div id="Clock.reset" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">remained</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+        <span class="name">reset</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#App.remained"></a>
+    <a class="headerlink" href="#Clock.reset"></a>
     
-            <div class="docstring"><p>The remained function returns a tuple of the remaining number of cycles required by each thread in
-this application to complete its execution.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Refer to the instance of the class</li>
-</ul>
+            <div class="docstring"><p>The reset function resets the clock to 0.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>A tuple of the remained cycles of application threads</p>
+  <p>The new current time</p>
 </blockquote>
 </div>
 
 
                             </div>
-                            <div id="App.process" class="classattr">
+                            <div id="Clock.increment" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">process</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">cycles</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+        <span class="name">increment</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ticks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#App.process"></a>
+    <a class="headerlink" href="#Clock.increment"></a>
     
-            <div class="docstring"><p>The process function takes a tuple of integers as input, and returns a tuple of integers.
-The input is the number of cycles available to each processor in the system. The output is
-the remaining number of processor cycles after execution.</p>
+            <div class="docstring"><p>The increment function is used to increment the clock by a given number of ticks where each tick represents one simulation time unit.
+The default value for ticks is 1, so if no argument is passed in, the clock will be incremented by 1 tick.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>self</strong>:  Refer to the current object</li>
-<li><strong>cycles: tuple[int, ...]</strong>:  Pass in the available cycles of each processor</li>
+<li><strong>ticks: int</strong>:  Increment the clock by a certain number of ticks</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>The remained cycles of processors</p>
+  <p>The new current time</p>
 </blockquote>
 </div>
 
 
                             </div>
-                            <div id="App.finished" class="classattr">
+                            <div id="Clock.now" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">finished</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+        <span class="name">now</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#App.finished"></a>
+    <a class="headerlink" href="#Clock.now"></a>
     
-            <div class="docstring"><p>The finished function checks if the application is finished.
-It returns True if all the threads in the application have been finished, and False otherwise.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Access the attributes of the class</li>
-</ul>
+            <div class="docstring"><p>The now function returns the current time, which is stored in a private variable called _tick.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>True if the application is finished, and False otherwise</p>
+  <p>The value of the _tick attribute</p>
 </blockquote>
 </div>
 
 
                             </div>
                 </section>
-                <section id="Vm">
+                <section id="Logger">
                     <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
+            
     <span class="def">class</span>
-    <span class="name">Vm</span>:
+    <span class="name">Logger</span>:
 
         
     </div>
-    <a class="headerlink" href="#Vm"></a>
+    <a class="headerlink" href="#Logger"></a>
     
-            <div class="docstring"><p>The Vm class represent a virtual machine instance in cloud.</p>
+            <div class="docstring"><p>A class that logs messages to stdout.</p>
+</div>
+
+
+                            <div id="Logger.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Logger</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Logger.__init__"></a>
+    
+            <div class="docstring"><p>The __init__ function initializes the class with a dictionary of column names and their widths.
+If no arguments are passed, it defaults to the following:
+    {'Clock': 5, 'Event': 15, 'Description': 25}</p>
+</div>
+
+
+                            </div>
+                            <div id="Logger.begin" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">begin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Logger.begin"></a>
+    
+            <div class="docstring"><p>The begin function prints the header for the table of events.</p>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>None</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="Logger.end" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">end</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Logger.end"></a>
+    
+            <div class="docstring"><p>The end function prints the bottom of the table of events.</p>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>None</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="Logger.log" class="classattr">
+                                <div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">log</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+        
+    </div>
+    <a class="headerlink" href="#Logger.log"></a>
+    
+            <div class="docstring"><p>The log function is used to print out the event log.
+It takes the values to print in a log.</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>*args: Any</strong>:  Values to be logged</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>None</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="EventType">
+                    <div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">EventType</span><wbr>(<span class="base">enum.Enum</span>):
+
+        
+    </div>
+    <a class="headerlink" href="#EventType"></a>
+    
+            <div class="docstring"><p>The Type class is an enum class that defines the available types af Events in the simulation.</p>
 
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>NAME (str): name of the virtual machine</li>
-<li>CPU (int): number of cores; core speed depends on the host machine</li>
-<li>RAM (int): amount of RAM, in megabytes</li>
-<li>OS (Type[Os]): operating system which determines creation and execution of applications</li>
+<li>VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider</li>
+<li>DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center</li>
 </ul>
 </div>
 
 
-                            <div id="Vm.__init__" class="classattr">
-                                <div class="attr function">
-            
-        <span class="name">Vm</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">CPU</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">OS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n"><a href="#Os">cloudy.module.Os</a></span><span class="p">]</span></span>)</span>
+                            <div id="EventType.VM_ARRIVAL" class="classattr">
+                                <div class="attr variable">
+            <span class="name">VM_ARRIVAL</span><span class="annotation">: str</span>        =
+<span class="default_value">&lt;<a href="#EventType.VM_ARRIVAL">EventType.VM_ARRIVAL</a>: &#39;vm_arrival&#39;&gt;</span>
 
         
     </div>
-    <a class="headerlink" href="#Vm.__init__"></a>
+    <a class="headerlink" href="#EventType.VM_ARRIVAL"></a>
     
     
 
                             </div>
+                            <div id="EventType.DC_PROCESS" class="classattr">
+                                <div class="attr variable">
+            <span class="name">DC_PROCESS</span><span class="annotation">: str</span>        =
+<span class="default_value">&lt;<a href="#EventType.DC_PROCESS">EventType.DC_PROCESS</a>: &#39;dc_process&#39;&gt;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EventType.DC_PROCESS"></a>
+    
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt>enum.Enum</dt>
+                                <dd id="EventType.name" class="variable">name</dd>
+                <dd id="EventType.value" class="variable">value</dd>
+
+            </div>
+                                </dl>
+                            </div>
                 </section>
-                <section id="Pm">
+                <section id="Event">
                     <div class="attr class">
                     <div class="decorator">@dataclass</div>
 
     <span class="def">class</span>
-    <span class="name">Pm</span>:
+    <span class="name">Event</span>:
 
         
     </div>
-    <a class="headerlink" href="#Pm"></a>
+    <a class="headerlink" href="#Event"></a>
     
-            <div class="docstring"><p>The Pm class represent a physical machine in the data center.</p>
+            <div class="docstring"><p>It is a class that represents an event that can occur in the simulation.</p>
 
 <h1 id="attributes">Attributes</h1>
 
 <ul>
-<li>NAME (str): name of the physical machine</li>
-<li>CPU (tuple[int, ...]): cycles of cores per simulation time unit</li>
-<li>RAM (int): amount of RAM in megabytes</li>
-<li>VMM (Type[Vmm]): hypervisor which determines creation and execution of virtual machines</li>
+<li>TYPE (Event.Type): the event of the event which helps in the interpretation and processing of the event</li>
+<li>DATA (object): the data that is associated with the event</li>
 </ul>
 </div>
 
 
-                            <div id="Pm.__init__" class="classattr">
+                            <div id="Event.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">Pm</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">CPU</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">VMM</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n"><a href="#Vmm">cloudy.module.Vmm</a></span><span class="p">]</span></span>)</span>
+        <span class="name">Event</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">TYPE</span><span class="p">:</span> <span class="n"><a href="#EventType">cloudy.module.EventType</a></span>, </span><span class="param"><span class="n">DATA</span><span class="p">:</span> <span class="nb">object</span></span>)</span>
 
         
     </div>
-    <a class="headerlink" href="#Pm.__init__"></a>
+    <a class="headerlink" href="#Event.__init__"></a>
     
     
 
                             </div>
                 </section>
-                <section id="DataCenter">
+                <section id="EventQueue">
                     <div class="attr class">
                     <div class="decorator">@dataclass</div>
 
     <span class="def">class</span>
-    <span class="name">DataCenter</span>:
+    <span class="name">EventQueue</span>:
 
         
     </div>
-    <a class="headerlink" href="#DataCenter"></a>
+    <a class="headerlink" href="#EventQueue"></a>
     
-            <div class="docstring"><p>The DataCenter class represent a data center in cloud.</p>
-
-<h1 id="attributes">Attributes</h1>
-
-<ul>
-<li>NAME (str): name of the data center</li>
-<li>SERVERS (list[Pm, ...]): physical machines of data center</li>
-<li>PLACEMENT (Type[Placement]): management utility which determines assignment of virtual machines to physical machines</li>
-</ul>
+            <div class="docstring"><p>This class represents an event queue to hold registered events during simulation</p>
 </div>
 
 
-                            <div id="DataCenter.__init__" class="classattr">
+                            <div id="EventQueue.put" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">DataCenter</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">SERVERS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Pm">cloudy.module.Pm</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">PLACEMENT</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n"><a href="#Placement">cloudy.module.Placement</a></span><span class="p">]</span></span>)</span>
-
-        
-    </div>
-    <a class="headerlink" href="#DataCenter.__init__"></a>
-    
-    
-
-                            </div>
-                </section>
-                <section id="Request">
-                    <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
-    <span class="def">class</span>
-    <span class="name">Request</span>:
-
-        
-    </div>
-    <a class="headerlink" href="#Request"></a>
-    
-            <div class="docstring"><p>The Request class represents a request that arrives at the data center.</p>
-
-<h1 id="attributes">Attributes</h1>
-
-<ul>
-<li>ARRIVAL (int): arrival time of the request, in simulation time unit</li>
-<li>VM (Vm): virtual machine instance</li>
-</ul>
-</div>
-
-
-                            <div id="Request.__init__" class="classattr">
-                                <div class="attr function">
-            
-        <span class="name">Request</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">ARRIVAL</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">VM</span><span class="p">:</span> <span class="n"><a href="#Vm">cloudy.module.Vm</a></span></span>)</span>
-
-        
-    </div>
-    <a class="headerlink" href="#Request.__init__"></a>
-    
-    
-
-                            </div>
-                </section>
-                <section id="User">
-                    <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
-    <span class="def">class</span>
-    <span class="name">User</span>:
-
-        
-    </div>
-    <a class="headerlink" href="#User"></a>
-    
-            <div class="docstring"><p>The User class represents a cloud user.</p>
-
-<h1 id="attributes">Attributes</h1>
-
-<ul>
-<li>NAME (str): name of the user</li>
-<li>REQUESTS (list[Request, ...]): list of user requrests (e.g., vm provisioning)</li>
-</ul>
-</div>
-
-
-                            <div id="User.__init__" class="classattr">
-                                <div class="attr function">
-            
-        <span class="name">User</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">REQUESTS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Request">cloudy.module.Request</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span>)</span>
-
-        
-    </div>
-    <a class="headerlink" href="#User.__init__"></a>
-    
-    
-
-                            </div>
-                </section>
-                <section id="Os">
-                    <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
-    <span class="def">class</span>
-    <span class="name">Os</span><wbr>(<span class="base">abc.ABC</span>):
-
-        
-    </div>
-    <a class="headerlink" href="#Os"></a>
-    
-    
-
-                            <div id="Os.schedule" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
         <span class="def">def</span>
-        <span class="name">schedule</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">apps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#App">cloudy.module.App</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+        <span class="name">put</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">tick</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">event</span><span class="p">:</span> <span class="n"><a href="#Event">cloudy.module.Event</a></span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#Os.schedule"></a>
+    <a class="headerlink" href="#EventQueue.put"></a>
     
-            <div class="docstring"><p>The schedule function is responsible for scheduling the applications to run on the virtual machine.
-It takes a list of App objects as input and returns a list of booleans indicating whether each app was successfully scheduled or not.</p>
+            <div class="docstring"><p>The put function is used to register an event with the EventQueue class.
+The function takes two arguments: a tick and an event. The tick argument is
+the number of ticks that must pass before the event will be executed, and the
+event argument will be consumed when it's time for the event to execute.
+The register function then inserts the tuple containing these two arguments
+into Event's list attribute at an index such that all events in this list are
+sorted by their respective ticks, with earlier events appearing first.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>self</strong>:  Represent the instance of a class</li>
-<li><strong>apps: list[App, ...]</strong>:  Pass in the list of apps that need to be scheduled</li>
+<li><strong>tick: int</strong>:  Tell the register function when to run the event</li>
+<li><strong>event: Event</strong>:  Specify the event that is to be registered</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>A list of booleans</p>
+  <p>None</p>
 </blockquote>
 </div>
 
 
                             </div>
-                            <div id="Os.process" class="classattr">
+                            <div id="EventQueue.empty" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
+            
         <span class="def">def</span>
-        <span class="name">process</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">cpu</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>, </span><span class="param"><span class="n">duration</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+        <span class="name">empty</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#Os.process"></a>
+    <a class="headerlink" href="#EventQueue.empty"></a>
     
-            <div class="docstring"><p>The process function is the main function of the scheduler. It takes in a list of processors and an amount
-of time that they can run uninterrupted, and returns an integer representing how much time it will take to finish
-all processes.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Represent the instance of the class</li>
-<li><strong>cpu: tuple[int, ...]</strong>:  Indicate the processors that are available</li>
-<li><strong>duration: int</strong>:  Determine how long the cpu can run uninterrupted</li>
-</ul>
+            <div class="docstring"><p>The empty function checks if the Event list is empty.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>The remaining cycles of processors</p>
+  <p>True if the event list is empty, otherwise it returns false</p>
 </blockquote>
 </div>
 
 
                             </div>
-                            <div id="Os.finished" class="classattr">
+                            <div id="EventQueue.get" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">finished</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.module.Event</a></span><span class="p">]</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#Os.finished"></a>
+    <a class="headerlink" href="#EventQueue.get"></a>
     
-            <div class="docstring"><p>The finished function checks to see if all of the apps in the list are finished.
-If they are, it returns True. If not, it returns False.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Refer to the object itself</li>
-</ul>
+            <div class="docstring"><p>The get function returns the first event in the list of events.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>A boolean value</p>
+  <p>A single event</p>
 </blockquote>
 </div>
 
 
                             </div>
                 </section>
-                <section id="Vmm">
+                <section id="Simulation">
                     <div class="attr class">
                     <div class="decorator">@dataclass</div>
 
     <span class="def">class</span>
-    <span class="name">Vmm</span><wbr>(<span class="base">abc.ABC</span>):
+    <span class="name">Simulation</span>:
 
         
     </div>
-    <a class="headerlink" href="#Vmm"></a>
+    <a class="headerlink" href="#Simulation"></a>
     
-            <div class="docstring"><p>This class provides a template for implementing virtual machine managers that can allocate and deallocate VMs on a host and process.</p>
-
-<h1 id="attributes">Attributes</h1>
-
-<p>_HOST(Pm, private): the physical machine on which the virtual machines managed by the Vmm instance are running
-guests (list[Vm, ...]): the list of allocated VMs</p>
+            <div class="docstring"><p>This class represents a simulation.</p>
 </div>
 
 
-                            <div id="Vmm.allocate" class="classattr">
+                            <div id="Simulation.__init__" class="classattr">
                                 <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">allocate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">vms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Vm">cloudy.module.Vm</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
+            
+        <span class="name">Simulation</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">_user</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span>,</span><span class="param">	<span class="n">_datacenter</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">DataCenter</span>,</span><span class="param">	<span class="n">_clock_resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span>)</span>
 
         
     </div>
-    <a class="headerlink" href="#Vmm.allocate"></a>
+    <a class="headerlink" href="#Simulation.__init__"></a>
     
-            <div class="docstring"><p>The allocate function is responsible for allocating a new VM on the host.
-It takes as input a list of VMs and returns a list of booleans, one per VM, indicating whether or not it was successfully allocated.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Represent the instance of the class</li>
-<li><strong>vms: list[Vm, ...]</strong>:  Pass in the list of vms that need to be allocated</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A list of boolean values</p>
-</blockquote>
-</div>
-
+    
 
                             </div>
-                            <div id="Vmm.deallocate" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">deallocate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">vms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Vm">cloudy.module.Vm</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Vmm.deallocate"></a>
-    
-            <div class="docstring"><p>The deallocate function is used to deallocate a list of VMs from the host.
-It returns a list of booleans, where each boolean indicates whether the VM was successfully deallocated or not.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Represent the instance of the class</li>
-<li><strong>vms: list[Vm, ...]</strong>:  Specify the vms that are to be deallocated</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A list of booleans</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                            <div id="Vmm.process" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">process</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">duration</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="n"><a href="#Vm">cloudy.module.Vm</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Vmm.process"></a>
-    
-            <div class="docstring"><p>The process function is the main function of the Host class. It takes a duration as an argument, and processes
-the guest vms OS for that amount of time. Then it checks if any VMs have finished running, and returns them in a list.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Represent the instance of a class</li>
-<li><strong>duration: int</strong>:  Specify the amount of time that the vms will run for</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A list of finished vms</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                            <div id="Vmm.idle" class="classattr">
+                            <div id="Simulation.start" class="classattr">
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">idle</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+        <span class="name">start</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
         
     </div>
-    <a class="headerlink" href="#Vmm.idle"></a>
+    <a class="headerlink" href="#Simulation.start"></a>
     
-            <div class="docstring"><p>The idle function returns True if all of the guests have no running load.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Refer to the object itself</li>
-</ul>
+            <div class="docstring"><p>The start function is the main function of this simulation.
+It will run until there are no more events in the event queue.
+Each time it runs, it will get an event from the queue and call a handler for that event of event.
+The handlers are responsible for creating new events to be added to the queue.</p>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>True if all the guests have finished executing, and False otherwise.</p>
-</blockquote>
-</div>
-
-
-                            </div>
-                </section>
-                <section id="Placement">
-                    <div class="attr class">
-                    <div class="decorator">@dataclass</div>
-
-    <span class="def">class</span>
-    <span class="name">Placement</span><wbr>(<span class="base">abc.ABC</span>):
-
-        
-    </div>
-    <a class="headerlink" href="#Placement"></a>
-    
-    
-
-                            <div id="Placement.allocate" class="classattr">
-                                <div class="attr function">
-                    <div class="decorator">@abstractmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">allocate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">vms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n"><a href="#Vm">cloudy.module.Vm</a></span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>:</span></span>
-
-        
-    </div>
-    <a class="headerlink" href="#Placement.allocate"></a>
-    
-            <div class="docstring"><p>The allocate function is responsible for allocating the given VMs in the data center.
-It should return a list of booleans, where each boolean indicates whether or not a VM was successfully allocated.
-The order of these booleans should correspond to the order of VMs in the input list.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>self</strong>:  Represent the instance of the class</li>
-<li><strong>vms: list[Vm, ...]</strong>:  Pass the list of vms to be allocated</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A list of booleans</p>
+  <p>None</p>
 </blockquote>
 </div>
 
