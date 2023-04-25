@@ -1,11 +1,11 @@
-from __future__ import annotations
+""" The components of the simulator. """
 
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 from typing import List, Tuple
 
-from model import User, DataCenter, Vm
+import model
 
 
 class Clock:
@@ -170,8 +170,8 @@ class Simulation:
     """
     This class represents a simulation.
     """
-    _user: User
-    _datacenter: DataCenter
+    _user: model.User
+    _datacenter: model.DataCenter
     _clock_resolution: int = field(default=1)
 
     def __post_init__(self):
@@ -201,7 +201,7 @@ class Simulation:
             self._events.put(request.ARRIVAL, new_event)
 
         self._num_requests: int = 0
-        self._finished_vms: list[tuple[int, Vm], ...] = []
+        self._finished_vms: list[tuple[int, model.Vm], ...] = []
 
         new_event = Event(EventType.DC_PROCESS, (self._clock.now(), self._datacenter))
         self._events.put(self._clock.now(), new_event)
@@ -216,7 +216,7 @@ class Simulation:
         :param event: Event: Pass the event to the function
         :return: None
         """
-        vm: Vm = event.DATA
+        vm: model.Vm = event.DATA
         if True in self._datacenter.PLACEMENT.allocate([vm]):
             self._num_requests += 1
             event = 'allocated'
