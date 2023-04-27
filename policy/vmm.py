@@ -22,9 +22,8 @@ class VmmSpaceShared(policy.Vmm):
         self._free_cpu: set[int, ...] = {core for core in range(len(self._HOST.CPU))}
         self._vm_cpu: dict[int, set[int, ...]] = dict()
         self._free_ram: int = self._HOST.RAM
-        if self._HOST.GPU:
-            self._free_gpu: tuple[set[int], ...] = tuple({block for block in range(blocks)} for _, blocks in self._HOST.GPU)
-            self._vm_gpu: dict[int, tuple[int, set[int, ...]]] = dict()
+        self._free_gpu: tuple[set[int], ...] = tuple({slice for slice in range(slices)} for _, slices in self._HOST.GPU)
+        self._vm_gpu: dict[int, tuple[int, set[int, ...]]] = dict()
 
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """
@@ -37,13 +36,12 @@ class VmmSpaceShared(policy.Vmm):
         """
         results = []
         for vm in vms:
-            if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM \
-                    and not vm.GPU or (free_gpu := self._get_free_gpu(vm.GPU)):
+            if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM and (not vm.GPU or (free_gpu := self._get_free_gpu(vm.GPU))):
                 self._vm_cpu[id(vm)] = {self._free_cpu.pop() for core in range(vm.CPU)}
                 self._free_ram -= vm.RAM
                 if vm.GPU:
-                    free_gpu, free_block = self._vm_gpu[id(vm)] = free_gpu
-                    self._free_gpu[free_gpu].remove(*free_block)
+                    free_gpu, free_slice = self._vm_gpu[id(vm)] = free_gpu
+                    self._free_gpu[free_gpu].remove(*free_slice)
                 self.guests += [vm]
                 results += [True]
             else:
@@ -66,8 +64,8 @@ class VmmSpaceShared(policy.Vmm):
                 del self._vm_cpu[id(vm)]
                 self._free_ram += vm.RAM
                 if vm.GPU:
-                    gpu, block = self._vm_gpu[id(vm)]
-                    self._free_gpu[gpu].update(block)
+                    gpu, slice = self._vm_gpu[id(vm)]
+                    self._free_gpu[gpu].update(slice)
                     del self._vm_gpu[id(vm)]
                 self.guests.remove(vm)
                 results += [True]
@@ -95,19 +93,19 @@ class VmmSpaceShared(policy.Vmm):
 
     def _get_free_gpu(self, gpu: tuple[int, int]) -> tuple[int, set[int, ...]] | None:
         """
-        The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory blocks that
-        can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory blocks
+        The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory slices that
+        can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory slices
         required by a given virtual GPU, and returns the index of the first free GPU (if one exists) along with a tuple
-        containing indices of free memory blocks on that GPU which can be allocated for the virtual GPU.
+        containing indices of free memory slices on that GPU which can be allocated for the virtual GPU.
         If no such contiguous set exists, None is returned.
 
         :param gpu: tuple[int, int]: represents the virtual GPU
-        :return: index of first free physical GPU and free memory blocks
+        :return: index of first free physical GPU and free memory slices
         """
         placements = self._get_gpu_placement(gpu)
-        for free_gpu_idx, free_gpu_blocks in enumerate(self._free_gpu):
+        for free_gpu_idx, free_gpu_slices in enumerate(self._free_gpu):
             for placement in map(set, placements):
-                if placement.issubset(free_gpu_blocks):
+                if placement.issubset(free_gpu_slices):
                     return free_gpu_idx, placement
         return None
 
@@ -116,16 +114,16 @@ class VmmSpaceShared(policy.Vmm):
         """
         This function is used to determine the order of placements for a given virtual GPU in the physical GPU memory.
         The function takes in a tuple of integers, which represents a virtual GPU where the first integer in the tuple
-        represents the number of compute engines, and the second integer represents the number of memory blocks.
-        For example, (2, 2) means that we have a virtual GPU with 2 compute engines and 2 memory blocks.
-        The function returns an ordered list containing physical GPU memory block placements for the virtual GPU.
+        represents the number of compute engines, and the second integer represents the number of memory slices.
+        For example, (2, 2) means that we have a virtual GPU with 2 compute engines and 2 memory slices.
+        The function returns an ordered list containing physical GPU memory slice placements for the virtual GPU.
 
         Remarks
         =======
         The sequences of placement returned by this function are obtained from NVIDIA driver version 495.29.05
 
         :param gpu: tuple[int, int]: represents the virtual GPU
-        :return: ordered list of physical GPU memory blocks to place the virtual GPU
+        :return: ordered list of physical GPU memory slices to place the virtual GPU
         """
         if gpu == (1, 1):
             placement = (6, 4, 5, 0, 1, 2, 3)
@@ -140,6 +138,6 @@ class VmmSpaceShared(policy.Vmm):
         else:
             return None
 
-        num_compute_engines, num_memory_blocks = gpu
-        placements = tuple(range(p, p + num_memory_blocks) for p in placement)
+        num_compute_engines, num_memory_slices = gpu
+        placements = tuple(range(p, p + num_memory_slices) for p in placement)
         return placements

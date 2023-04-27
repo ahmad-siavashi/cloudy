@@ -255,7 +255,7 @@ It returns True if all the threads in the application have been finished, and Fa
 <li>NAME (str): name of the virtual machine</li>
 <li>CPU (int): number of cores; core speed depends on the host machine</li>
 <li>RAM (int): amount of RAM</li>
-<li>GPU (None|tuple[int, int]): (no. of compute engines, no. of memory blocks)</li>
+<li>GPU (tuple[()]|tuple[int, int]): (no. of compute engines, no. of memory slices)</li>
 <li>OS (Type[Os]): operating system which determines creation and execution of applications</li>
 </ul>
 </div>
@@ -264,7 +264,7 @@ It returns True if all the threads in the application have been finished, and Fa
                             <div id="Vm.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">Vm</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">CPU</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">GPU</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>,</span><span class="param">	<span class="n">OS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">policy</span><span class="o">.</span><span class="n">Os</span><span class="p">]</span></span>)</span>
+        <span class="name">Vm</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">CPU</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">GPU</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[()]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>,</span><span class="param">	<span class="n">OS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">policy</span><span class="o">.</span><span class="n">Os</span><span class="p">]</span></span>)</span>
 
         
     </div>
@@ -293,7 +293,7 @@ It returns True if all the threads in the application have been finished, and Fa
 <li>NAME (str): name of the physical machine</li>
 <li>CPU (tuple[int, ...]): cycles of cores per simulation time unit</li>
 <li>RAM (int): amount of RAM</li>
-<li>GPU (None|tuple[tuple(int, int), ...]): list of GPUs in the form of [(no. of compute engines, no. of memory blocks), ...]</li>
+<li>GPU (tuple[()]|tuple[tuple(int, int), ...]): list of GPUs in the form of [(no. of compute engines, no. of memory slices), ...]</li>
 <li>VMM (Type[Vmm]): hypervisor which determines creation and execution of virtual machines</li>
 </ul>
 </div>
@@ -302,7 +302,7 @@ It returns True if all the threads in the application have been finished, and Fa
                             <div id="Pm.__init__" class="classattr">
                                 <div class="attr function">
             
-        <span class="name">Pm</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">CPU</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">GPU</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">VMM</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">policy</span><span class="o">.</span><span class="n">Vmm</span><span class="p">]</span></span>)</span>
+        <span class="name">Pm</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">NAME</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">CPU</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">RAM</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">GPU</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[()]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>,</span><span class="param">	<span class="n">VMM</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">policy</span><span class="o">.</span><span class="n">Vmm</span><span class="p">]</span></span>)</span>
 
         
     </div>
