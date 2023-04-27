@@ -65,7 +65,7 @@ class VmmSpaceShared(policy.Vmm):
                 results += [False]
         return results
 
-    def process(self, duration: int) -> tuple[model.Vm, ...]:
+    def process(self, duration: int) -> list[model.Vm, ...]:
         """
         The process function is the main function of the scheduler. It takes a duration
         parameter and processes all VMs for that amount of time. The return value is a list
