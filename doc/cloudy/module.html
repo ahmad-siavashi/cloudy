@@ -492,18 +492,24 @@ sorted by their respective ticks, with earlier events appearing first.</p>
                                 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.module.Event</a></span><span class="p">]</span>:</span></span>
+        <span class="name">get</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">current_tick</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">list</span><span class="p">[[]]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n"><a href="#Event">cloudy.module.Event</a></span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>:</span></span>
 
         
     </div>
     <a class="headerlink" href="#EventQueue.get"></a>
     
-            <div class="docstring"><p>The get function returns the first event in the list of events.</p>
+            <div class="docstring"><p>The get function returns the list of events that their time precedes the current time.</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>current_tick: int</strong>:  the current time</li>
+</ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>A single event</p>
+  <p>list of events or nothing if no event precedes the current time</p>
 </blockquote>
 </div>
 

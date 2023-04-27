@@ -156,13 +156,19 @@ class EventQueue:
         """
         return len(self._events) == 0
 
-    def get(self) -> Tuple[int, Event]:
+    def get(self, current_tick: int) -> list[[]] | list[tuple[int, Event], ...]:
         """
-        The get function returns the first event in the list of events.
+        The get function returns the list of events that their time precedes the current time.
 
-        :return: A single event
+        :param current_tick: int: the current time
+        :return: list of events or nothing if no event precedes the current time
         """
-        return self._events.pop(0)
+        events = []
+        while not self.empty():
+            tick, event = self._events[-1]
+            if tick <= current_tick:
+                events += [self._events.pop(0)]
+        return events
 
 
 @dataclass
@@ -183,7 +189,7 @@ class Simulation:
         :param self: Refer to the object itself
         """
         # This creates an empty queue that will be used to store events in the simulation.
-        self._events: EventQueue = EventQueue()
+        self._queue: EventQueue = EventQueue()
         # This logger will be used to record events and messages during the simulation.
         self._logger: Logger = Logger()
         # This creates a clock object that can be used to keep track of time during the simulation.
@@ -198,13 +204,13 @@ class Simulation:
         # keep track of the number of requests and finished VMs during the simulation.
         for request in self._user.REQUESTS:
             new_event = Event(EventType.VM_ARRIVAL, request.VM)
-            self._events.put(request.ARRIVAL, new_event)
+            self._queue.put(request.ARRIVAL, new_event)
 
         self._num_requests: int = 0
         self._finished_vms: list[tuple[int, model.Vm], ...] = []
 
         new_event = Event(EventType.DC_PROCESS, (self._clock.now(), self._datacenter))
-        self._events.put(self._clock.now(), new_event)
+        self._queue.put(self._clock.now(), new_event)
 
     def _handler_vm_arrival(self, event: Event) -> None:
         """
@@ -246,7 +252,7 @@ class Simulation:
 
         if self._num_requests:
             next_event = Event(EventType.DC_PROCESS, (self._clock.now(), datacenter))
-            self._events.put(self._clock.now() + self._clock_resolution, next_event)
+            self._queue.put(self._clock.now() + self._clock_resolution, next_event)
         else:
             for clock, finished_vm in self._finished_vms:
                 self._logger.log(clock, 'vm finished', finished_vm.NAME)
@@ -262,14 +268,14 @@ class Simulation:
         """
         self._logger.begin()
         self._logger.log(self._clock.now(), 'simulation', 'begin')
-        while not self._events.empty():
-            tick, event = self._events.get()
-            if event.TYPE == EventType.VM_ARRIVAL:
-                self._handler_vm_arrival(event)
-            elif event.TYPE == EventType.DC_PROCESS:
-                self._handler_dc_process(event)
-            else:
-                raise ValueError('unknown event ' + event.TYPE.value)
+        while not self._queue.empty():
+            for tick, event in self._queue.get(self._clock.now()):
+                if event.TYPE == EventType.VM_ARRIVAL:
+                    self._handler_vm_arrival(event)
+                elif event.TYPE == EventType.DC_PROCESS:
+                    self._handler_dc_process(event)
+                else:
+                    raise ValueError('unknown event ' + event.TYPE.value)
             self._clock.increment()
         self._logger.log(self._clock.now(), 'simulation', 'end')
         self._logger.end()
