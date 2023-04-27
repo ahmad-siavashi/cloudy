@@ -41,7 +41,7 @@ class VmmSpaceShared(policy.Vmm):
                 self._free_ram -= vm.RAM
                 if vm.GPU:
                     free_gpu, free_slice = self._vm_gpu[id(vm)] = free_gpu
-                    self._free_gpu[free_gpu].remove(*free_slice)
+                    self._free_gpu[free_gpu].difference_update(free_slice)
                 self.guests += [vm]
                 results += [True]
             else:
@@ -91,7 +91,7 @@ class VmmSpaceShared(policy.Vmm):
                 finished += [vm]
         return finished
 
-    def _get_free_gpu(self, gpu: tuple[int, int]) -> tuple[int, set[int, ...]] | None:
+    def _get_free_gpu(self, gpu: tuple[int, int]) -> tuple[int, set[int, ...]] | tuple[()]:
         """
         The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory slices that
         can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory slices
@@ -107,10 +107,10 @@ class VmmSpaceShared(policy.Vmm):
             for placement in map(set, placements):
                 if placement.issubset(free_gpu_slices):
                     return free_gpu_idx, placement
-        return None
+        return ()
 
     @staticmethod
-    def _get_gpu_placement(gpu: tuple[int, int]) -> tuple[range, ...] | None:
+    def _get_gpu_placement(gpu: tuple[int, int]) -> tuple[range, ...] | tuple[()]:
         """
         This function is used to determine the order of placements for a given virtual GPU in the physical GPU memory.
         The function takes in a tuple of integers, which represents a virtual GPU where the first integer in the tuple
@@ -136,7 +136,7 @@ class VmmSpaceShared(policy.Vmm):
         elif gpu == (7, 8):
             placement = (0,)
         else:
-            return None
+            return ()
 
         num_compute_engines, num_memory_slices = gpu
         placements = tuple(range(p, p + num_memory_slices) for p in placement)
