@@ -19,8 +19,8 @@ class VmmSpaceShared(policy.Vmm):
         :param self: Represent the instance of the class
         :return: None
         """
-        self._free_cpu: list[int, ...] = list(range(len(self._HOST.CPU)))
-        self._vm_cpu: dict[int, tuple[int, ...]] = dict()
+        self._free_cpu: set[int, ...] = {core for core in range(len(self._HOST.CPU))}
+        self._vm_cpu: dict[int, set[int, ...]] = dict()
         self._free_ram: int = self._HOST.RAM
 
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
@@ -35,8 +35,7 @@ class VmmSpaceShared(policy.Vmm):
         results = []
         for vm in vms:
             if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM:
-                self._vm_cpu[id(vm)] = self._free_cpu[:vm.CPU]
-                del self._free_cpu[:vm.CPU]
+                self._vm_cpu[id(vm)] = {self._free_cpu.pop() for core in range(vm.CPU)}
                 self._free_ram -= vm.RAM
                 self.guests += [vm]
                 results += [True]
@@ -56,7 +55,7 @@ class VmmSpaceShared(policy.Vmm):
         results = []
         for vm in vms:
             if vm in self.guests:
-                self._free_cpu += self._vm_cpu[id(vm)]
+                self._free_cpu.update(self._vm_cpu[id(vm)])
                 del self._vm_cpu[id(vm)]
                 self._free_ram += vm.RAM
                 self.guests.remove(vm)
