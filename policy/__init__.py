@@ -88,7 +88,7 @@ class Vmm(ABC):
         pass
 
     @abstractmethod
-    def process(self, duration: int) -> tuple[model.Vm, ...]:
+    def process(self, duration: int) -> list[model.Vm, ...]:
         """
         The process function is the main function of the Host class. It takes a duration as an argument, and processes
         the guest vms OS for that amount of time. Then it checks if any VMs have finished running, and returns them in a list.
