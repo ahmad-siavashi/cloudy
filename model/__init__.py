@@ -59,12 +59,14 @@ class App:
         num_cores = len(cycles)
         num_threads = len(threads)
         while any(cycles) and not self.finished():
-            while cycles[c] and t < num_threads:
-                spent_cycles = cycles[c] if threads[t] >= cycles[c] else threads[t]
-                self._remained[t] -= spent_cycles
-                cycles[c] -= spent_cycles
+            spent_cycles = min(cycles[c], threads[t])
+            threads[t] -= spent_cycles
+            cycles[c] -= spent_cycles
+            if not threads[t]:
                 t = (t + 1) % num_threads
-            c = (c + 1) % num_cores
+            if not cycles[c]:
+                c = (c + 1) % num_cores
+
         return tuple(cycles)
 
     def finished(self) -> bool:
