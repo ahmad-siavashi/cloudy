@@ -103,10 +103,10 @@ class VmmSpaceShared(policy.Vmm):
         :return: index of first free physical GPU and free memory slices
         """
         placements = self._get_gpu_placement(gpu)
-        for free_gpu_idx, free_gpu_slices in enumerate(self._free_gpu):
+        for free_gpu_index, free_gpu_slices in enumerate(self._free_gpu):
             for placement in map(set, placements):
                 if placement.issubset(free_gpu_slices):
-                    return free_gpu_idx, placement
+                    return free_gpu_index, placement
         return ()
 
     @staticmethod

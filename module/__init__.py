@@ -133,7 +133,7 @@ class EventQueue:
         The function takes two arguments: a tick and an event. The tick argument is
         the number of ticks that must pass before the event will be executed, and the
         event argument will be consumed when it's time for the event to execute.
-        The register function then inserts the tuple containing these two arguments
+        The put function then inserts the tuple containing these two arguments
         into Event's list attribute at an index such that all events in this list are
         sorted by their respective ticks, with earlier events appearing first.
 
@@ -165,9 +165,11 @@ class EventQueue:
         """
         events = []
         while not self.empty():
-            tick, event = self._events[-1]
+            tick, _ = self._events[0]
             if tick <= current_tick:
                 events += [self._events.pop(0)]
+            else:
+                break
         return events
 
 
