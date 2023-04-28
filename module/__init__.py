@@ -202,14 +202,13 @@ class Simulation:
         self._clock.reset()
 
         # This code block is initializing the simulation by creating events for each VM arrival and adding them to the
-        # event queue. It is also initializing two variables, `_num_requests` and `_finished_vms`, which will be used to
-        # keep track of the number of requests and finished VMs during the simulation.
+        # event queue. It is also initializing `_num_requests` variable, which will be used to
+        # keep track of the number of processed requests during the simulation.
         for request in self._user.REQUESTS:
             new_event = Event(EventType.VM_ARRIVAL, request.VM)
             self._queue.put(request.ARRIVAL, new_event)
 
-        self._num_requests: int = 0
-        self._finished_vms: list[tuple[int, model.Vm], ...] = []
+        self._num_requests: int = len(self._user.REQUESTS)
 
         new_event = Event(EventType.DC_PROCESS, (self._clock.now(), self._datacenter))
         self._queue.put(self._clock.now(), new_event)
@@ -226,9 +225,9 @@ class Simulation:
         """
         vm: model.Vm = event.DATA
         if True in self._datacenter.PLACEMENT.allocate([vm]):
-            self._num_requests += 1
             event = 'allocated'
         else:
+            self._num_requests -= 1
             event = 'rejected'
 
         self._logger.log(self._clock.now(), 'vm ' + event, vm.NAME)
@@ -250,14 +249,12 @@ class Simulation:
             finished_vms = server.VMM.process(duration)
             server.VMM.deallocate(finished_vms)
             self._num_requests -= len(finished_vms)
-            self._finished_vms += [(self._clock.now(), finished_vm) for finished_vm in finished_vms]
+            for finished_vm in finished_vms:
+                self._logger.log(self._clock.now(), 'vm finished', finished_vm.NAME)
 
         if self._num_requests:
             next_event = Event(EventType.DC_PROCESS, (self._clock.now(), datacenter))
             self._queue.put(self._clock.now() + self._clock_resolution, next_event)
-        else:
-            for clock, finished_vm in self._finished_vms:
-                self._logger.log(clock, 'vm finished', finished_vm.NAME)
 
     def start(self) -> None:
         """

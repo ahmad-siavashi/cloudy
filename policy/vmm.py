@@ -85,7 +85,7 @@ class VmmSpaceShared(policy.Vmm):
         """
         finished = []
         for vm in self.guests:
-            vm_cpu = list(self._HOST.CPU[index] for index in self._vm_cpu[id(vm)])
+            vm_cpu = [self._HOST.CPU[index] for index in self._vm_cpu[id(vm)]]
             vm.OS.process(vm_cpu, duration)
             if vm.OS.finished():
                 finished += [vm]
