@@ -57,9 +57,9 @@ class Logger:
         """
         The __init__ function initializes the class with a dictionary of column names and their widths.
         If no arguments are passed, it defaults to the following:
-            {'Clock': 5, 'Event': 15, 'Description': 25}
+            {'Tick': 5, 'Event': 15, 'Description': 25}
         """
-        self.COLUMNS = {'Clock': 5, 'Event': 15, 'Description': 25} if not kwargs else kwargs
+        self.COLUMNS = {'Tick': 5, 'Event': 15, 'Description': 25} if not kwargs else kwargs
         self.SEPARATOR = '+ ' + ' + '.join('-' * col_width for col_width in self.COLUMNS.values()) + ' +'
         self.ROW = '| ' + ' | '.join('{:<%d}' % col_width for col_width in self.COLUMNS.values()) + ' |'
 
