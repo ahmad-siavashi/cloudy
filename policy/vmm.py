@@ -36,7 +36,8 @@ class VmmSpaceShared(policy.Vmm):
         """
         results = []
         for vm in vms:
-            if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM and (not vm.GPU or (free_gpu := self._get_free_gpu(vm.GPU))):
+            if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM and (
+                    not vm.GPU or (free_gpu := self._get_free_gpu(vm.GPU))):
                 self._vm_cpu[id(vm)] = {self._free_cpu.pop() for core in range(vm.CPU)}
                 self._free_ram -= vm.RAM
                 if vm.GPU:
@@ -47,6 +48,16 @@ class VmmSpaceShared(policy.Vmm):
             else:
                 results += [False]
         return results
+
+    def allocate_ex(self, vm: model.Vm, gpu: int, slice: int) -> bool:
+        if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM:
+            self._vm_cpu[id(vm)] = {self._free_cpu.pop() for core in range(vm.CPU)}
+            self._free_ram -= vm.RAM
+            free_gpu, free_slice = self._vm_gpu[id(vm)] = gpu, {slice + i for i in range(vm.GPU[1])}
+            self._free_gpu[free_gpu].difference_update(free_slice)
+            self.guests += [vm]
+            return True
+        return False
 
     def deallocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """

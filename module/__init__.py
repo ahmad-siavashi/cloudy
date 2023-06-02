@@ -1,17 +1,17 @@
 """ The components of the simulator. """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any
-from typing import List, Tuple
+from typing import Any, Iterator
 
 import model
 
 
 class Clock:
     """
-    The simulator uses a clock to keep track of time. One tick equals one time unit. To make things easy, assume
-    one tick equals one second.
+    The simulator uses a clock to keep track of time. One event_tick equals one time unit. To make things easy, assume
+    one event_tick equals one second.
 
     Attributes
     ==========
@@ -30,8 +30,8 @@ class Clock:
 
     def increment(self, ticks: int = 1) -> int:
         """
-        The increment function is used to increment the clock by a given number of ticks where each tick represents one simulation time unit.
-        The default value for ticks is 1, so if no argument is passed in, the clock will be incremented by 1 tick.
+        The increment function is used to increment the clock by a given number of ticks where each event_tick represents one simulation time unit.
+        The default value for ticks is 1, so if no argument is passed in, the clock will be incremented by 1 event_tick.
 
         :param ticks: int: Increment the clock by a certain number of ticks
         :return: The new current time
@@ -92,61 +92,55 @@ class Logger:
         print(self.ROW.format(*args))
 
 
-class EventType(Enum):
-    """
-    The Type class is an enum class that defines the available types af Events in the simulation.
-
-    Attributes
-    ==========
-    - VM_ARRIVAL (str): types of events that denote the arrival of a new IaaS request to the cloud provider
-    - DC_PROCESS (str): types of events that enforce execution of guest virtual machines in a data center
-    """
-    VM_ARRIVAL: str = 'vm_arrival'
-    DC_PROCESS: str = 'dc_process'
-
-
 @dataclass
 class Event:
     """
-    It is a class that represents an event that can occur in the simulation.
+    This class represents an event in the simulation.
 
     Attributes
     ==========
-    - TYPE (Event.Type): the event of the event which helps in the interpretation and processing of the event
-    - DATA (object): the data that is associated with the event
+    TICK: int: the occurrence time attributed to the event
+    TYPE: str: type of the event
+    DATA: object: data associated with the event
     """
-    TYPE: EventType
+    TICK: int
+    TYPE: str
     DATA: object
+
+    # types of events that denote the arrival of a new IaaS request to the cloud provider
+    TYPE_VM_ARRIVAL: str = 'vm_arrival'
+    # types of events that enforce execution of guest virtual machines in a data center
+    TYPE_DC_PROCESS: str = 'dc_process'
 
 
 @dataclass
 class EventQueue:
     """
     This class represents an event queue to hold registered events during simulation
+
+    Attributes
+    ==========
+    _events: (list[Event], private): the list of events within the queue
     """
 
-    _events: List[Tuple[int, Event]] = field(init=False, default_factory=list)
+    _events: list[Event] = field(init=False, default_factory=list)
 
-    def put(self, tick: int, event: Event) -> None:
+    def put(self, event: Event) -> None:
         """
-        The put function is used to register an event with the EventQueue class.
-        The function takes two arguments: a tick and an event. The tick argument is
-        the number of ticks that must pass before the event will be executed, and the
-        event argument will be consumed when it's time for the event to execute.
-        The put function then inserts the tuple containing these two arguments
-        into Event's list attribute at an index such that all events in this list are
-        sorted by their respective ticks, with earlier events appearing first.
+        The put function is used to insert an event into the queue.
+        The function iterates through the list of events and compares each event's tick value with that of the new event.
+        If it finds a tick value greater than that of the new event, it inserts it at this index in order to maintain sorted order.
 
-        :param tick: int: Tell the register function when to run the event
-        :param event: Event: Specify the event that is to be registered
-        :return: None
+        :param self: Refer to the object itself
+        :param event: Event: Pass in the event object to be inserted into the queue
+        :return: None, because it is a void function
         """
         index = 0
-        for t, e in self._events:
-            if t > tick:
+        for e in self._events:
+            if e.TICK > event.TICK:
                 break
             index += 1
-        self._events.insert(index, (tick, event))
+        self._events.insert(index, event)
 
     def empty(self) -> bool:
         """
@@ -154,9 +148,9 @@ class EventQueue:
 
         :return: True if the event list is empty, otherwise it returns false
         """
-        return len(self._events) == 0
+        return not bool(self._events)
 
-    def get(self, current_tick: int) -> list[[]] | list[tuple[int, Event], ...]:
+    def get(self, current_tick: int) -> list[[]] | list[Event, ...]:
         """
         The get function returns the list of events that their time precedes the current time.
 
@@ -165,12 +159,48 @@ class EventQueue:
         """
         events = []
         while not self.empty():
-            tick, _ = self._events[0]
-            if tick <= current_tick:
+            if self._events[0].TICK <= current_tick:
                 events += [self._events.pop(0)]
             else:
                 break
         return events
+
+
+@dataclass
+class Report:
+    _num_requests: int = 0
+    _num_accepted_requests: int = 0
+    _num_finished_requests: int = 0
+    _num_rejected_requests: int = 0
+
+    def reset(self):
+        self._num_requests = 0
+        self._num_accepted_requests = 0
+        self._num_finished_requests = 0
+        self._num_rejected_requests = 0
+
+    def count_request_arrival(self, count: int = 1) -> None:
+        self._num_requests += count
+
+    def count_request_acceptance(self, count: int = 1) -> None:
+        self._num_accepted_requests += count
+
+    def count_request_finish(self, count: int = 1) -> None:
+        self._num_finished_requests += count
+
+    def count_request_rejection(self, count: int = 1) -> None:
+        self._num_rejected_requests += count
+
+    def has_request_running(self) -> bool:
+        return bool(self._num_requests - self._num_finished_requests - self._num_rejected_requests)
+
+    def get(self):
+        return {
+            'requests': self._num_requests,
+            'accepted': self._num_accepted_requests,
+            'rejected': self._num_rejected_requests,
+            'finished': self._num_finished_requests
+        }
 
 
 @dataclass
@@ -202,40 +232,51 @@ class Simulation:
         self._clock.reset()
 
         # This code block is initializing the simulation by creating events for each VM arrival and adding them to the
-        # event queue. It is also initializing `_num_requests` variable, which will be used to
-        # keep track of the number of processed requests during the simulation.
+        # event queue.
         for request in self._user.REQUESTS:
-            new_event = Event(EventType.VM_ARRIVAL, request.VM)
-            self._queue.put(request.ARRIVAL, new_event)
+            new_event = Event(request.ARRIVAL, Event.TYPE_VM_ARRIVAL, request.VM)
+            self._queue.put(new_event)
 
-        self._num_requests: int = len(self._user.REQUESTS)
+        self._report: Report = Report()
 
-        new_event = Event(EventType.DC_PROCESS, (self._clock.now(), self._datacenter))
-        self._queue.put(self._clock.now(), new_event)
+        new_event = Event(self._clock.now(), Event.TYPE_DC_PROCESS, (self._clock.now(), self._datacenter))
+        self._queue.put(new_event)
 
-    def _handler_vm_arrival(self, event: Event) -> None:
+    def report(self) -> None:
+        report = self._report.get()
+        acceptance_ratio = round(report["accepted"] / report["requests"], 2)
+        rejection_ratio = round(1 - acceptance_ratio, 2)
+        print('============== Report ==============')
+        print(f'Accepted: {report["accepted"]} / {report["requests"]} = {acceptance_ratio}')
+        print(f'Rejected: {report["rejected"]} / {report["requests"]} = {rejection_ratio}')
+        print(f'Total: {report["requests"]}')
+        print('====================================')
+
+    def _handler_vm_arrival(self, events: Iterator[Event]) -> None:
         """
-        The _handler_vm_arrival function is a handler for the VM_ARRIVAL event.
-        It takes an Event object as input and returns nothing.
-        The function first checks if the vm can be allocated in the data enter,
-        and prints a message to stdout depending on whether or not it was successful.
+        The _handler_vm_arrival function is called when a VM arrives.
+        It calls the PLACEMENT algorithm to allocate the VMs on hosts.
+        If allocation fails, it logs that the VM was rejected and decrements _num_requests.
 
-        :param event: Event: Pass the event to the function
+        :param self: Refer to the current object
+        :param events: Iterator[Event]: Pass in a list of events
         :return: None
         """
-        vm: model.Vm = event.DATA
-        if True in self._datacenter.PLACEMENT.allocate([vm]):
-            event = 'allocated'
-        else:
-            self._num_requests -= 1
-            event = 'rejected'
-
-        self._logger.log(self._clock.now(), 'vm ' + event, vm.NAME)
+        vms = [event.DATA for event in events]
+        self._report.count_request_arrival(len(vms))
+        results = self._datacenter.PLACEMENT.allocate(vms)
+        for i, result in enumerate(results):
+            if result:
+                self._logger.log(self._clock.now(), 'vm accepted', vms[i].NAME)
+                self._report.count_request_acceptance()
+            else:
+                self._logger.log(self._clock.now(), 'vm rejected', vms[i].NAME)
+                self._report.count_request_rejection()
 
     def _handler_dc_process(self, event: Event) -> None:
         """
         The _handler_dc_process function is responsible for processing the virtual machines in a data center.
-        It takes in an event and then calculates the duration of time that has passed since the last tick.
+        It takes in an event and then calculates the duration of time that has passed since the last event_tick.
         Then it loops through all of the servers in a data center, and then loops through all of the guests
         on each server to process them. It also keeps track of finished requests to conclude the simulation.
 
@@ -248,15 +289,16 @@ class Simulation:
         for server in datacenter.SERVERS:
             finished_vms = server.VMM.process(duration)
             server.VMM.deallocate(finished_vms)
-            self._num_requests -= len(finished_vms)
+            self._report.count_request_finish(len(finished_vms))
             for finished_vm in finished_vms:
                 self._logger.log(self._clock.now(), 'vm finished', finished_vm.NAME)
 
-        if self._num_requests:
-            next_event = Event(EventType.DC_PROCESS, (self._clock.now(), datacenter))
-            self._queue.put(self._clock.now() + self._clock_resolution, next_event)
+        if self._report.has_request_running():
+            next_event = Event(self._clock.now() + self._clock_resolution, Event.TYPE_DC_PROCESS,
+                               (self._clock.now(), datacenter))
+            self._queue.put(next_event)
 
-    def start(self) -> None:
+    def start(self) -> Simulation:
         """
         The start function is the main function of this simulation.
         It will run until there are no more events in the event queue.
@@ -268,13 +310,11 @@ class Simulation:
         self._logger.begin()
         self._logger.log(self._clock.now(), 'simulation', 'begin')
         while not self._queue.empty():
-            for tick, event in self._queue.get(self._clock.now()):
-                if event.TYPE == EventType.VM_ARRIVAL:
-                    self._handler_vm_arrival(event)
-                elif event.TYPE == EventType.DC_PROCESS:
-                    self._handler_dc_process(event)
-                else:
-                    raise ValueError('unknown event ' + event.TYPE.value)
+            events_so_far = self._queue.get(self._clock.now())
+            self._handler_vm_arrival(filter(lambda e: e.TYPE == Event.TYPE_VM_ARRIVAL, events_so_far))
+            for event_dc_process in filter(lambda e: e.TYPE == Event.TYPE_DC_PROCESS, events_so_far):
+                self._handler_dc_process(event_dc_process)
             self._clock.increment()
         self._logger.log(self._clock.now(), 'simulation', 'end')
         self._logger.end()
+        return self
