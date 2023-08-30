@@ -178,12 +178,16 @@ class Simulation:
         print(f'{self.NAME}@{cloca.now()}> ======== START ========')
 
         # Define the exit condition based on whether a duration is provided
-        exit_condition = (lambda start_time=cloca.now(): cloca.now() >= start_time + duration) if duration else self._no_pending_events_or_requests
+        has_duration_elapsed = lambda start_time=cloca.now(): cloca.now() >= start_time + duration if duration else False
+        should_exit = has_duration_elapsed if duration else self._no_pending_events_or_requests
 
-        while not exit_condition():
+        while not should_exit():
             self._simulate_step()
 
-        print(f'{self.NAME}@{cloca.now()}> ======== STOP ========')
+        if has_duration_elapsed():
+            print(f'{self.NAME}@{cloca.now()}> -------- PAUSE --------')
+        else:
+            print(f'{self.NAME}@{cloca.now()}> ======== STOP ========')
         return self
 
     def resume(self, duration: int) -> Simulation:
