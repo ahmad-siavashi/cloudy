@@ -121,28 +121,6 @@ class VmmSpaceShared(policy.Vmm):
             vm.OS.resume(vm_cpu, duration)
         return self
 
-    def _can_allocate_gpu(self, vm: model.Vm, gpu: int, block: int) -> bool:
-        """
-        This function checks if a given virtual machine can be allocated on a specific GPU and block.
-
-        Parameters
-        ----------
-        vm : Vm 
-            represents a virtual machine
-        gpu : int 
-            the index of the GPU in the machine which needs to be allocated
-        block : int 
-            an integer representing the starting block in the GPU memory
-
-        Returns
-        -------
-            a boolean value indicating whether the given GPU and memory block can be allocated for the given virtual machine (vm) or not
-        """
-        if not vm.GPU:
-            raise ValueError
-        free_gpu, free_block = gpu, {block + i for i in range(vm.GPU[1])}
-        return free_block.issubset(self._free_gpu[free_gpu])
-
     def _get_free_gpu(self, gpu: tuple[int, int]) -> Optional[tuple[int, set[int, ...]]]:
         """
         The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory blocks that
@@ -178,4 +156,4 @@ class VmmSpaceShared(policy.Vmm):
             for placement in map(set, placements):
                 if placement.issubset(free_gpu_blocks):
                     return free_gpu_index, placement
-        return ()
+        return None
