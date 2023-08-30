@@ -12,7 +12,7 @@ from policy.vmp import VmpFirstFit
 from policy.vmm import VmmSpaceShared
 
 # Creating an application object called 'nginx' with 3 threads, each 1 cycles length.
-app = App(NAME='nginx', LENGTH=(1, 1, 1), EXPIRATION=None)
+app = App(NAME='nginx', LENGTH=(1, 1, 1))
 
 # Creating a virtual machine called 'webserver' with 1 core, 1 GB of RAM, (2, 2) GPU profile, and OsTimeShared
 # operating system.

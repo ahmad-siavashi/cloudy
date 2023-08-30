@@ -12,7 +12,7 @@ from policy.vmp import VmpFirstFit
 user = User(NAME='portal')
 
 # Creating a container spec that requires a minimum of 0.5 CPU, and 256MB of RAM.
-container_spec = {'NAME': 'nginx', 'LENGTH': (2,), 'EXPIRATION': None, 'CPU': (0.5, 1), 'RAM': (256, 512), 'GPU': ()}
+container_spec = {'NAME': 'nginx', 'LENGTH': (2,), 'CPU': (0.5, 1), 'RAM': (256, 512), 'GPU': ()}
 # A deployment of the container consists of six replicas.
 deployment = Deployment(NAME='server', replicas=6, CONTAINER_SPECS=[container_spec])
 
@@ -28,7 +28,7 @@ for node in nodes:
 
 # The controller is asked to run a cluster of three nodes for 50 cycles.
 # The control plane runs on the first node (default).
-controller = Controller(NAME='controller', LENGTH=(10,), EXPIRATION=None, NODES=nodes[1:], CONTROL_PLANE=ControlPlaneRoundRobin)
+controller = Controller(NAME='controller', LENGTH=(10,), NODES=nodes[1:], CONTROL_PLANE=ControlPlaneRoundRobin)
 
 # The cluster is asked to run the deployment.
 user.REQUESTS += [
