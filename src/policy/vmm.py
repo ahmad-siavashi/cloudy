@@ -19,10 +19,10 @@ class VmmSpaceShared(policy.Vmm):
         RAM, and GPU of the host.
         """
         super().__post_init__()
-        self.free_cpu: set[model.Vm, ...] = {core for core in range(len(self.HOST.CPU))}
+        self._free_cpu: set[model.Vm, ...] = {core for core in range(len(self.HOST.CPU))}
         self._vm_cpu: dict[int, set[int, ...]] = {}
-        self.free_ram: int = self.HOST.RAM
-        self.free_gpu: tuple[set[int], ...] = tuple({block for block in range(blocks)} for _, blocks in self.HOST.GPU)
+        self._free_ram: int = self.HOST.RAM
+        self._free_gpu: tuple[set[int], ...] = tuple({block for block in range(blocks)} for _, blocks in self.HOST.GPU)
         self._vm_gpu: dict[model.Vm, tuple[int, set[int, ...]]] = {}
 
     def has_capacity(self, vm: model.Vm) -> bool:
@@ -39,7 +39,7 @@ class VmmSpaceShared(policy.Vmm):
         bool
             `True` if the virtual machine can be allocated, otherwise `False`.
         """
-        if len(self.free_cpu) >= vm.CPU and self.free_ram >= vm.RAM and (not vm.GPU or self._get_free_gpu(vm.GPU)):
+        if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM and (not vm.GPU or self._get_free_gpu(vm.GPU)):
             return True
         return False
 
@@ -61,12 +61,12 @@ class VmmSpaceShared(policy.Vmm):
         results = []
         for vm in vms:
             if self.has_capacity(vm):
-                self._vm_cpu[vm] = {self.free_cpu.pop() for core in range(vm.CPU)}
-                self.free_ram -= vm.RAM
+                self._vm_cpu[vm] = {self._free_cpu.pop() for core in range(vm.CPU)}
+                self._free_ram -= vm.RAM
                 if vm.GPU:
                     free_gpu = self._get_free_gpu(vm.GPU)
                     free_gpu, free_block = self._vm_gpu[vm] = free_gpu
-                    self.free_gpu[free_gpu].difference_update(free_block)
+                    self._free_gpu[free_gpu].difference_update(free_block)
                 self._guests += [vm]
                 vm.turn_on()
                 results.append(True)
@@ -91,12 +91,12 @@ class VmmSpaceShared(policy.Vmm):
         results = []
         for vm in vms:
             if vm in self:
-                self.free_cpu.update(self._vm_cpu[vm])
+                self._free_cpu.update(self._vm_cpu[vm])
                 del self._vm_cpu[vm]
-                self.free_ram += vm.RAM
+                self._free_ram += vm.RAM
                 if vm.GPU:
                     gpu, block = self._vm_gpu[vm]
-                    self.free_gpu[gpu].update(block)
+                    self._free_gpu[gpu].update(block)
                     del self._vm_gpu[vm]
                 self._guests.remove(vm)
                 vm.turn_off()
@@ -141,7 +141,7 @@ class VmmSpaceShared(policy.Vmm):
         if not vm.GPU:
             raise ValueError
         free_gpu, free_block = gpu, {block + i for i in range(vm.GPU[1])}
-        return free_block.issubset(self.free_gpu[free_gpu])
+        return free_block.issubset(self._free_gpu[free_gpu])
 
     def _get_free_gpu(self, gpu: tuple[int, int]) -> Optional[tuple[int, set[int, ...]]]:
         """
@@ -174,7 +174,7 @@ class VmmSpaceShared(policy.Vmm):
         placements = tuple(range(p, p + num_memory_blocks)
                            for p in _PROFILE_BLOCK.get(gpu, ()))
 
-        for free_gpu_index, free_gpu_blocks in enumerate(self.free_gpu):
+        for free_gpu_index, free_gpu_blocks in enumerate(self._free_gpu):
             for placement in map(set, placements):
                 if placement.issubset(free_gpu_blocks):
                     return free_gpu_index, placement
