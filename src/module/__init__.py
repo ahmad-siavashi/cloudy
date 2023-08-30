@@ -14,12 +14,11 @@ import model
 
 @dataclass
 class Tracker:
-    """Tracks request labels: total, accepted, stopped, and rejected."""
+    """Tracks request labels: total, accepted, and rejected."""
 
     _counts: dict[str, int] = field(default_factory=lambda: {
         'requests': 0,
         'accepted': 0,
-        'stopped': 0,
         'rejected': 0
     })
 
@@ -36,7 +35,7 @@ class Tracker:
         Parameters
         ----------
         label : str
-            Label type ('requests', 'accepted', 'stopped', 'rejected').
+            Label type ('requests', 'accepted', 'rejected').
         count : int, optional
             Number of labels, default is 1.
 
@@ -51,7 +50,7 @@ class Tracker:
 
     def has_pending(self) -> bool:
         """Check if there are any pending requests."""
-        return self._counts['requests'] - self._counts['stopped'] - self._counts['rejected'] > 0
+        return self._counts['requests'] - self._counts['accepted'] - self._counts['rejected'] > 0
 
     def stats(self) -> dict[str, int]:
         """Retrieve all request label counts."""
@@ -95,9 +94,11 @@ class Simulation:
         for topic, handler in [
             ('request.arrival', self._handle_request_arrival),
             ('request.arrival', lambda xs: self._tracker.record('requests', sum(isinstance(x, model.Request) for x in xs))),
-            ('request.accept', lambda x: self._tracker.record('accepted', x)),
-            ('request.reject', lambda x: self._tracker.record('rejected', x)),
-            ('request.stop', lambda x: self._tracker.record('stopped', x)),
+            ('request.arrival', lambda xs: [evque.publish('sim.log', cloca.now(), f'arrive {x.VM.NAME}') for x in xs]),
+            ('request.accept', lambda xs: self._tracker.record('accepted', len(xs))),
+            ('request.accept', lambda xs: [evque.publish('sim.log', cloca.now(), f'accept {x.VM.NAME}') for x in xs]),
+            ('request.reject', lambda xs: self._tracker.record('rejected', len(xs))),
+            ('request.reject', lambda xs: [evque.publish('sim.log', cloca.now(), f'reject {x.VM.NAME}') for x in xs]),
             ('action.execute', self._handle_action_execution),
             ('sim.log', self._handle_simulation_log)
         ]:
@@ -198,7 +199,6 @@ class Simulation:
 
         if stopped_vms := self.DATACENTER.VMP.stopped():
             self.DATACENTER.VMP.deallocate(stopped_vms)
-            evque.publish('request.stop', cloca.now(), len(stopped_vms))
 
         return self
 
@@ -228,26 +228,26 @@ class Simulation:
 
         allocations = self.DATACENTER.VMP.allocate([r.VM for r in requests if isinstance(r, model.Request)])
 
-        # Initialize counters for publishing results
-        accepted_count = 0
-        rejected_count = 0
+        # Initialize lists for publishing results
+        accepted_requests = []
+        rejected_requests = []
 
         # Check allocation results, handle callbacks, and update counters
         for request, allocated in zip(filter(lambda r: isinstance(r, model.Request), requests), allocations):
             if allocated:
-                accepted_count += 1
+                accepted_requests.append(request)
                 if request.ON_SUCCESS:
                     request.ON_SUCCESS()
             else:
-                rejected_count += 1
+                rejected_requests.append(request)
                 if request.REQUIRED:
                     raise AssertionError('The allocation of initialization requests must not result in failure.')
                 if request.ON_FAILURE:
                     request.ON_FAILURE()
 
         # Publish allocation results
-        evque.publish('request.accept', cloca.now(), accepted_count)
-        evque.publish('request.reject', cloca.now(), rejected_count)
+        evque.publish('request.accept', cloca.now(), accepted_requests)
+        evque.publish('request.reject', cloca.now(), rejected_requests)
 
         evque.publish('action.execute', cloca.now(), requests)
 
