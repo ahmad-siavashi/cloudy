@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import model
 
@@ -324,6 +324,17 @@ class Vmp(ABC):
             If the VM instance is not found in the placement.
         """
         return self._vm_pm[vm]
+
+    def has_vms(self) -> bool:
+        """
+        Check if there are any virtual machines placed.
+
+        Returns
+        -------
+        bool
+            True if there are VMs placed, False otherwise.
+        """
+        return bool(self._vm_pm)
 
     @abstractmethod
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:

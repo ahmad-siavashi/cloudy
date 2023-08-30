@@ -179,7 +179,7 @@ class Simulation:
 
         # Define the exit condition based on whether a duration is provided
         has_duration_elapsed = lambda start_time=cloca.now(): cloca.now() >= start_time + duration if duration else False
-        should_exit = has_duration_elapsed if duration else self._no_pending_events_or_requests
+        should_exit = has_duration_elapsed if duration else self._is_all_settled
 
         while not should_exit():
             self._simulate_step()
@@ -214,11 +214,11 @@ class Simulation:
         self.resume(self.CLOCK_RESOLUTION)
         cloca.increase(self.CLOCK_RESOLUTION)
 
-    def _no_pending_events_or_requests(self) -> bool:
+    def _is_all_settled(self) -> bool:
         """
         Determine if there are no more events in the queue and no ongoing requests.
         """
-        return evque.empty() and not self._tracker.has_pending()
+        return evque.empty() and not self._tracker.has_pending() and not self.DATACENTER.VMP.has_vms()
 
     def _handle_request_arrival(self, requests: list[model.Request, ...]) -> Simulation:
         """
