@@ -99,7 +99,7 @@ class App:
             True if the app is stopped, False otherwise.
         """
         # Check if the current time has surpassed the expiration time
-        if self.EXPIRATION and cloca.now() >= self.EXPIRATION:
+        if self.EXPIRATION is not None and cloca.now() >= self.EXPIRATION:
             return True
         return not any(self._remained)
 
