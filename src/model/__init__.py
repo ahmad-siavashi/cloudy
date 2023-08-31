@@ -537,6 +537,9 @@ class Request(Action):
         A virtual machine.
     REQUIRED : bool
         True if this action is required for initialization, False otherwise.
+    IGNORED : bool
+        When set to True, this request won't be counted in stats.
+        Usually used for requests that are part of simulation initialization.
     EXECUTE : Callable[[], None], optional
         The callable function to be executed. Defaults to None.
     ON_SUCCESS : Callable[[], None], optional
@@ -546,6 +549,7 @@ class Request(Action):
     """
     VM: Vm
     REQUIRED: bool = field(default=False)
+    IGNORED: bool = field(default=False)
     EXECUTE: Optional[Callable[[], None]] = None
     ON_SUCCESS: Optional[Callable[[], None]] = None
     ON_FAILURE: Optional[Callable[[], None]] = None
