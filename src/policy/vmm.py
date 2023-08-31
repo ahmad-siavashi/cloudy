@@ -60,7 +60,9 @@ class VmmSpaceShared(policy.Vmm):
         """
         results = []
         for vm in vms:
-            if self.has_capacity(vm):
+            if not self.has_capacity(vm):
+                results.append(False)
+            else:
                 self._vm_cpu[vm] = {self._free_cpu.pop() for core in range(vm.CPU)}
                 self._free_ram -= vm.RAM
                 if vm.GPU:
@@ -70,8 +72,6 @@ class VmmSpaceShared(policy.Vmm):
                 self._guests += [vm]
                 vm.turn_on()
                 results.append(True)
-            else:
-                results.append(False)
         return results
 
     def deallocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:

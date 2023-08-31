@@ -93,12 +93,12 @@ class Simulation:
         # Subscribe to event topics
         for topic, handler in [
             ('request.arrival', self._handle_request_arrival),
-            ('request.arrival', lambda xs: self._tracker.record('requests', sum(isinstance(x, model.Request) for x in xs))),
-            ('request.arrival', lambda xs: [evque.publish('sim.log', cloca.now(), f'arrive {x.VM.NAME}') for x in xs]),
-            ('request.accept', lambda xs: self._tracker.record('accepted', len(xs))),
-            ('request.accept', lambda xs: [evque.publish('sim.log', cloca.now(), f'accept {x.VM.NAME}') for x in xs]),
-            ('request.reject', lambda xs: self._tracker.record('rejected', len(xs))),
-            ('request.reject', lambda xs: [evque.publish('sim.log', cloca.now(), f'reject {x.VM.NAME}') for x in xs]),
+            ('request.arrival', lambda xs: self._tracker.record('requests', sum(isinstance(x, model.Request) for x in xs if not x.IGNORED))),
+            ('request.arrival', lambda xs: [evque.publish('sim.log', cloca.now(), f'arrive {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
+            ('request.accept', lambda xs: self._tracker.record('accepted', sum(not x.IGNORED for x in xs))),
+            ('request.accept', lambda xs: [evque.publish('sim.log', cloca.now(), f'accept {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
+            ('request.reject', lambda xs: self._tracker.record('rejected', sum(not x.IGNORED for x in xs))),
+            ('request.reject', lambda xs: [evque.publish('sim.log', cloca.now(), f'reject {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
             ('action.execute', self._handle_action_execution),
             ('sim.log', self._handle_simulation_log)
         ]:
@@ -245,7 +245,7 @@ class Simulation:
             else:
                 rejected_requests.append(request)
                 if request.REQUIRED:
-                    raise AssertionError('The allocation of initialization requests must not result in failure.')
+                    raise AssertionError(f'The allocation of initialization requests must not result in failure: {request.VM.NAME}')
                 if request.ON_FAILURE:
                     request.ON_FAILURE()
 
