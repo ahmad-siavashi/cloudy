@@ -325,7 +325,7 @@ class Vmp(ABC):
         """
         return self._vm_pm[vm]
 
-    def has_vms(self) -> bool:
+    def empty(self) -> bool:
         """
         Check if there are any virtual machines placed.
 
@@ -334,7 +334,7 @@ class Vmp(ABC):
         bool
             True if there are VMs placed, False otherwise.
         """
-        return bool(self._vm_pm)
+        return not bool(self._vm_pm)
 
     @abstractmethod
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:

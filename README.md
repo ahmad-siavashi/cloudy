@@ -104,7 +104,7 @@ topics.
 
 The following elucidates the primary event topics used within the Cloudy simulator, offering a brief description of their significance and the scenarios in which they are employed:
 
-- **request.arrival**: Signifies the arrival of a request. It also keeps track of model-based requests, recording the count in the simulator's tracker.
+- **request.arrive**: Signifies the arrival of a request. It also keeps track of model-based requests, recording the count in the simulator's tracker.
   
 - **request.accept**: Indicates that a request has been accepted and this acceptance is recorded in the simulator's tracker.
 

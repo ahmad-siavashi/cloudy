@@ -92,39 +92,35 @@ class Simulation:
 
         # Subscribe to event topics
         for topic, handler in [
-            ('request.arrival', self._handle_request_arrival),
-            ('request.arrival', lambda xs: self._tracker.record('requests', sum(isinstance(x, model.Request) for x in xs if not x.IGNORED))),
-            ('request.arrival', lambda xs: [evque.publish('sim.log', cloca.now(), f'arrive {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
-            ('request.accept', lambda xs: self._tracker.record('accepted', sum(not x.IGNORED for x in xs))),
-            ('request.accept', lambda xs: [evque.publish('sim.log', cloca.now(), f'accept {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
-            ('request.reject', lambda xs: self._tracker.record('rejected', sum(not x.IGNORED for x in xs))),
-            ('request.reject', lambda xs: [evque.publish('sim.log', cloca.now(), f'reject {x.VM.NAME}' + (' [REQUIRED]' if x.REQUIRED else '') + (' [IGNORED]' if x.IGNORED else '')) for x in xs]),
-            ('action.execute', self._handle_action_execution),
-            ('sim.log', self._handle_simulation_log)
+            ('request.arrive', self._handle_request_arrive),
+            ('request.accept', self._handle_request_accept),
+            ('request.reject', self._handle_request_accept),
+            ('action.execute', self._handle_action_execute),
+            ('sim.log', self._handle_simulation_log),
         ]:
             evque.subscribe(topic, handler)
 
-        for topic, log_msg in [
-            ('app.start', '[{0.NAME}]: start {1.NAME}'),
-            ('app.stop', '[{0.NAME}]: stop {1.NAME}'),
-            ('container.start', '[{0.NAME}]: start {1.NAME}'),
-            ('container.stop', '[{0.NAME}]: stop {1.NAME}'),
-            ('controller.start', '[{0.NAME}]: start {1.NAME}'),
-            ('controller.stop', '[{0.NAME}]: stop {1.NAME}'),
-            ('deployment.run', '[{0.NAME}]: {1.NAME} is RUNNING'),
-            ('deployment.pend', '[{0.NAME}]: {1.NAME} is PENDING (awaiting resources)'),
-            ('deployment.degrade', '[{0.NAME}]: {1.NAME} is DEGRADED ({2} replica(s) remained)'),
-            ('deployment.scale', '[{0.NAME}]: {1.NAME} is SCALED ({2} replica(s) {"added" if z > 0 else "deleted"})'),
-            ('deployment.stop', '[{0.NAME}]: {1.NAME} is STOPPED'),
-            ('vm.allocate', '[{0.NAME}]: allocate {1.NAME}'),
-            ('vm.deallocate', '[{0.NAME}]: deallocate {1.NAME}')
+        for topic, message_suffix in [
+            ('app.start', 'start {1.NAME}'),
+            ('app.stop', 'stop {1.NAME}'),
+            ('container.start', 'start {1.NAME}'),
+            ('container.stop', 'stop {1.NAME}'),
+            ('controller.start', 'start {1.NAME}'),
+            ('controller.stop', 'stop {1.NAME}'),
+            ('deployment.run', '{1.NAME} is RUNNING'),
+            ('deployment.pend', '{1.NAME} is PENDING'),
+            ('deployment.degrade', '{1.NAME} is DEGRADED ({2} replica(s) remained)'),
+            ('deployment.scale', '{1.NAME} is SCALED (± {2} replica(s))'),
+            ('deployment.stop', '{1.NAME} is STOPPED'),
+            ('vm.allocate', 'allocate {1.NAME}'),
+            ('vm.deallocate', 'deallocate {1.NAME}')
         ]:
-            evque.subscribe(topic, self.__make_log_handler(log_msg))
+            evque.subscribe(topic, self._create_log_formatter(message_suffix))
 
         # Group incoming requests by their arrival time
         for arrival, requests in groupby(self.USER.REQUESTS, key=lambda r: r.ARRIVAL):
             # Publish an event to signal the arrival of requests with the same arrival time.
-            evque.publish('request.arrival', arrival, list(requests))
+            evque.publish('request.arrive', arrival, list(requests))
 
     def report(self, to_stdout=True) -> dict[str, float]:
         """
@@ -218,9 +214,9 @@ class Simulation:
         """
         Determine if there are no more events in the queue and no ongoing requests.
         """
-        return evque.empty() and not self._tracker.has_pending() and not self.DATACENTER.VMP.has_vms()
+        return evque.empty() and not self._tracker.has_pending() and self.DATACENTER.VMP.empty()
 
-    def _handle_request_arrival(self, requests: list[model.Request, ...]) -> Simulation:
+    def _handle_request_arrive(self, requests: list[model.Request, ...]) -> Simulation:
         """
         Handles the arrival of requests and allocates them to the datacenter.
 
@@ -229,6 +225,13 @@ class Simulation:
         requests : list[model.Request, ...]
             List of incoming requests.
         """
+
+        requests = [r for r in requests if isinstance(r, model.Request)]
+        self._tracker.record('requests', sum(not r.IGNORED for r in requests))
+        for request in requests:
+            required_tag = ' [REQUIRED]' if request.REQUIRED else ''
+            ignored_tag = ' [IGNORED]' if request.IGNORED else ''
+            evque.publish('sim.log', cloca.now(), f'arrive {request.VM.NAME}' + required_tag + ignored_tag)
 
         allocations = self.DATACENTER.VMP.allocate([r.VM for r in requests if isinstance(r, model.Request)])
 
@@ -257,7 +260,57 @@ class Simulation:
 
         return self
 
-    def _handle_action_execution(self, actions: list[model.Action, ...]) -> Simulation:
+    def _handle_request_accept(self, requests):
+        """
+        Handle the acceptance of requests by recording the event and publishing a log.
+
+        This method iterates over each request, records it as 'accepted' if it's not ignored,
+        and publishes an acceptance log with the request's virtual machine name and any
+        required or ignored flags.
+
+        Parameters
+        ----------
+        requests : list
+            A list of request objects to be processed.
+
+        See Also
+        --------
+        _tracker.record : Method used to record the number of accepted requests.
+        evque.publish : Method used to publish an event to the event queue.
+        """
+        requests = [r for r in requests if isinstance(r, model.Request)]
+        self._tracker.record('accepted', sum(not r.IGNORED for r in requests))
+        for request in requests:
+            required_tag = ' [REQUIRED]' if request.REQUIRED else ''
+            ignored_tag = ' [IGNORED]' if request.IGNORED else ''
+            evque.publish('sim.log', cloca.now(), f'accept {request.VM.NAME}' + required_tag + ignored_tag)
+
+    def _handle_request_reject(self, requests):
+        """
+            Handle the rejection of requests by recording the event and publishing a log.
+
+            This method iterates over each request, records it as 'rejected' if it's not ignored,
+            and publishes a rejection log with the request's virtual machine name and any
+            required or ignored flags.
+
+            Parameters
+            ----------
+            requests : list
+                A list of request objects to be processed.
+
+            See Also
+            --------
+            _tracker.record : Method used to record the number of rejected requests.
+            evque.publish : Method used to publish an event to the event queue.
+        """
+        requests = [r for r in requests if isinstance(r, model.Request)]
+        self._tracker.record('rejected', sum(not r.IGNORED for r in requests))
+        for request in requests:
+            required_tag = ' [REQUIRED]' if request.REQUIRED else ''
+            ignored_tag = ' [IGNORED]' if request.IGNORED else ''
+            evque.publish('sim.log', cloca.now(), f'reject {request.VM.NAME}' + required_tag + ignored_tag)
+
+    def _handle_action_execute(self, actions: list[model.Action, ...]) -> Simulation:
         """
         Handles the execution of a list of actions.
 
@@ -297,19 +350,22 @@ class Simulation:
         print(f'{self.NAME}@{cloca.now()}> {message}')
 
     @staticmethod
-    def __make_log_handler(log_msg) -> Callable:
+    def _create_log_formatter(template_suffix) -> Callable:
         """
-        Generate a logging handler using a specified log message format.
+        Returns a logger function that prefixes messages with the standard format
+        and appends a given message template.
 
         Parameters
         ----------
-        log_msg : str
-            Format string for the log message.
+        template_suffix : str
+            The template string to append to the standard log message prefix.
 
         Returns
         -------
-        function
-            Lambda function that logs using the specified format.
+        Callable
+            A function that logs messages with a standard prefix followed by the formatted template_suffix.
         """
-        return lambda *args: evque.publish('sim.log', cloca.now(), log_msg.format(*args))
+        template = '[{0.NAME}]: ' + template_suffix
+        return lambda *args: evque.publish('sim.log', cloca.now(), template.format(*args))
+
 
