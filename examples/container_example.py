@@ -40,9 +40,11 @@ user.REQUESTS += [
 datacenter = DataCenter(NAME='boston region', VMP=VmpFirstFit)
 
 # The master host is given more CPU to simultaneously run the control plane.
-datacenter.HOSTS += [Pm(NAME='pm 1', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared)]
-datacenter.HOSTS += [Pm(NAME='pm 2', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared)]
-datacenter.HOSTS += [Pm(NAME='pm 3', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared)]
+datacenter.HOSTS += [
+    Pm(NAME='pm 1', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared),
+    Pm(NAME='pm 2', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared),
+    Pm(NAME='pm 3', CPU=(1, 1, 1), RAM=1024, GPU=(), VMM=VmmSpaceShared)
+]
 
 # Initializing the simulation with the user and data center and then starting the simulation.
 Simulation(NAME='container', USER=user, DATACENTER=datacenter).run().report()
