@@ -213,16 +213,6 @@
         
 
         
-            <div class="itemName"><code><a href="#_can_allocate_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._can_allocate_gpu">_can<wbr></wbr>_allocate<wbr></wbr>_gpu</a></code>
-            </div>
-        
-
-    </li><li class="private">
-        
-        
-        
-
-        
             <div class="itemName"><code><a href="#_get_free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._get_free_gpu">_get<wbr></wbr>_free<wbr></wbr>_gpu</a></code>
             </div>
         
@@ -279,33 +269,33 @@
         <div class="childrenKindTitle">Attributes</div>
         <ul>
     
-    <li class="">
+    <li class="private">
         
         
         
 
         
-            <div class="itemName"><code><a href="#free_cpu" class="internal-link" title="policy.vmm.VmmSpaceShared.free_cpu">free<wbr></wbr>_cpu</a></code>
+            <div class="itemName"><code><a href="#_free_cpu" class="internal-link" title="policy.vmm.VmmSpaceShared._free_cpu">_free<wbr></wbr>_cpu</a></code>
             </div>
         
 
-    </li><li class="">
+    </li><li class="private">
         
         
         
 
         
-            <div class="itemName"><code><a href="#free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared.free_gpu">free<wbr></wbr>_gpu</a></code>
+            <div class="itemName"><code><a href="#_free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._free_gpu">_free<wbr></wbr>_gpu</a></code>
             </div>
         
 
-    </li><li class="">
+    </li><li class="private">
         
         
         
 
         
-            <div class="itemName"><code><a href="#free_ram" class="internal-link" title="policy.vmm.VmmSpaceShared.free_ram">free<wbr></wbr>_ram</a></code>
+            <div class="itemName"><code><a href="#_free_ram" class="internal-link" title="policy.vmm.VmmSpaceShared._free_ram">_free<wbr></wbr>_ram</a></code>
             </div>
         
 
@@ -439,7 +429,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id30">
+          <table class="children sortable" id="id42">
   
   
   <tr class="method">
@@ -467,31 +457,26 @@
     <td>Method</td>
     <td><code><a href="#resume" class="internal-link" title="policy.vmm.VmmSpaceShared.resume">resume</a></code></td>
     <td>The process function is the main function of the scheduler. It takes a duration parameter and processes all VMs for that amount of time.</td>
-  </tr><tr class="instancevariable">
-    
-    <td>Instance Variable</td>
-    <td><code><a href="#free_cpu" class="internal-link" title="policy.vmm.VmmSpaceShared.free_cpu">free<wbr></wbr>_cpu</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="instancevariable">
-    
-    <td>Instance Variable</td>
-    <td><code><a href="#free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared.free_gpu">free<wbr></wbr>_gpu</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="instancevariable">
-    
-    <td>Instance Variable</td>
-    <td><code><a href="#free_ram" class="internal-link" title="policy.vmm.VmmSpaceShared.free_ram">free<wbr></wbr>_ram</a></code></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="method private">
-    
-    <td>Method</td>
-    <td><code><a href="#_can_allocate_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._can_allocate_gpu">_can<wbr></wbr>_allocate<wbr></wbr>_gpu</a></code></td>
-    <td>This function checks if a given virtual machine can be allocated on a specific GPU and block.</td>
   </tr><tr class="method private">
     
     <td>Method</td>
     <td><code><a href="#_get_free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._get_free_gpu">_get<wbr></wbr>_free<wbr></wbr>_gpu</a></code></td>
     <td>The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory blocks that can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory blocks required by a given virtual GPU, and returns the index of the first free GPU (if one exists) along with a tuple containing indices of free memory blocks on that GPU which can be allocated for the virtual GPU...</td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_free_cpu" class="internal-link" title="policy.vmm.VmmSpaceShared._free_cpu">_free<wbr></wbr>_cpu</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_free_gpu" class="internal-link" title="policy.vmm.VmmSpaceShared._free_gpu">_free<wbr></wbr>_gpu</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_free_ram" class="internal-link" title="policy.vmm.VmmSpaceShared._free_ram">_free<wbr></wbr>_ram</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="instancevariable private">
     
     <td>Instance Variable</td>
@@ -508,7 +493,7 @@
             <p class="inheritedFrom">
               Inherited from <code><a href="policy.Vmm.html" class="internal-link" title="policy.Vmm">Vmm</a></code>:
             </p>
-            <table class="children sortable" id="id31">
+            <table class="children sortable" id="id43">
   
   
   <tr class="basemethod">
@@ -679,102 +664,6 @@ It returns a list of booleans indicating whether each VM was successfully remove
     <div><p>The process function is the main function of the scheduler. It takes a duration
 parameter and processes all VMs for that amount of time.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">duration:</span><code>int</code></td><td class="fieldArgDesc">determine how long the cpu should be processing for</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="policy.Vmm.html" class="internal-link">policy.Vmm</a></code></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
   </div>
-</div><div class="baseinstancevariable">
-  
-  
-  <a name="policy.vmm.VmmSpaceShared.free_cpu">
-    
-  </a>
-  <a name="free_cpu">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">free_cpu</span>: <code>set[<wbr></wbr><a href="model.Vm.html" class="internal-link">model.Vm</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    
-    <a class="headerLink" href="#free_cpu" title="policy.vmm.VmmSpaceShared.free_cpu">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseinstancevariable">
-  
-  
-  <a name="policy.vmm.VmmSpaceShared.free_gpu">
-    
-  </a>
-  <a name="free_gpu">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">free_gpu</span>: <code>tuple[<wbr></wbr>set[<wbr></wbr>int], <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
-    
-    <a class="headerLink" href="#free_gpu" title="policy.vmm.VmmSpaceShared.free_gpu">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="baseinstancevariable">
-  
-  
-  <a name="policy.vmm.VmmSpaceShared.free_ram">
-    
-  </a>
-  <a name="free_ram">
-    
-  </a>
-  <div class="functionHeader">
-    
-    <span class="py-defname">free_ram</span>: <code>int</code> =
-    
-    <a class="headerLink" href="#free_ram" title="policy.vmm.VmmSpaceShared.free_ram">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="functionBody">
-    
-    <div><p class="undocumented">Undocumented</p></div>
-    
-  </div>
-</div><div class="basemethod private">
-  
-  
-  <a name="policy.vmm.VmmSpaceShared._can_allocate_gpu">
-    
-  </a>
-  <a name="_can_allocate_gpu">
-    
-  </a>
-  <div class="functionHeader">
-    
-    
-    <span class="py-keyword">def</span> <span class="py-defname">_can_allocate_gpu</span><span class="function-signature">(self, vm: <code><a href="model.Vm.html" class="internal-link">model.Vm</a></code>, gpu: <code>int</code>, block: <code>int</code>) -&gt; <code>bool</code></span>:
-    
-    <a class="headerLink" href="#_can_allocate_gpu" title="policy.vmm.VmmSpaceShared._can_allocate_gpu">
-      
-      
-      ¶
-    </a>
-  </div>
-  <div class="docstring functionBody">
-    
-    <div><p>This function checks if a given virtual machine can be allocated on a specific GPU and block.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vm:</span><code><a href="model.Vm.html" class="internal-link" title="model.Vm">Vm</a></code></td><td class="fieldArgDesc">represents a virtual machine</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">gpu:</span><code>int</code></td><td class="fieldArgDesc">the index of the GPU in the machine which needs to be allocated</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">block:</span><code>int</code></td><td class="fieldArgDesc">an integer representing the starting block in the GPU memory</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">a boolean value indicating whether the given GPU and memory block can be allocated for the given virtual machine (vm) or not</td></tr></table></div>
-  </div>
 </div><div class="basemethod private">
   
   
@@ -806,6 +695,78 @@ If no such contiguous set exists, None is returned.</p><table class="fieldTable"
 </div><div class="baseinstancevariable private">
   
   
+  <a name="policy.vmm.VmmSpaceShared._free_cpu">
+    
+  </a>
+  <a name="_free_cpu">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_free_cpu</span>: <code>set[<wbr></wbr><a href="model.Vm.html" class="internal-link">model.Vm</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+    
+    <a class="headerLink" href="#_free_cpu" title="policy.vmm.VmmSpaceShared._free_cpu">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="policy.vmm.VmmSpaceShared._free_gpu">
+    
+  </a>
+  <a name="_free_gpu">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_free_gpu</span>: <code>tuple[<wbr></wbr>set[<wbr></wbr>int], <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+    
+    <a class="headerLink" href="#_free_gpu" title="policy.vmm.VmmSpaceShared._free_gpu">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="policy.vmm.VmmSpaceShared._free_ram">
+    
+  </a>
+  <a name="_free_ram">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_free_ram</span>: <code>int</code> =
+    
+    <a class="headerLink" href="#_free_ram" title="policy.vmm.VmmSpaceShared._free_ram">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
   <a name="policy.vmm.VmmSpaceShared._vm_cpu">
     
   </a>
@@ -814,7 +775,7 @@ If no such contiguous set exists, None is returned.</p><table class="fieldTable"
   </a>
   <div class="functionHeader">
     
-    <span class="py-defname">_vm_cpu</span>: <code>dict[<wbr></wbr>int, <wbr></wbr>set[<wbr></wbr>int, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]]</code> =
+    <span class="py-defname">_vm_cpu</span>: <code>dict[<wbr></wbr><a href="model.Vm.html" class="internal-link">model.Vm</a>, <wbr></wbr>set[<wbr></wbr>int, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]]</code> =
     
     <a class="headerLink" href="#_vm_cpu" title="policy.vmm.VmmSpaceShared._vm_cpu">
       
@@ -863,7 +824,7 @@ If no such contiguous set exists, None is returned.</p><table class="fieldTable"
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2023-08-23 03:04:11.
+    23.4.1 at 2023-11-11 08:49:38.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

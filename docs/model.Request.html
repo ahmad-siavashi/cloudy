@@ -157,8 +157,31 @@
         
          
 
+        <div class="childrenKindTitle">Inherited Methods</div>
+        <ul>
+    
+    <li class="">
         
-         
+        
+        
+
+        
+            <div class="itemName"><code><a href="model.Base.html#__eq__" class="internal-link" title="model.Base.__eq__">__eq__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="model.Base.html#__hash__" class="internal-link" title="model.Base.__hash__">__hash__</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
 
         <div class="childrenKindTitle">Attributes</div>
         <ul>
@@ -170,6 +193,16 @@
 
         
             <div class="itemName"><code><a href="#EXECUTE" class="internal-link" title="model.Request.EXECUTE">EXECUTE</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#IGNORED" class="internal-link" title="model.Request.IGNORED">IGNORED</a></code>
             </div>
         
 
@@ -266,6 +299,26 @@
 
         
             <div class="itemName"><code><a href="model.App.html" class="internal-link" title="model.App"><wbr></wbr>App</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="model.Base.html" class="internal-link" title="model.Base"><wbr></wbr>Base</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="model.BaseMeta.html" class="internal-link" title="model.BaseMeta"><wbr></wbr>Base<wbr></wbr>Meta</a></code>
             </div>
         
 
@@ -404,7 +457,7 @@ Requests are usually associated with a User.</p></div>
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id13">
+          <table class="children sortable" id="id24">
   
   
   <tr class="constant">
@@ -412,6 +465,11 @@ Requests are usually associated with a User.</p></div>
     <td>Constant</td>
     <td><code><a href="#EXECUTE" class="internal-link" title="model.Request.EXECUTE">EXECUTE</a></code></td>
     <td>The callable function to be executed. Defaults to None.</td>
+  </tr><tr class="constant">
+    
+    <td>Constant</td>
+    <td><code><a href="#IGNORED" class="internal-link" title="model.Request.IGNORED">IGNORED</a></code></td>
+    <td>When set to True, this request won't be counted in stats. Usually used for requests that are part of simulation initialization.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -438,7 +496,7 @@ Requests are usually associated with a User.</p></div>
             <p class="inheritedFrom">
               Inherited from <code><a href="model.Action.html" class="internal-link" title="model.Action">Action</a></code>:
             </p>
-            <table class="children sortable" id="id14">
+            <table class="children sortable" id="id25">
   
   
   <tr class="baseconstant">
@@ -446,6 +504,25 @@ Requests are usually associated with a User.</p></div>
     <td>Constant</td>
     <td><code><a href="model.Action.html#ARRIVAL" class="internal-link" title="model.Action.ARRIVAL">ARRIVAL</a></code></td>
     <td>Arrival time of the action, in simulation time unit.</td>
+  </tr>
+</table>
+            
+            <p class="inheritedFrom">
+              Inherited from <code><a href="model.Base.html" class="internal-link" title="model.Base">Base</a></code> (via <code><a href="model.Action.html" class="internal-link" title="model.Action">Action</a></code>):
+            </p>
+            <table class="children sortable" id="id26">
+  
+  
+  <tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="model.Base.html#__eq__" class="internal-link" title="model.Base.__eq__">__eq__</a></code></td>
+    <td>Compare the equality of two instances based on their object ids.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="model.Base.html#__hash__" class="internal-link" title="model.Base.__hash__">__hash__</a></code></td>
+    <td>Calculate the hash value of the instance based on its object id.</td>
   </tr>
 </table>
             
@@ -477,6 +554,31 @@ Requests are usually associated with a User.</p></div>
     <div class="interfaceinfo">overrides <code><a href="model.Action.html#EXECUTE" class="internal-link">model.Action.EXECUTE</a></code></div>
     <div><p>The callable function to be executed. Defaults to None.</p></div>
     <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>None</code></pre></td></tr></table>
+  </div>
+</div><div class="baseconstant">
+  
+  
+  <a name="model.Request.IGNORED">
+    
+  </a>
+  <a name="IGNORED">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">IGNORED</span>: <code>bool</code> =
+    
+    <a class="headerLink" href="#IGNORED" title="model.Request.IGNORED">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    <div><p>When set to True, this request won't be counted in stats.
+Usually used for requests that are part of simulation initialization.</p></div>
+    <table class="valueTable"><tr class="fieldStart"><td class="fieldName">Value</td></tr><tr><td><pre class="constant-value"><code>field(<wbr></wbr>default=False)</code></pre></td></tr></table>
   </div>
 </div><div class="baseconstant">
   
@@ -586,7 +688,7 @@ Requests are usually associated with a User.</p></div>
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2023-08-23 03:04:11.
+    23.4.1 at 2023-11-11 08:49:38.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 

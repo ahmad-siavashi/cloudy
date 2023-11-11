@@ -10,8 +10,53 @@ import cloca
 import policy
 
 
+class BaseMeta(type):
+    """
+        Metaclass for the Base class.
+
+        This metaclass is responsible for modifying the behavior of the generated data class. If the data class
+        doesn't provide a custom __hash__ method, it sets the __hash__ method to the one from the Base class.
+
+        Attributes
+        ----------
+        name : str
+            The name of the class.
+        bases : tuple
+            A tuple of the base classes.
+        class_dict : dict
+            The dictionary containing the attributes and methods of the class.
+        """
+
+    def __init__(cls, name, bases, class_dict):
+        if "__hash__" not in class_dict:
+            # If the class doesn't provide a custom __hash__ method, use the one from the Base class
+            cls.__hash__ = Base.__hash__
+
+
 @dataclass(kw_only=True)
-class App:
+class Base(metaclass=BaseMeta):
+    """
+    Base class providing common functionality for data classes. This class includes
+    custom __eq__ and __hash__ methods based on object ids.
+    """
+
+    def __eq__(self, other):
+        """
+        Compare the equality of two instances based on their object ids.
+        """
+        if isinstance(other, self.__class__):
+            return id(self) == id(other)
+        return False
+
+    def __hash__(self):
+        """
+        Calculate the hash value of the instance based on its object id.
+        """
+        return hash(id(self))
+
+
+@dataclass(kw_only=True)
+class App(Base):
     """
     The App class represent a single application instance in cloud.
 
@@ -122,35 +167,6 @@ class Container(App):
     RAM: tuple[int, int]
     GPU: Optional[tuple[int, int] | float]
 
-    def __hash__(self) -> int:
-        """The __hash__ function returns the unique identifier of an object.
-
-        Returns
-        -------
-            The `id` of the object.
-
-        """
-        return id(self)
-
-    def __eq__(self, other: object) -> bool:
-        """The function checks if two objects are equal by comparing their hash values.
-
-        Parameters
-        ----------
-        other : object
-            The parameter "other" is an object that we are comparing with the current object.
-
-        Returns
-        -------
-            It returns True if the object being compared is an
-        instance of the Vm class and has the same hash value as the current object. Otherwise, it
-        returns False.
-
-        """
-        if isinstance(other, Container):
-            return self.__hash__() == other.__hash__()
-        return False
-
 
 @dataclass(kw_only=True)
 class Controller(App):
@@ -220,7 +236,7 @@ class Controller(App):
 
 
 @dataclass(kw_only=True)
-class Deployment:
+class Deployment(Base):
     """
     Represents a Deployment.
 
@@ -273,38 +289,9 @@ class Deployment:
         """
         return iter(self.CONTAINER_SPECS)
 
-    def __hash__(self) -> int:
-        """The __hash__ function returns the unique identifier of an object.
-
-        Returns
-        -------
-            The `id` of the object.
-
-        """
-        return id(self)
-
-    def __eq__(self, other: object) -> bool:
-        """The function checks if two objects are equal by comparing their hash values.
-
-        Parameters
-        ----------
-        other : object
-            The parameter "other" is an object that we are comparing with the current object.
-
-        Returns
-        -------
-            The code is returning a boolean value. It returns True if the object being compared is an
-        instance of the Deployment class and has the same hash value as the current object. Otherwise, it
-        returns False.
-
-        """
-        if isinstance(other, Deployment):
-            return self.__hash__() == other.__hash__()
-        return False
-
 
 @dataclass(kw_only=True)
-class Vm:
+class Vm(Base):
     """
     The Vm class represent a virtual machine instance in cloud.
 
@@ -340,35 +327,6 @@ class Vm:
         us to do some additional setup on our objects, like setting up attributes that depend on other attributes.
         """
         self.OS = self.OS(self)
-
-    def __hash__(self) -> int:
-        """The __hash__ function returns the unique identifier of an object.
-
-        Returns
-        -------
-            The `id` of the object.
-
-        """
-        return id(self)
-
-    def __eq__(self, other: object) -> bool:
-        """The function checks if two objects are equal by comparing their hash values.
-
-        Parameters
-        ----------
-        other : object
-            The parameter "other" is an object that we are comparing with the current object.
-
-        Returns
-        -------
-            The code is returning a boolean value. It returns True if the object being compared is an
-        instance of the Vm class and has the same hash value as the current object. Otherwise, it
-        returns False.
-
-        """
-        if isinstance(other, Vm):
-            return self.__hash__() == other.__hash__()
-        return False
 
     def turn_on(self) -> Vm:
         """
@@ -406,7 +364,7 @@ class Vm:
 
 
 @dataclass(kw_only=True)
-class Pm:
+class Pm(Base):
     """
     The Pm class represent a physical machine, i.e. host, in the data center.
 
@@ -439,7 +397,7 @@ class Pm:
 
 
 @dataclass(kw_only=True)
-class DataCenter:
+class DataCenter(Base):
     """
     The DataCenter class represent a data center in cloud.
 
@@ -480,7 +438,7 @@ class DataCenter:
 
 
 @dataclass(kw_only=True)
-class User:
+class User(Base):
     """
     The User class represents a cloud user.
 
@@ -509,7 +467,7 @@ class User:
 
 
 @dataclass(kw_only=True)
-class Action:
+class Action(Base):
     """
     The Action class represents a callable action to be executed. Actions can be
     associated with a user or exist independently as a simulation element.
