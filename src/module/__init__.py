@@ -94,7 +94,7 @@ class Simulation:
         for topic, handler in [
             ('request.arrive', self._handle_request_arrive),
             ('request.accept', self._handle_request_accept),
-            ('request.reject', self._handle_request_accept),
+            ('request.reject', self._handle_request_reject),
             ('action.execute', self._handle_action_execute),
             ('sim.log', self._handle_simulation_log),
         ]:
