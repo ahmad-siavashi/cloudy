@@ -89,7 +89,7 @@ class App(Base):
         """
         return self.__has_resumed_once
 
-    def restart(self) -> 'App':
+    def restart(self) -> App:
         """
         Resets the remained list to its original length.
 
@@ -480,7 +480,7 @@ class Action(Base):
         Arrival time of the action, in simulation time unit.
     """
     ARRIVAL: int
-    EXECUTE: Callable[[], None]
+    EXECUTE: Callable[[], Any]
 
 
 @dataclass(kw_only=True)
@@ -508,6 +508,6 @@ class Request(Action):
     VM: Vm
     REQUIRED: bool = field(default=False)
     IGNORED: bool = field(default=False)
-    EXECUTE: Optional[Callable[[], None]] = None
-    ON_SUCCESS: Optional[Callable[[], None]] = None
-    ON_FAILURE: Optional[Callable[[], None]] = None
+    EXECUTE: Optional[Callable[[], Any]] = None
+    ON_SUCCESS: Optional[Callable[[], Any]] = None
+    ON_FAILURE: Optional[Callable[[], Any]] = None
