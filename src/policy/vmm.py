@@ -20,7 +20,7 @@ class VmmSpaceShared(policy.Vmm):
         """
         super().__post_init__()
         self._free_cpu: set[model.Vm, ...] = {core for core in range(len(self.HOST.CPU))}
-        self._vm_cpu: dict[int, set[int, ...]] = {}
+        self._vm_cpu: dict[model.Vm, set[int, ...]] = {}
         self._free_ram: int = self.HOST.RAM
         self._free_gpu: tuple[set[int], ...] = tuple({block for block in range(blocks)} for _, blocks in self.HOST.GPU)
         self._vm_gpu: dict[model.Vm, tuple[int, set[int, ...]]] = {}

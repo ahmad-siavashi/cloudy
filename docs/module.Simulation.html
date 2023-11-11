@@ -203,7 +203,7 @@
         
 
         
-            <div class="itemName"><code><a href="#__make_log_handler" class="internal-link" title="module.Simulation.__make_log_handler">__make<wbr></wbr>_log<wbr></wbr>_handler</a></code>
+            <div class="itemName"><code><a href="#_create_log_formatter" class="internal-link" title="module.Simulation._create_log_formatter">_create<wbr></wbr>_log<wbr></wbr>_formatter</a></code>
             </div>
         
 
@@ -213,7 +213,7 @@
         
 
         
-            <div class="itemName"><code><a href="#_handle_action_execution" class="internal-link" title="module.Simulation._handle_action_execution">_handle<wbr></wbr>_action<wbr></wbr>_execution</a></code>
+            <div class="itemName"><code><a href="#_handle_action_execute" class="internal-link" title="module.Simulation._handle_action_execute">_handle<wbr></wbr>_action<wbr></wbr>_execute</a></code>
             </div>
         
 
@@ -223,7 +223,27 @@
         
 
         
-            <div class="itemName"><code><a href="#_handle_request_arrival" class="internal-link" title="module.Simulation._handle_request_arrival">_handle<wbr></wbr>_request<wbr></wbr>_arrival</a></code>
+            <div class="itemName"><code><a href="#_handle_request_accept" class="internal-link" title="module.Simulation._handle_request_accept">_handle<wbr></wbr>_request<wbr></wbr>_accept</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_handle_request_arrive" class="internal-link" title="module.Simulation._handle_request_arrive">_handle<wbr></wbr>_request<wbr></wbr>_arrive</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_handle_request_reject" class="internal-link" title="module.Simulation._handle_request_reject">_handle<wbr></wbr>_request<wbr></wbr>_reject</a></code>
             </div>
         
 
@@ -243,7 +263,7 @@
         
 
         
-            <div class="itemName"><code><a href="#_no_pending_events_or_requests" class="internal-link" title="module.Simulation._no_pending_events_or_requests">_no<wbr></wbr>_pending<wbr></wbr>_events<wbr></wbr>_or<wbr></wbr>_requests</a></code>
+            <div class="itemName"><code><a href="#_is_all_settled" class="internal-link" title="module.Simulation._is_all_settled">_is<wbr></wbr>_all<wbr></wbr>_settled</a></code>
             </div>
         
 
@@ -413,7 +433,7 @@
         </div>
 
         <div id="splitTables">
-          <table class="children sortable" id="id17">
+          <table class="children sortable" id="id29">
   
   
   <tr class="method">
@@ -459,18 +479,28 @@
   </tr><tr class="staticmethod private">
     
     <td>Static Method</td>
-    <td><code><a href="#__make_log_handler" class="internal-link" title="module.Simulation.__make_log_handler">__make<wbr></wbr>_log<wbr></wbr>_handler</a></code></td>
-    <td>Generate a logging handler using a specified log message format.</td>
+    <td><code><a href="#_create_log_formatter" class="internal-link" title="module.Simulation._create_log_formatter">_create<wbr></wbr>_log<wbr></wbr>_formatter</a></code></td>
+    <td>Returns a logger function that prefixes messages with the standard format and appends a given message template.</td>
   </tr><tr class="method private">
     
     <td>Method</td>
-    <td><code><a href="#_handle_action_execution" class="internal-link" title="module.Simulation._handle_action_execution">_handle<wbr></wbr>_action<wbr></wbr>_execution</a></code></td>
+    <td><code><a href="#_handle_action_execute" class="internal-link" title="module.Simulation._handle_action_execute">_handle<wbr></wbr>_action<wbr></wbr>_execute</a></code></td>
     <td>Handles the execution of a list of actions.</td>
   </tr><tr class="method private">
     
     <td>Method</td>
-    <td><code><a href="#_handle_request_arrival" class="internal-link" title="module.Simulation._handle_request_arrival">_handle<wbr></wbr>_request<wbr></wbr>_arrival</a></code></td>
+    <td><code><a href="#_handle_request_accept" class="internal-link" title="module.Simulation._handle_request_accept">_handle<wbr></wbr>_request<wbr></wbr>_accept</a></code></td>
+    <td>Handle the acceptance of requests by recording the event and publishing a log.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_handle_request_arrive" class="internal-link" title="module.Simulation._handle_request_arrive">_handle<wbr></wbr>_request<wbr></wbr>_arrive</a></code></td>
     <td>Handles the arrival of requests and allocates them to the datacenter.</td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_handle_request_reject" class="internal-link" title="module.Simulation._handle_request_reject">_handle<wbr></wbr>_request<wbr></wbr>_reject</a></code></td>
+    <td>Handle the rejection of requests by recording the event and publishing a log.</td>
   </tr><tr class="method private">
     
     <td>Method</td>
@@ -479,7 +509,7 @@
   </tr><tr class="method private">
     
     <td>Method</td>
-    <td><code><a href="#_no_pending_events_or_requests" class="internal-link" title="module.Simulation._no_pending_events_or_requests">_no<wbr></wbr>_pending<wbr></wbr>_events<wbr></wbr>_or<wbr></wbr>_requests</a></code></td>
+    <td><code><a href="#_is_all_settled" class="internal-link" title="module.Simulation._is_all_settled">_is<wbr></wbr>_all<wbr></wbr>_settled</a></code></td>
     <td>Determine if there are no more events in the queue and no ongoing requests.</td>
   </tr><tr class="method private">
     
@@ -711,18 +741,18 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
 </div><div class="basestaticmethod private">
   
   
-  <a name="module.Simulation.__make_log_handler">
+  <a name="module.Simulation._create_log_formatter">
     
   </a>
-  <a name="__make_log_handler">
+  <a name="_create_log_formatter">
     
   </a>
   <div class="functionHeader">
     
     @staticmethod<br />
-    <span class="py-keyword">def</span> <span class="py-defname">__make_log_handler</span><span class="function-signature">(log_msg) -&gt; <code>Callable</code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">_create_log_formatter</span><span class="function-signature">(template_suffix) -&gt; <code>Callable</code></span>:
     
-    <a class="headerLink" href="#__make_log_handler" title="module.Simulation.__make_log_handler">
+    <a class="headerLink" href="#_create_log_formatter" title="module.Simulation._create_log_formatter">
       
       
       ¶
@@ -730,23 +760,24 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Generate a logging handler using a specified log message format.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">log<wbr></wbr>_msg:</span><code>str</code></td><td class="fieldArgDesc">Format string for the log message.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>function</code></td><td class="fieldArgDesc">Lambda function that logs using the specified format.</td></tr></table></div>
+    <div><p>Returns a logger function that prefixes messages with the standard format
+and appends a given message template.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">template<wbr></wbr>_suffix:</span><code>str</code></td><td class="fieldArgDesc">The template string to append to the standard log message prefix.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Callable</code></td><td class="fieldArgDesc">A function that logs messages with a standard prefix followed by the formatted template_suffix.</td></tr></table></div>
   </div>
 </div><div class="basemethod private">
   
   
-  <a name="module.Simulation._handle_action_execution">
+  <a name="module.Simulation._handle_action_execute">
     
   </a>
-  <a name="_handle_action_execution">
+  <a name="_handle_action_execute">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">_handle_action_execution</span><span class="function-signature">(self, actions: <code>list[<wbr></wbr><a href="model.Action.html" class="internal-link">model.Action</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code>) -&gt; <code><a href="module.Simulation.html" class="internal-link" title="module.Simulation">Simulation</a></code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">_handle_action_execute</span><span class="function-signature">(self, actions: <code>list[<wbr></wbr><a href="model.Action.html" class="internal-link">model.Action</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code>) -&gt; <code><a href="module.Simulation.html" class="internal-link" title="module.Simulation">Simulation</a></code></span>:
     
-    <a class="headerLink" href="#_handle_action_execution" title="module.Simulation._handle_action_execution">
+    <a class="headerLink" href="#_handle_action_execute" title="module.Simulation._handle_action_execute">
       
       
       ¶
@@ -764,18 +795,55 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
 </div><div class="basemethod private">
   
   
-  <a name="module.Simulation._handle_request_arrival">
+  <a name="module.Simulation._handle_request_accept">
     
   </a>
-  <a name="_handle_request_arrival">
+  <a name="_handle_request_accept">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">_handle_request_arrival</span><span class="function-signature">(self, requests: <code>list[<wbr></wbr><a href="model.Request.html" class="internal-link">model.Request</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code>) -&gt; <code><a href="module.Simulation.html" class="internal-link" title="module.Simulation">Simulation</a></code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">_handle_request_accept</span><span class="function-signature">(self, requests)</span>:
     
-    <a class="headerLink" href="#_handle_request_arrival" title="module.Simulation._handle_request_arrival">
+    <a class="headerLink" href="#_handle_request_accept" title="module.Simulation._handle_request_accept">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Handle the acceptance of requests by recording the event and publishing a log.</p>
+<p>This method iterates over each request, records it as 'accepted' if it's not ignored,
+and publishes an acceptance log with the request's virtual machine name and any
+required or ignored flags.</p>
+<div class="rst-admonition seealso">
+<p class="rst-first rst-admonition-title">See Also</p>
+<dl class="rst-last rst-docutils">
+<dt><code>_tracker.record</code></dt>
+<dd>Method used to record the number of accepted requests.</dd>
+<dt><code>evque.publish</code></dt>
+<dd>Method used to publish an event to the event queue.</dd>
+</dl>
+</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requests:</span><code>list</code></td><td class="fieldArgDesc">A list of request objects to be processed.</td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="module.Simulation._handle_request_arrive">
+    
+  </a>
+  <a name="_handle_request_arrive">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_handle_request_arrive</span><span class="function-signature">(self, requests: <code>list[<wbr></wbr><a href="model.Request.html" class="internal-link">model.Request</a>, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code>) -&gt; <code><a href="module.Simulation.html" class="internal-link" title="module.Simulation">Simulation</a></code></span>:
+    
+    <a class="headerLink" href="#_handle_request_arrive" title="module.Simulation._handle_request_arrive">
       
       
       ¶
@@ -784,6 +852,43 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
   <div class="docstring functionBody">
     
     <div><p>Handles the arrival of requests and allocates them to the datacenter.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requests:</span><code>list[<a href="model.Request.html" class="internal-link">model.Request</a></code>, <code>...]</code></td><td class="fieldArgDesc">List of incoming requests.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code><a href="module.Simulation.html" class="internal-link" title="module.Simulation">Simulation</a></code></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="module.Simulation._handle_request_reject">
+    
+  </a>
+  <a name="_handle_request_reject">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_handle_request_reject</span><span class="function-signature">(self, requests)</span>:
+    
+    <a class="headerLink" href="#_handle_request_reject" title="module.Simulation._handle_request_reject">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Handle the rejection of requests by recording the event and publishing a log.</p>
+<p>This method iterates over each request, records it as 'rejected' if it's not ignored,
+and publishes a rejection log with the request's virtual machine name and any
+required or ignored flags.</p>
+<div class="rst-admonition seealso">
+<p class="rst-first rst-admonition-title">See Also</p>
+<dl class="rst-last rst-docutils">
+<dt><code>_tracker.record</code></dt>
+<dd>Method used to record the number of rejected requests.</dd>
+<dt><code>evque.publish</code></dt>
+<dd>Method used to publish an event to the event queue.</dd>
+</dl>
+</div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requests:</span><code>list</code></td><td class="fieldArgDesc">A list of request objects to be processed.</td></tr></table></div>
   </div>
 </div><div class="basemethod private">
   
@@ -812,18 +917,18 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
 </div><div class="basemethod private">
   
   
-  <a name="module.Simulation._no_pending_events_or_requests">
+  <a name="module.Simulation._is_all_settled">
     
   </a>
-  <a name="_no_pending_events_or_requests">
+  <a name="_is_all_settled">
     
   </a>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">_no_pending_events_or_requests</span><span class="function-signature">(self) -&gt; <code>bool</code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">_is_all_settled</span><span class="function-signature">(self) -&gt; <code>bool</code></span>:
     
-    <a class="headerLink" href="#_no_pending_events_or_requests" title="module.Simulation._no_pending_events_or_requests">
+    <a class="headerLink" href="#_is_all_settled" title="module.Simulation._is_all_settled">
       
       
       ¶
@@ -893,7 +998,7 @@ if None, run till the end.</td></tr><tr class="fieldStart"><td class="fieldName"
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2023-08-23 03:04:11.
+    23.4.1 at 2023-11-11 08:49:38.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
