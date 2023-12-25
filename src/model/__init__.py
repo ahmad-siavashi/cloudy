@@ -376,7 +376,7 @@ class Pm(Base):
         cycles of cores per simulation time unit
     RAM : int
         amount of RAM
-    GPU : Optional[tuple[tuple(int, int), ...]]
+    GPU : Optional[tuple[tuple[int, int], ...]]
         list of GPUs in the form of [(no. of compute engines, no. of memory blocks), ...]
     VMM : Type[Vmm])
         hypervisor which determines creation and execution of virtual machines

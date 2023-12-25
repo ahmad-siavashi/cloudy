@@ -82,5 +82,5 @@ class VmpFirstFit(policy.Vmp):
         stopped_vms = []
         for host in self.DATACENTER.HOSTS:
             # VMs in an idle state are treated as stopped, but other criteria can also be considered.
-            stopped_vms.extend(host.VMM.idle())
+            stopped_vms.extend(host.VMM.idles())
         return stopped_vms
