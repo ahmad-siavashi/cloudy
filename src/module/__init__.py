@@ -72,11 +72,14 @@ class Simulation:
         the data center associated with the simulation
     CLOCK_RESOLUTION : int
         the resolution of the simulation clock
+    LOG : bool
+        print simulation logs to stdout (default: True)
     """
     NAME: str
     USER: model.User
     DATACENTER: model.DataCenter
     CLOCK_RESOLUTION: int = field(default=1)
+    LOG: bool = True
 
     def __post_init__(self):
         """
@@ -347,7 +350,8 @@ class Simulation:
         None
             This method does not return any value, it simply prints the message to the console.
         """
-        print(f'{self.NAME}@{cloca.now()}> {message}')
+        if self.LOG:
+            print(f'{self.NAME}@{cloca.now()}> {message}')
 
     @staticmethod
     def _create_log_formatter(template_suffix) -> Callable:
