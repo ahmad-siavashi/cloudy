@@ -1,5 +1,9 @@
 # Cloudy: a modern simulator of cloud environments
 
+<center>
+   <img alt="logo" src="logo.png"/>
+</center>
+
 Cloudy is a framework for modeling and simulating cloud computing environments and services. It enables the creation of
 virtualized cloud computing environments, and provides a comprehensive set of features for simulating and analyzing the
 performance of cloud infrastructures. The goal is to enable researchers and developers to evaluate the performance of
