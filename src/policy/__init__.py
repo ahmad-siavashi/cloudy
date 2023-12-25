@@ -277,7 +277,7 @@ class Vmm(ABC):
         """
         pass
 
-    def idle(self) -> list[model.Vm, ...]:
+    def idles(self) -> list[model.Vm, ...]:
         """
         The idle function returns list of guests that have no running load.
 

@@ -1,16 +1,19 @@
 # Cloudy: a modern simulator of cloud environments
 
-<center>
-   <img alt="logo" src="logo.png"/>
-</center>
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ahmad-siavashi/cloudy.svg)](https://github.com/username/repository)
+[![Documentation](https://img.shields.io/badge/documentation-included-blue.svg)](https://github.com/ahmad-siavashi/repository/tree/main/docs)
+![GitHub stars](https://img.shields.io/github/stars/ahmad-siavashi/cloudy?style=social)
+[![GitHub forks](https://img.shields.io/github/forks/ahmad-siavashi/cloudy.svg?style=social&label=Fork)](https://github.com/username/repository)
 
-Cloudy is a framework for modeling and simulating cloud computing environments and services. It enables the creation of
-virtualized cloud computing environments, and provides a comprehensive set of features for simulating and analyzing the
-performance of cloud infrastructures. The goal is to enable researchers and developers to evaluate the performance of
-their cloud-based applications and services in a realistic simulated environment. The simulator is a valuable tool for
-developers, allowing them to test their applications and services in a realistic environment without the need for a
-physical cloud environment. The simulator is designed to support a range of cloud service models, providing flexibility
-and applicability across various cloud-based scenarios.
+![logo](logo.png)
+
+Cloudy is a framework designed for modeling and simulating cloud computing environments and services. It
+provides the necessary components that researchers and studies require to investigate new concepts and expedite the
+development and evaluation process in the evolving field of cloud computing. The choice of Python as the programming
+language for Cloudy is for its user-friendly nature and efficient compatibility with third-party libraries. This
+decision addresses certain limitations found in other simulators. The simulator is built to be flexible,
+capable of supporting a variety of cloud-based services to meet the diverse requirements of researchers.
 
 ## Getting started
 
@@ -47,8 +50,8 @@ The simulator is designed to be easy to use and extend. To run Cloudy,
 
    **Note:** _Depending on your operating system and shell environment, you may need to replace backslashes with double
    backslashes when setting the `PYTHONPATH` variable on Windows. For example, if the path to your project root
-   directory is `C:\path\to\cloudy\src`, you should set the `PYTHONPATH` variable as `C:\\path\\to\\cloudy\\src"` in Windows
-   environments. This is due to the way backslashes are treated as escape characters in certain contexts. Linux
+   directory is `C:\path\to\cloudy\src`, you should set the `PYTHONPATH` variable as `C:\\path\\to\\cloudy\\src"` in
+   Windows environments. This is due to the way backslashes are treated as escape characters in certain contexts. Linux
    environments do not require this adjustment._
 
 5. Run an example
@@ -57,24 +60,24 @@ The simulator is designed to be easy to use and extend. To run Cloudy,
       ```
 
 That's all. The code is minimal, self-documented and easy to read. You can quickly start coding by reading the existing
-code and example. Nevertheless, documentations are provided in the `doc` directory.
+code and example. Nevertheless, documentations are provided in the `docs` directory.
 
 ## Examples
 
 Explore the capabilities of Cloudy by checking out the examples in the `examples` directory. These examples demonstrate
 some use cases and functionalities of the simulator.
 
-## Contribution
+## Development
 
 The simulator is a work in progress. Please feel free to develop new features or make improvements. You can contact me
-through email at siavashi@aut.ac.ir. For ensuring the reliability of the codebase, limited unit tests are available in
-the `tests` directory. You are
-encouraged to add more tests as you contribute to the project.
+through [email](mailto:siavashi@aut.ac.ir). For ensuring the reliability of the codebase, limited unit tests are
+available in
+the `tests` directory. You are encouraged to add more tests as you contribute to the project.
 
 **Generating HTML Documentation with PyDoctor**
 
-To generate HTML documentation for the Python code using PyDoctor, run the following command in the terminal or command
-prompt while you are within the project root directory, i.e. cloudy:
+To regenerate HTML documentation for the Python code using PyDoctor, run the following command in the terminal or
+command prompt while you are within the project root directory, i.e. cloudy:
 
 ```bash
 $ pip install pydoctor
@@ -85,87 +88,64 @@ PyDoctor will analyze the code and generate the HTML documentation, which can be
 specified `doc` directory. The docstrings are written
 with [numpy style](https://numpydoc.readthedocs.io/en/latest/format.html).
 
-**Event Queue System**
+**Architecture**
 
-The simulator enjoys an event-driven architecture empowered by [evque](https://github.com/ahmad-siavashi/evque)
-and [cloca](https://github.com/ahmad-siavashi/cloca) Python libraries implemented by the creator. The event queue system
-is a powerful and flexible mechanism designed to manage and process events in a distributed
-application. It serves as a central hub for event communication, enabling different components and instances to interact
-efficiently and asynchronously. This document provides an overview of the system's functionality, explains its core
-topics, and guides users on how to extend the system to suit their specific requirements.
+Cloudy works mainly as a discrete-time simulation but also includes some features of
+event-driven simulations. It operates by checking and updating the system at regular, set intervals. This is like a
+clock ticking at a steady pace. However, Cloudy can also handle new situations or "events" that come up during these
+intervals, dealing with them later. This mix of a steady, predictable pattern with the ability to react to unexpected
+events makes Cloudy versatile. It's especially useful for simulations that need regular updates but also must adapt to
+sudden changes.
 
-At its core, the event queue system facilitates communication between various parts of a distributed application by
-utilizing the publish-subscribe pattern. It enables decoupling of components, ensuring that they can communicate without
-being aware of each other's existence. This decoupling fosters modularity and scalability, making the system highly
-adaptable to complex applications.
+The simulator is built in a way that's easy to understand, using Python libraries. It uses two main
+libraries: [evque](https://github.com/ahmad-siavashi/evque) and [cloca](https://github.com/ahmad-siavashi/cloca). Cloca
+acts like a master clock, keeping everything in the simulation in sync. Evque is used for communication within the
+simulation, allowing different parts to exchange information without directly knowing each other. This setup makes
+Cloudy flexible and scalable, suitable for complex tasks.
 
-The system revolves around the concept of topics, which act as channels for event messages. Publishers, the entities
-generating events, send messages to specific topics without the need to know who, if anyone, is listening. Subscribers,
-on the other hand, express their interest in specific topics and receive messages whenever events are published to those
-topics.
+### Topics
 
-### Topics and Purpose
+Here is an explanation of the main events used in the Cloudy simulator, along with a short explanation of what they mean
+and when they are used:
 
-The following elucidates the primary event topics used within the Cloudy simulator, offering a brief description of their significance and the scenarios in which they are employed:
+- **request.arrive**: This event happens when a request comes in. It counts and records these requests in the simulator.
 
-- **request.arrive**: Signifies the arrival of a request. It also keeps track of model-based requests, recording the count in the simulator's tracker.
-  
-- **request.accept**: Indicates that a request has been accepted and this acceptance is recorded in the simulator's tracker.
+- **request.accept**: This happens when a request is approved, and the approval is noted down.
 
-- **request.reject**: Denotes that a request has been rejected, and this rejection is recorded in the simulator's tracker.
+- **request.reject**: This occurs when a request is turned down, and the rejection is recorded.
 
-- **request.stop**: Signifies the stopping or completion of a request, and this stop event is recorded in the simulator's tracker.
+- **request.stop**: This event is for when a request is finished or stopped, and this is also noted in the records.
 
-- **action.execute**: Handles the execution of a list of actions. The specific processing logic is determined by the associated handler function.
+- **action.execute**: This deals with carrying out a series of actions. What exactly happens depends on the specific
+  instructions given.
 
-- **app.start**: Marks the start of an application on a specific virtual machine (VM).
+- **app.start**: This marks the beginning of an application running on a VM.
 
-- **app.stop**: Indicates the stopping of an application on a specific VM.
+- **app.stop**: This is when an application on a VM is stopped.
 
-- **container.start**: Denotes the start of a container on a specific VM.
+- **container.start**: This is for starting a container on a VM.
 
-- **container.stop**: Signifies the stopping of a container on a specific VM.
+- **container.stop**: This is for stopping a container on a VM.
 
-- **controller.start**: Marks the start of a controller on a specific VM.
+- **controller.start**: This indicates the start of a controller on a VM.
 
-- **controller.stop**: Indicates the stopping of a controller on a specific VM.
+- **controller.stop**: This is when a controller on a VM is stopped.
 
-- **deployment.run**: Highlights when a deployment is in a RUNNING state.
+- **deployment.run**: This shows when a deployment is actively running.
 
-- **deployment.pend**: Implies that a deployment is in a PENDING state, awaiting resources.
+- **deployment.pend**: This means a deployment is waiting for resources.
 
-- **deployment.degrade**: Points out when a deployment is DEGRADED with a specified number of replicas remaining.
+- **deployment.degrade**: This indicates a deployment is not running optimally with some replicas still pending.
 
-- **deployment.scale**: Marks when a deployment has been scaled, either with replicas added or deleted.
+- **deployment.scale**: This is when the size of a deployment is changed, either by adding or removing replicas.
 
-- **deployment.stop**: Specifies when a deployment is STOPPED.
+- **deployment.stop**: This is when a deployment is completely stopped.
 
-- **vm.allocate**: Signifies the allocation of a VM to a physical machine (PM).
+- **vm.allocate**: This happens when a VM is assigned to a physical machine (PM).
 
-- **vm.deallocate**: Marks the deallocation or release of a VM from a physical machine (PM).
+- **vm.deallocate**: This is when a VM is removed or released from a PM.
 
-- **sim.log**: Pertains to the general logging mechanism of the simulation. The specific processing logic is determined by the associated handler function.
+- **sim.log**: This is for the general logging mechanism of the simulation.
 
-The event queue system is designed with extensibility in mind, allowing developers to add new functionalities and tailor
-it to their specific needs. Here are some guidelines to follow when extending the system:
-
-1. **Define New Topics:** Identify the new events or functionalities you want to introduce and create descriptive topic
-   names for each.
-
-2. **Publish to Appropriate Topics:** Ensure that new components or instances publish messages to the relevant topics
-   based on their functionalities.
-
-3. **Implement Subscribers:** Create subscribers for the new topics to handle events effectively. Subscribers can
-   process data, trigger actions, or update the system's state.
-
-4. **Maintain Consistency:** Keep the new extensions consistent with existing conventions and patterns in the event
-   queue system. Consistency enhances code readability and collaboration.
-
-5. **Error Handling:** Implement error handling mechanisms for critical operations to ensure stability and graceful
-   recovery from exceptions.
-
-6. **Performance Optimization:** Monitor system performance and optimize event handling as needed, such as implementing
-   asynchronous processing or load balancing.
-
-By following these guidelines, developers can seamlessly integrate new features into the event queue system, enhancing
-its capabilities and supporting diverse applications.
+The system for handling these events is made to be flexible, so developers can add new things or change it to suit their
+needs.

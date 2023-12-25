@@ -35,7 +35,7 @@ class TestDeployment(unittest.TestCase):
         self.assertEqual(self.deployment.__hash__(), id(self.deployment))
 
     def test_eq(self):
-        deployment2 = Deployment(NAME="MyDeployment", replicas=3, CONTAINER_SPECS=self.container_specs)
+        deployment2 = Deployment(NAME="MyDeployment2", replicas=3, CONTAINER_SPECS=self.container_specs[:1])
         self.assertNotEqual(self.deployment, deployment2)
         self.assertEqual(self.deployment, self.deployment)
 
