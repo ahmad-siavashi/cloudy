@@ -1,10 +1,10 @@
 # Cloudy: a modern simulator of cloud environments
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
-[![GitHub last commit](https://img.shields.io/github/last-commit/ahmad-siavashi/cloudy.svg)](https://github.com/username/repository)
-[![Documentation](https://img.shields.io/badge/documentation-included-blue.svg)](https://github.com/ahmad-siavashi/repository/tree/main/docs)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ahmad-siavashi/cloudy.svg)](https://github.com/ahmad-siavashi/cloudy)
+[![Documentation](https://img.shields.io/badge/documentation-included-blue.svg)](https://github.com/ahmad-siavashi/cloudy/tree/main/docs)
 ![GitHub stars](https://img.shields.io/github/stars/ahmad-siavashi/cloudy?style=social)
-[![GitHub forks](https://img.shields.io/github/forks/ahmad-siavashi/cloudy.svg?style=social&label=Fork)](https://github.com/username/repository)
+[![GitHub forks](https://img.shields.io/github/forks/ahmad-siavashi/cloudy.svg?style=social&label=Fork)](https://github.com/ahmad-siavashi/cloudy)
 
 ![logo](logo.png)
 
