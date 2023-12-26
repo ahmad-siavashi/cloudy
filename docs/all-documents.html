@@ -1732,14 +1732,14 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">The process function is the main function of the scheduler. It takes a duration parameter and processes all VMs for that amount of time.</div>
-          </li><li id="policy.vmm.VmmSpaceShared._get_free_gpu">
+          </li><li id="policy.vmm.VmmSpaceShared.find_gpu_blocks">
             
-            <div class="fullName">policy<wbr></wbr>.vmm<wbr></wbr>.<wbr></wbr>Vmm<wbr></wbr>Space<wbr></wbr>Shared<wbr></wbr>._get<wbr></wbr>_free<wbr></wbr>_gpu</div>
-            <div class="url">policy.vmm.VmmSpaceShared.html#_get_free_gpu</div>
+            <div class="fullName">policy<wbr></wbr>.vmm<wbr></wbr>.<wbr></wbr>Vmm<wbr></wbr>Space<wbr></wbr>Shared<wbr></wbr>.find<wbr></wbr>_gpu<wbr></wbr>_blocks</div>
+            <div class="url">policy.vmm.VmmSpaceShared.html#find_gpu_blocks</div>
             <div class="type">Function</div>
             <div class="kind">Method</div>
-            <div class="privacy">PRIVATE</div>
-            <div class="summary">The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory blocks that can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory blocks required by a given virtual GPU, and returns the index of the first free GPU (if one exists) along with a tuple containing indices of free memory blocks on that GPU which can be allocated for the virtual GPU...</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Yield GPU indices and available block sets for a given profile.</div>
           </li><li id="policy.vmp.VmpFirstFit">
             
             <div class="fullName">policy<wbr></wbr>.vmp<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>First<wbr></wbr>Fit</div>
