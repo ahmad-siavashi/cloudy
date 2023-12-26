@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Generator
 
 import model
 import policy
@@ -39,8 +39,9 @@ class VmmSpaceShared(policy.Vmm):
         bool
             `True` if the virtual machine can be allocated, otherwise `False`.
         """
-        if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM and (not vm.GPU or self._get_free_gpu(vm.GPU)):
-            return True
+        if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM:
+            if not vm.GPU or any(self.find_gpu_blocks(vm.GPU)):
+                return True
         return False
 
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
@@ -62,16 +63,16 @@ class VmmSpaceShared(policy.Vmm):
         for vm in vms:
             if not self.has_capacity(vm):
                 results.append(False)
-            else:
-                self._vm_cpu[vm] = {self._free_cpu.pop() for core in range(vm.CPU)}
-                self._free_ram -= vm.RAM
-                if vm.GPU:
-                    free_gpu = self._get_free_gpu(vm.GPU)
-                    free_gpu, free_block = self._vm_gpu[vm] = free_gpu
-                    self._free_gpu[free_gpu].difference_update(free_block)
-                self._guests += [vm]
-                vm.turn_on()
-                results.append(True)
+                continue
+            self._vm_cpu[vm] = {self._free_cpu.pop() for core in range(vm.CPU)}
+            self._free_ram -= vm.RAM
+            if vm.GPU:
+                gpu_idx, gpu_blocks = next(self.find_gpu_blocks(vm.GPU))
+                self._vm_gpu[vm] = gpu_idx, gpu_blocks
+                self._free_gpu[gpu_idx].difference_update(gpu_blocks)
+            self._guests.append(vm)
+            results.append(True)
+            vm.turn_on()
         return results
 
     def deallocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
@@ -90,20 +91,19 @@ class VmmSpaceShared(policy.Vmm):
         """
         results = []
         for vm in vms:
-            if vm in self:
-                self._free_cpu.update(self._vm_cpu[vm])
-                del self._vm_cpu[vm]
-                self._free_ram += vm.RAM
-                if vm.GPU:
-                    gpu, block = self._vm_gpu[vm]
-                    self._free_gpu[gpu].update(block)
-                    del self._vm_gpu[vm]
-                self._guests.remove(vm)
-                vm.turn_off()
-
-                results.append(True)
-            else:
+            if vm not in self:
                 results.append(False)
+                continue
+            self._free_cpu.update(self._vm_cpu[vm])
+            del self._vm_cpu[vm]
+            self._free_ram += vm.RAM
+            if vm.GPU:
+                gpu, blocks = self._vm_gpu[vm]
+                self._free_gpu[gpu].update(blocks)
+                del self._vm_gpu[vm]
+            self._guests.remove(vm)
+            results.append(True)
+            vm.turn_off()
         return results
 
     def resume(self, duration: int) -> policy.Vmm:
@@ -121,39 +121,32 @@ class VmmSpaceShared(policy.Vmm):
             vm.OS.resume(vm_cpu, duration)
         return self
 
-    def _get_free_gpu(self, gpu: tuple[int, int]) -> Optional[tuple[int, set[int, ...]]]:
+    def find_gpu_blocks(self, profile: tuple[int, int]) -> Generator[tuple[int, set[int, ...]], None, None]:
         """
-        The _get_free_gpu function is used to find a physical GPU with a contiguous set of memory blocks that
-        can be allocated to a given virtual GPU. The function takes in the number of compute engines and memory blocks
-        required by a given virtual GPU, and returns the index of the first free GPU (if one exists) along with a tuple
-        containing indices of free memory blocks on that GPU which can be allocated for the virtual GPU.
-        If no such contiguous set exists, None is returned.
+        Yield GPU indices and available block sets for a given profile.
+
+        This method iterates through the available GPU blocks of each GPU, checking against the profile requirements.
+        When a matching set of contiguous blocks is found on a GPU, it yields a tuple containing the GPU index and
+        the set of blocks where the profile can be placed.
+
+        For example, invoking `find_gpu_blocks((2, 2))` will yield `(gpu_idx, {0, 1})` for a suitable `gpu_idx`.
+        This indicates that the profile can occupy starting at the 0th location and extend across 2 blocks on the
+        GPU with index `gpu_idx`.
 
         Parameters
         ----------
-        gpu : tuple[int, int]
-            represents the virtual GPU
+        profile : tuple[int, int]
+            Represents the profile of the virtual GPU, including the number of compute engines and memory blocks needed.
 
-        Returns
-        -------
-            index of first free physical GPU and free memory blocks
+        Yields
+        ------
+        tuple[int, set[int, ...]]
+            Yields tuples where the first element is the index of a GPU and the second element is a set of blocks
+            on that GPU where the profile can be placed.
         """
-
-        _PROFILE_BLOCK = {
-            (1, 1): {0, 1, 2, 3, 4, 5, 6},
-            (1, 2): {0, 2, 4, 6},
-            (2, 2): {0, 2, 4},
-            (3, 4): {0, 4},
-            (4, 4): {0},
-            (7, 8): {0}
-        }
-
-        _, num_memory_blocks = gpu
-        placements = tuple(range(p, p + num_memory_blocks)
-                           for p in _PROFILE_BLOCK.get(gpu, ()))
-
-        for free_gpu_index, free_gpu_blocks in enumerate(self._free_gpu):
-            for placement in map(set, placements):
-                if placement.issubset(free_gpu_blocks):
-                    return free_gpu_index, placement
-        return None
+        _, num_memory_blocks = profile
+        for gpu_idx, free_gpu_blocks in enumerate(self._free_gpu):
+            for start in free_gpu_blocks:
+                blocks = set(range(start, start + num_memory_blocks))
+                if blocks.issubset(free_gpu_blocks):
+                    yield gpu_idx, blocks
