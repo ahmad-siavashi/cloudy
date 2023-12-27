@@ -33,7 +33,7 @@ class VmpFirstFit(policy.Vmp):
         results = []
         for vm in vms:
             for host in self.DATACENTER.HOSTS:
-                if host.VMM.has_capacity(vm):
+                if all(host.VMM.has_capacity(vm)):
                     results.extend(host.VMM.allocate([vm]))
                     self._vm_pm[vm] = host
                     evque.publish('vm.allocate', cloca.now(), host, vm)

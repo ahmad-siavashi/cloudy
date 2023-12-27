@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Generator
 
 import model
 import policy
@@ -25,9 +24,9 @@ class VmmSpaceShared(policy.Vmm):
         self._free_gpu: tuple[set[int], ...] = tuple({block for block in range(blocks)} for _, blocks in self.HOST.GPU)
         self._vm_gpu: dict[model.Vm, tuple[int, set[int, ...]]] = {}
 
-    def has_capacity(self, vm: model.Vm) -> bool:
+    def has_capacity(self, vm: model.Vm) -> tuple[bool, bool, bool]:
         """
-        Check if the host has enough resources to allocate the given virtual machine.
+        Check if the host has enough CPU, RAM, and GPU resources to allocate the given virtual machine.
 
         Parameters
         ----------
@@ -36,13 +35,17 @@ class VmmSpaceShared(policy.Vmm):
 
         Returns
         -------
-        bool
-            `True` if the virtual machine can be allocated, otherwise `False`.
+        tuple[bool, bool, bool]
+            A tuple where the first element indicates if there is enough CPU,
+            the second if there is enough RAM,
+            and the third if there is enough GPU capacity.
+            Each element is `True` if there is enough capacity, otherwise `False`.
         """
-        if len(self._free_cpu) >= vm.CPU and self._free_ram >= vm.RAM:
-            if not vm.GPU or any(self.find_gpu_blocks(vm.GPU)):
-                return True
-        return False
+        has_cpu_capacity = len(self._free_cpu) >= vm.CPU
+        has_ram_capacity = self._free_ram >= vm.RAM
+        has_gpu_capacity = not vm.GPU or any(self.find_gpu_blocks(vm.GPU, gpu) for gpu in self._free_gpu)
+
+        return has_cpu_capacity, has_ram_capacity, has_gpu_capacity
 
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
         """
@@ -61,15 +64,19 @@ class VmmSpaceShared(policy.Vmm):
         """
         results = []
         for vm in vms:
-            if not self.has_capacity(vm):
+            # Check if there is enough overall capacity (CPU, RAM, GPU) for the VM
+            if not all(self.has_capacity(vm)):
                 results.append(False)
                 continue
             self._vm_cpu[vm] = {self._free_cpu.pop() for core in range(vm.CPU)}
             self._free_ram -= vm.RAM
             if vm.GPU:
-                gpu_idx, gpu_blocks = next(self.find_gpu_blocks(vm.GPU))
-                self._vm_gpu[vm] = gpu_idx, gpu_blocks
-                self._free_gpu[gpu_idx].difference_update(gpu_blocks)
+                for gpu_idx, free_gpu in enumerate(self._free_gpu):
+                    if all_gpu_blocks := self.find_gpu_blocks(vm.GPU, free_gpu):
+                        gpu_blocks = all_gpu_blocks.pop(0)
+                        free_gpu.difference_update(gpu_blocks)
+                        self._vm_gpu[vm] = gpu_idx, gpu_blocks
+                        break
             self._guests.append(vm)
             results.append(True)
             vm.turn_on()
@@ -121,32 +128,30 @@ class VmmSpaceShared(policy.Vmm):
             vm.OS.resume(vm_cpu, duration)
         return self
 
-    def find_gpu_blocks(self, profile: tuple[int, int]) -> Generator[tuple[int, set[int, ...]], None, None]:
+    def find_gpu_blocks(self, profile: tuple[int, int], gpu: set[int, ...]) -> list[set[int], ...]:
         """
-        Yield GPU indices and available block sets for a given profile.
+        Find available GPU block sets that match a given profile on a specific GPU.
 
-        This method iterates through the available GPU blocks of each GPU, checking against the profile requirements.
-        When a matching set of contiguous blocks is found on a GPU, it yields a tuple containing the GPU index and
-        the set of blocks where the profile can be placed.
-
-        For example, invoking `find_gpu_blocks((2, 2))` will yield `(gpu_idx, {0, 1})` for a suitable `gpu_idx`.
-        This indicates that the profile can occupy starting at the 0th location and extend across 2 blocks on the
-        GPU with index `gpu_idx`.
+        This method iterates through the available GPU blocks, checking them against the profile requirements.
+        It identifies sets of contiguous blocks on a GPU that match the profile's needs and collects these sets.
 
         Parameters
         ----------
         profile : tuple[int, int]
-            Represents the profile of the virtual GPU, including the number of compute engines and memory blocks needed.
+            A tuple representing the profile of the virtual GPU. The first element is the number of compute engines
+            needed, and the second element is the number of memory blocks needed.
+        gpu : set[int, ...]
+            A set representing available memory blocks on a specific GPU.
 
-        Yields
-        ------
-        tuple[int, set[int, ...]]
-            Yields tuples where the first element is the index of a GPU and the second element is a set of blocks
-            on that GPU where the profile can be placed.
+        Returns
+        -------
+        list[set[int, ...], ...]
+            A list of sets, where each set contains contiguous memory blocks on the GPU where the profile can be placed.
         """
+        result = []
         _, num_memory_blocks = profile
-        for gpu_idx, free_gpu_blocks in enumerate(self._free_gpu):
-            for start in free_gpu_blocks:
-                blocks = set(range(start, start + num_memory_blocks))
-                if blocks.issubset(free_gpu_blocks):
-                    yield gpu_idx, blocks
+        for start in gpu:
+            blocks = set(range(start, start + num_memory_blocks))
+            if blocks.issubset(gpu):
+                result.append(blocks)
+        return result
