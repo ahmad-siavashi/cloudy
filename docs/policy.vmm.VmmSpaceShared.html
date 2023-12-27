@@ -451,12 +451,12 @@
     
     <td>Method</td>
     <td><code><a href="#find_gpu_blocks" class="internal-link" title="policy.vmm.VmmSpaceShared.find_gpu_blocks">find<wbr></wbr>_gpu<wbr></wbr>_blocks</a></code></td>
-    <td>Yield GPU indices and available block sets for a given profile.</td>
+    <td>Find available GPU block sets that match a given profile on a specific GPU.</td>
   </tr><tr class="method">
     
     <td>Method</td>
     <td><code><a href="#has_capacity" class="internal-link" title="policy.vmm.VmmSpaceShared.has_capacity">has<wbr></wbr>_capacity</a></code></td>
-    <td>Check if the host has enough resources to allocate the given virtual machine.</td>
+    <td>Check if the host has enough CPU, RAM, and GPU resources to allocate the given virtual machine.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -627,7 +627,7 @@ It returns a list of booleans indicating whether each VM was successfully remove
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">find_gpu_blocks</span><span class="function-signature">(self, profile: <code>tuple[<wbr></wbr>int, <wbr></wbr>int]</code>) -&gt; <code>Generator[<wbr></wbr>tuple[<wbr></wbr>int, <wbr></wbr>set[<wbr></wbr>int, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]], <wbr></wbr>None, <wbr></wbr>None]</code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">find_gpu_blocks</span><span class="function-signature">(self, profile: <code>tuple[<wbr></wbr>int, <wbr></wbr>int]</code>, gpu: <code>set[<wbr></wbr>int, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code>) -&gt; <code>list[<wbr></wbr>set[<wbr></wbr>int], <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code></span>:
     
     <a class="headerLink" href="#find_gpu_blocks" title="policy.vmm.VmmSpaceShared.find_gpu_blocks">
       
@@ -637,15 +637,11 @@ It returns a list of booleans indicating whether each VM was successfully remove
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Yield GPU indices and available block sets for a given profile.</p>
-<p>This method iterates through the available GPU blocks of each GPU, checking against the profile requirements.
-When a matching set of contiguous blocks is found on a GPU, it yields a tuple containing the GPU index and
-the set of blocks where the profile can be placed.</p>
-<p>For example, invoking <code>find_gpu_blocks((2, 2))</code> will yield <code>(gpu_idx, {0, 1})</code> for a suitable <code>gpu_idx</code>.
-This indicates that the profile can occupy starting at the 0th location and extend across 2 blocks on the
-GPU with index <code>gpu_idx</code>.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">profile:</span><code>tuple[int</code>, <code>int]</code></td><td class="fieldArgDesc">Represents the profile of the virtual GPU, including the number of compute engines and memory blocks needed.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Generator[<wbr></wbr>tuple[<wbr></wbr>int, <wbr></wbr>set[<wbr></wbr>int, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]], <wbr></wbr>None, <wbr></wbr>None]</code></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Yields</td></tr><tr><td class="fieldArgContainer"><code>tuple[int</code>, <code>set[int</code>, <code>...]]</code></td><td class="fieldArgDesc">Yields tuples where the first element is the index of a GPU and the second element is a set of blocks
-on that GPU where the profile can be placed.</td></tr></table></div>
+    <div><p>Find available GPU block sets that match a given profile on a specific GPU.</p>
+<p>This method iterates through the available GPU blocks, checking them against the profile requirements.
+It identifies sets of contiguous blocks on a GPU that match the profile's needs and collects these sets.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">profile:</span><code>tuple[int</code>, <code>int]</code></td><td class="fieldArgDesc">A tuple representing the profile of the virtual GPU. The first element is the number of compute engines
+needed, and the second element is the number of memory blocks needed.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">gpu:</span><code>set[int</code>, <code>...]</code></td><td class="fieldArgDesc">A set representing available memory blocks on a specific GPU.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>list[set[int</code>, <code>...]</code>, <code>...]</code></td><td class="fieldArgDesc">A list of sets, where each set contains contiguous memory blocks on the GPU where the profile can be placed.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -659,7 +655,7 @@ on that GPU where the profile can be placed.</td></tr></table></div>
   <div class="functionHeader">
     
     
-    <span class="py-keyword">def</span> <span class="py-defname">has_capacity</span><span class="function-signature">(self, vm: <code><a href="model.Vm.html" class="internal-link">model.Vm</a></code>) -&gt; <code>bool</code></span>:
+    <span class="py-keyword">def</span> <span class="py-defname">has_capacity</span><span class="function-signature">(self, vm: <code><a href="model.Vm.html" class="internal-link">model.Vm</a></code>) -&gt; <code>tuple[<wbr></wbr>bool, <wbr></wbr>bool, <wbr></wbr>bool]</code></span>:
     
     <a class="headerLink" href="#has_capacity" title="policy.vmm.VmmSpaceShared.has_capacity">
       
@@ -669,7 +665,10 @@ on that GPU where the profile can be placed.</td></tr></table></div>
   </div>
   <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <code><a href="policy.Vmm.html#has_capacity" class="internal-link">policy.Vmm.has_capacity</a></code></div>
-    <div><p>Check if the host has enough resources to allocate the given virtual machine.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vm:</span><code><a href="model.Vm.html" class="internal-link" title="model.Vm">Vm</a></code></td><td class="fieldArgDesc">Virtual machine for which resource allocation check is performed.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc"><code>True</code> if the virtual machine can be allocated, otherwise <code>False</code>.</td></tr></table></div>
+    <div><p>Check if the host has enough CPU, RAM, and GPU resources to allocate the given virtual machine.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vm:</span><code><a href="model.Vm.html" class="internal-link" title="model.Vm">Vm</a></code></td><td class="fieldArgDesc">Virtual machine for which resource allocation check is performed.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>tuple[bool</code>, <code>bool</code>, <code>bool]</code></td><td class="fieldArgDesc">A tuple where the first element indicates if there is enough CPU,
+the second if there is enough RAM,
+and the third if there is enough GPU capacity.
+Each element is <code>True</code> if there is enough capacity, otherwise <code>False</code>.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -828,7 +827,7 @@ parameter and processes all VMs for that amount of time.</p><table class="fieldT
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2023-12-26 08:12:56.
+    23.4.1 at 2023-12-27 11:15:58.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
