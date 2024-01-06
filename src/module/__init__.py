@@ -189,28 +189,16 @@ class Simulation:
             print(f'{self.NAME}@{cloca.now()}> ======== STOP ========')
         return self
 
-    def resume(self, duration: int) -> Simulation:
-        """
-        Process events related to resuming a simulation and deallocate finished instances.
-
-        Parameters
-        ----------
-        duration : int
-            The amount of time to resume the simulation
-        """
-        self.DATACENTER.VMP.resume(duration)
-
-        if stopped_vms := self.DATACENTER.VMP.stopped():
-            self.DATACENTER.VMP.deallocate(stopped_vms)
-
-        return self
-
     def _simulate_step(self):
         """
         Simulate a single step of the simulation.
         """
         evque.run_until(cloca.now())
-        self.resume(self.CLOCK_RESOLUTION)
+
+        self.DATACENTER.VMP.resume(self.CLOCK_RESOLUTION)
+        if stopped_vms := self.DATACENTER.VMP.stopped():
+            self.DATACENTER.VMP.deallocate(stopped_vms)
+
         cloca.increase(self.CLOCK_RESOLUTION)
 
     def _is_all_settled(self) -> bool:
