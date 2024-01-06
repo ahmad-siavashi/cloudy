@@ -108,44 +108,27 @@ Cloudy flexible and scalable, suitable for complex tasks.
 Here is an explanation of the main events used in the Cloudy simulator, along with a short explanation of what they mean
 and when they are used:
 
-- **request.arrive**: This event happens when a request comes in. It counts and records these requests in the simulator.
-
-- **request.accept**: This happens when a request is approved, and the approval is noted down.
-
-- **request.reject**: This occurs when a request is turned down, and the rejection is recorded.
-
-- **request.stop**: This event is for when a request is finished or stopped, and this is also noted in the records.
-
-- **action.execute**: This deals with carrying out a series of actions. What exactly happens depends on the specific
-  instructions given.
-
-- **app.start**: This marks the beginning of an application running on a VM.
-
-- **app.stop**: This is when an application on a VM is stopped.
-
-- **container.start**: This is for starting a container on a VM.
-
-- **container.stop**: This is for stopping a container on a VM.
-
-- **controller.start**: This indicates the start of a controller on a VM.
-
-- **controller.stop**: This is when a controller on a VM is stopped.
-
-- **deployment.run**: This shows when a deployment is actively running.
-
-- **deployment.pend**: This means a deployment is waiting for resources.
-
-- **deployment.degrade**: This indicates a deployment is not running optimally with some replicas still pending.
-
-- **deployment.scale**: This is when the size of a deployment is changed, either by adding or removing replicas.
-
-- **deployment.stop**: This is when a deployment is completely stopped.
-
-- **vm.allocate**: This happens when a VM is assigned to a physical machine (PM).
-
-- **vm.deallocate**: This is when a VM is removed or released from a PM.
-
-- **sim.log**: This is for the general logging mechanism of the simulation.
+| Name        | Description                                                                                          |
+|-------------------|:-----------------------------------------------------------------------------------------------------|
+| *request.arrive*  | This event happens when a request comes in. It counts and records these requests in the simulator.   |
+| *request.accept*  | This happens when a request is approved, and the approval is noted down.                             |
+| *request.reject*  | This occurs when a request is turned down, and the rejection is recorded.                            |
+| *request.stop*    | This event is for when a request is finished or stopped, and this is also noted in the records.      |
+| *action.execute*  | This deals with carrying out a series of actions. What happens depends on the specific instructions. |
+| *app.start*       | This marks the beginning of an application running on a VM.                                          |
+| *app.stop*        | This is when an application on a VM is stopped.                                                      |
+| *container.start* | This is for starting a container on a VM.                                                            |
+| *container.stop*  | This is for stopping a container on a VM.                                                            |
+| *controller.start* | This indicates the start of a controller on a VM.                                                    |
+| *controller.stop* | This is when a controller on a VM is stopped.                                                        |
+| *deployment.run*  | This shows when a deployment is actively running.                                                    |
+| *deployment.pend* | This means a deployment is waiting for resources.                                                    |
+| *deployment.degrade*| This indicates a deployment is not running optimally with some replicas still pending.               |
+| *deployment.scale* | This is when the size of a deployment is changed, either by adding or removing replicas.             |
+| *deployment.stop* | This is when a deployment is completely stopped.                                                     |
+| *vm.allocate*     | This happens when a VM is assigned to a physical machine (PM).                                       |
+| *vm.deallocate*   | This is when a VM is removed or released from a PM.                                                  |
+| *sim.log*         | This is for the general logging mechanism of the simulation.                                          |
 
 The system for handling these events is made to be flexible, so developers can add new things or change it to suit their
 needs.
