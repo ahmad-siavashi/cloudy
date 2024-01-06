@@ -124,8 +124,9 @@ class VmmSpaceShared(policy.Vmm):
             determine how long the cpu should be processing for
         """
         for vm in self:
-            vm_cpu = [self.HOST.CPU[core] for core in self._vm_cpu[vm]]
-            vm.OS.resume(vm_cpu, duration)
+            if vm.is_on():
+                vm_cpu = [self.HOST.CPU[core] for core in self._vm_cpu[vm]]
+                vm.OS.resume(vm_cpu, duration)
         return self
 
     def find_gpu_blocks(self, profile: tuple[int, int], gpu: set[int, ...]) -> list[set[int], ...]:
