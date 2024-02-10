@@ -178,7 +178,7 @@ class Simulation:
 
         # Define the exit condition based on whether a duration is provided
         has_duration_elapsed = lambda start_time=cloca.now(): cloca.now() >= start_time + duration if duration else False
-        should_exit = has_duration_elapsed if duration else self._is_all_settled
+        should_exit = has_duration_elapsed if duration else self.is_complete
 
         while not should_exit():
             self._simulate_step()
@@ -191,19 +191,40 @@ class Simulation:
 
     def _simulate_step(self):
         """
-        Simulate a single step of the simulation.
+        Simulates a single step of the simulation.
+
+        Performs the following actions:
+            1. Runs events from the queue until the current simulation time.
+            2. Resumes VMs in the data center.
+            3. Deallocates any stopped VMs.
+            4. Advances the simulation clock.
         """
+
+        # Execute events for the current simulation time
         evque.run_until(cloca.now())
 
+        # Resume VMs in the data center
         self.DATACENTER.VMP.resume(self.CLOCK_RESOLUTION)
-        if stopped_vms := self.DATACENTER.VMP.stopped():
+
+        # Collect and deallocate stopped VMs
+        stopped_vms = self.DATACENTER.VMP.stopped()
+        if stopped_vms:
             self.DATACENTER.VMP.deallocate(stopped_vms)
 
+        # Advance the simulation clock
         cloca.increase(self.CLOCK_RESOLUTION)
 
-    def _is_all_settled(self) -> bool:
+    def is_complete(self) -> bool:
         """
-        Determine if there are no more events in the queue and no ongoing requests.
+        Determine if the simulation has completed all tasks.
+
+        This includes verifying that there are no more events in the queue,
+        no ongoing requests, and all virtual machines have been processed.
+
+        Returns
+        -------
+        bool
+            True if the simulation is complete, False otherwise.
         """
         return evque.empty() and not self._tracker.has_pending() and self.DATACENTER.VMP.empty()
 
