@@ -220,15 +220,22 @@ class Vmm(ABC):
         return len(self._guests)
 
     @abstractmethod
-    def has_capacity(self, vm: model.Vm) -> bool:
+    def has_capacity(self, vm: model.Vm) -> tuple[bool, bool, bool]:
         """
-        The function "has_capacity" takes a virtual machine object as input and returns a boolean value
-        indicating whether the VM can be allocated or not.
+        Check if the host has enough CPU, RAM, and GPU resources to allocate the given virtual machine.
 
         Parameters
         ----------
         vm : Vm
-            represents a virtual machine
+            Virtual machine for which resource allocation check is performed.
+
+        Returns
+        -------
+        tuple[bool, bool, bool]
+            A tuple where the first element indicates if there is enough CPU,
+            the second if there is enough RAM,
+            and the third if there is enough GPU capacity.
+            Each element is `True` if there is enough capacity, otherwise `False`.
         """
         pass
 
