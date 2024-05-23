@@ -15,7 +15,7 @@ language for Cloudy is for its user-friendly nature and efficient compatibility 
 decision addresses certain limitations found in other simulators. The simulator is built to be flexible,
 capable of supporting a variety of cloud-based services to meet the diverse requirements of researchers.
 
-## Getting started
+## Getting Started
 
 The simulator is designed to be easy to use and extend. To run Cloudy,
 
