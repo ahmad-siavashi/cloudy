@@ -226,7 +226,7 @@ class Simulation:
 
         # Define the exit condition based on whether a duration is provided
         has_duration_elapsed = lambda start_time=cloca.now(): cloca.now() >= start_time + duration if duration else False
-        should_exit = has_duration_elapsed if duration else self.is_complete
+        should_exit = has_duration_elapsed if duration else self.completed
 
         while not should_exit():
             self._simulate_step()
@@ -262,7 +262,7 @@ class Simulation:
         # Advance the simulation clock
         cloca.increase(self.CLOCK_RESOLUTION)
 
-    def is_complete(self) -> bool:
+    def completed(self) -> bool:
         """
         Determine if the simulation has completed all tasks.
 
