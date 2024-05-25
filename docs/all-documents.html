@@ -795,11 +795,11 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Tracks request labels: total, accepted, and rejected.</div>
-          </li><li id="module.Tracker._counts">
+            <div class="summary">Tracks request labels: arrived, accepted, and rejected.</div>
+          </li><li id="module.Tracker._requests">
             
-            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Tracker<wbr></wbr>._counts</div>
-            <div class="url">module.Tracker.html#_counts</div>
+            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Tracker<wbr></wbr>._requests</div>
+            <div class="url">module.Tracker.html#_requests</div>
             <div class="type">Attribute</div>
             <div class="kind">Class Variable</div>
             <div class="privacy">PRIVATE</div>
@@ -811,7 +811,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Reset the label counters.</div>
+            <div class="summary">Reset the request lists.</div>
           </li><li id="module.Tracker.record">
             
             <div class="fullName">module<wbr></wbr>.<wbr></wbr>Tracker<wbr></wbr>.record</div>
@@ -819,7 +819,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Increment the specified label's counter.</div>
+            <div class="summary">Add a list of requests to the specified label list.</div>
           </li><li id="module.Tracker.has_pending">
             
             <div class="fullName">module<wbr></wbr>.<wbr></wbr>Tracker<wbr></wbr>.has<wbr></wbr>_pending</div>
@@ -835,7 +835,15 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">Retrieve all request label counts.</div>
+            <div class="summary">Retrieve counts and ratios of requests.</div>
+          </li><li id="module.Tracker.get_requests">
+            
+            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Tracker<wbr></wbr>.get<wbr></wbr>_requests</div>
+            <div class="url">module.Tracker.html#get_requests</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Retrieve the list of requests for the specified label.</div>
           </li><li id="module.Simulation">
             
             <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation</div>
@@ -916,14 +924,6 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">The run function is the main function of this simulation. It will run until there are no more events in the event queue or until the specified duration is reached. Each time it runs, it will get an event from the queue and call a handler for that event...</div>
-          </li><li id="module.Simulation.resume">
-            
-            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>.resume</div>
-            <div class="url">module.Simulation.html#resume</div>
-            <div class="type">Function</div>
-            <div class="kind">Method</div>
-            <div class="privacy">PUBLIC</div>
-            <div class="summary">Process events related to resuming a simulation and deallocate finished instances.</div>
           </li><li id="module.Simulation._simulate_step">
             
             <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>._simulate<wbr></wbr>_step</div>
@@ -931,15 +931,15 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PRIVATE</div>
-            <div class="summary">Simulate a single step of the simulation.</div>
-          </li><li id="module.Simulation._is_all_settled">
+            <div class="summary">Simulates a single step of the simulation.</div>
+          </li><li id="module.Simulation.is_complete">
             
-            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>._is<wbr></wbr>_all<wbr></wbr>_settled</div>
-            <div class="url">module.Simulation.html#_is_all_settled</div>
+            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>.is<wbr></wbr>_complete</div>
+            <div class="url">module.Simulation.html#is_complete</div>
             <div class="type">Function</div>
             <div class="kind">Method</div>
-            <div class="privacy">PRIVATE</div>
-            <div class="summary">Determine if there are no more events in the queue and no ongoing requests.</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Determine if the simulation has completed all tasks.</div>
           </li><li id="module.Simulation._handle_request_arrive">
             
             <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>._handle<wbr></wbr>_request<wbr></wbr>_arrive</div>
@@ -1171,7 +1171,7 @@
             <div class="type">Function</div>
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">The function "has_capacity" takes a virtual machine object as input and returns a boolean value indicating whether the VM can be allocated or not.</div>
+            <div class="summary">Check if the host has enough CPU, RAM, and GPU resources to allocate the given virtual machine.</div>
           </li><li id="policy.Vmm.allocate">
             
             <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmm<wbr></wbr>.allocate</div>
