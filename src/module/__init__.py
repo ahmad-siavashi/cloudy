@@ -10,51 +10,92 @@ import cloca
 import evque
 
 import model
+from model import Request
 
 
 @dataclass
 class Tracker:
-    """Tracks request labels: total, accepted, and rejected."""
+    """Tracks request labels: arrived, accepted, and rejected."""
 
-    _counts: dict[str, int] = field(default_factory=lambda: {
-        'requests': 0,
-        'accepted': 0,
-        'rejected': 0
+    _requests: dict[str, list[Request]] = field(default_factory=lambda: {
+        'arrived': [],
+        'accepted': [],
+        'rejected': []
     })
 
     def reset(self) -> Tracker:
-        """Reset the label counters."""
-        for key in self._counts:
-            self._counts[key] = 0
+        """Reset the request lists."""
+        for key in self._requests:
+            self._requests[key].clear()
         return self
 
-    def record(self, label: str, count: int = 1) -> Tracker:
+    def record(self, label: str, requests: list[Request]) -> Tracker:
         """
-        Increment the specified label's counter.
+        Add a list of requests to the specified label list.
 
         Parameters
         ----------
         label : str
-            Label type ('requests', 'accepted', 'rejected').
-        count : int, optional
-            Number of labels, default is 1.
+            Label type ('arrived', 'accepted', 'rejected').
+        requests : List[Request]
+            The list of request instances to be recorded.
 
         Returns
         -------
         Tracker
             Updated tracker instance.
         """
-        if label in self._counts:
-            self._counts[label] += count
+        if label in self._requests:
+            self._requests[label].extend(requests)
         return self
 
     def has_pending(self) -> bool:
         """Check if there are any pending requests."""
-        return self._counts['requests'] - self._counts['accepted'] - self._counts['rejected'] > 0
+        return len(self._requests['arrived']) > (len(self._requests['accepted']) + len(self._requests['rejected']))
 
-    def stats(self) -> dict[str, int]:
-        """Retrieve all request label counts."""
-        return self._counts.copy()
+    def stats(self) -> dict[str, dict[str, float]]:
+        """Retrieve counts and ratios of requests."""
+        arrived_requests = len(self._requests['arrived'])
+        accepted_count = len(self._requests['accepted'])
+        rejected_count = len(self._requests['rejected'])
+        pending_count = arrived_requests - accepted_count - rejected_count
+
+        if arrived_requests == 0:
+            accepted_ratio = rejected_ratio = pending_ratio = 0.0
+        else:
+            accepted_ratio = accepted_count / arrived_requests
+            rejected_ratio = rejected_count / arrived_requests
+            pending_ratio = pending_count / arrived_requests
+
+        return {
+            'counts': {
+                'arrived': arrived_requests,
+                'accepted': accepted_count,
+                'rejected': rejected_count,
+                'pending': pending_count
+            },
+            'ratios': {
+                'accepted_ratio': accepted_ratio,
+                'rejected_ratio': rejected_ratio,
+                'pending_ratio': pending_ratio
+            }
+        }
+
+    def get_requests(self, label: str) -> list[Request]:
+        """
+        Retrieve the list of requests for the specified label.
+
+        Parameters
+        ----------
+        label : str
+            Label type ('arrived', 'accepted', 'rejected').
+
+        Returns
+        -------
+        List[Request]
+            List of request instances for the specified label.
+        """
+        return self._requests.get(label, [])
 
 
 @dataclass
@@ -127,39 +168,46 @@ class Simulation:
 
     def report(self, to_stdout=True) -> dict[str, float]:
         """
-        The function reports the acceptance and rejection ratios of requests and returns a dictionary of
-        values.
+        The function reports the acceptance and rejection ratios of requests and returns a dictionary of values.
 
         Parameters
         ----------
         to_stdout : bool, default=True
-            determines whether the report should be printed to the console (stdout) or not. If set to True, 
+            Determines whether the report should be printed to the console (stdout) or not. If set to True,
             the report will be printed to the console. If set to False, the report will not be printed to the console,
-            defaults to True
+            defaults to True.
 
         Returns
         -------
-            a dictionary with the following keys and their corresponding values:
-                - 'requests': total number of requests
+            A dictionary with the following keys and their corresponding values:
+                - 'arrived': number of arrived requests
                 - 'accepted': number of accepted requests
                 - 'rejected': number of rejected requests
-                - 'acceptance_ratio': ratio of accepted requests to total requests
-                - 'rejection_ratio': ratio of rejected requests to total requests.
+                - 'pending': number of pending requests
+                - 'acceptance_ratio': ratio of accepted requests to arrived requests
+                - 'rejection_ratio': ratio of rejected requests to arrived requests.
+                - 'pending_ratio': ratio of pending requests to arrived requests.
         """
         stats = self._tracker.stats()
-        requests = stats.get('requests', 0)
+        counts, ratios = stats['counts'], stats['ratios']
 
-        # Compute ratios with safe division
-        stats['accept_rate'] = round(stats.get('accepted', 0) / requests, 2) if requests else 0
-        stats['reject_rate'] = round(1 - stats['accept_rate'], 2) if requests else 0
+        result = {
+            'arrived': counts['arrived'],
+            'accepted': counts['accepted'],
+            'rejected': counts['rejected'],
+            'pending': counts['pending'],
+            'acceptance_ratio': round(ratios['accepted_ratio'], 2),
+            'rejection_ratio': round(ratios['rejected_ratio'], 2),
+            'pending_ratio': round(ratios['pending_ratio'], 2)
+        }
 
-        # Print results if needed
         if to_stdout:
             current_time = cloca.now()
-            print(f'{self.NAME}@{current_time}> Accept[{stats["accepted"]} / {requests}] = {stats["accept_rate"]}')
-            print(f'{self.NAME}@{current_time}> Reject[{stats["rejected"]} / {requests}] = {stats["reject_rate"]}')
+            print(f'{self.NAME}@{current_time}> Accept[{result["accepted"]} / {result["arrived"]}] = {result["acceptance_ratio"]}')
+            print(f'{self.NAME}@{current_time}> Reject[{result["rejected"]} / {result["arrived"]}] = {result["rejection_ratio"]}')
+            print(f'{self.NAME}@{current_time}> Pending[{result["pending"]} / {result["arrived"]}] = {result["pending_ratio"]}')
 
-        return stats
+        return result
 
     def run(self, duration: int = None) -> Simulation:
         """
@@ -239,7 +287,7 @@ class Simulation:
         """
 
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('requests', sum(not r.IGNORED for r in requests))
+        self._tracker.record('arrived', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
@@ -291,7 +339,7 @@ class Simulation:
         evque.publish : Method used to publish an event to the event queue.
         """
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('accepted', sum(not r.IGNORED for r in requests))
+        self._tracker.record('accepted', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
@@ -316,7 +364,7 @@ class Simulation:
             evque.publish : Method used to publish an event to the event queue.
         """
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('rejected', sum(not r.IGNORED for r in requests))
+        self._tracker.record('rejected', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
