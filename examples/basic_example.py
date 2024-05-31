@@ -1,9 +1,9 @@
-""" This is a simple example to demonstrate the use of the simulator. In this example, a data center with one
-physical machine (PM) receives one request (a virtual machine) from a user. The virtual machine (VM) which contains
-one application to run, arrives at time zero, i.e. the beginning of the simulation. The VM uses a
-time-sharing scheduling policy to execute its processes. The PM uses a space-shared policy to
-allocate resources for the virtual machine. Furthermore, the data center uses a first-fit (FF) policy to find a
-suitable host for the request. """
+"""
+This example demonstrates the ease of use of the cloud simulator. A data center with one physical machine (PM)
+receives one request for a virtual machine (VM) from a user. The VM arrives at time zero, uses a time-sharing policy
+for processes, and the PM uses a space-shared policy for resource allocation. The data center uses a first-fit policy
+to host the request.
+"""
 
 from model import App, DataCenter, Pm, Request, User, Vm
 from module import Simulation
@@ -11,26 +11,22 @@ from policy.os import OsTimeShared
 from policy.vmp import VmpFirstFit
 from policy.vmm import VmmSpaceShared
 
-# Creating an application object called 'nginx' with 3 threads, each 1 cycles length.
-app = App(NAME='nginx', LENGTH=(1, 1, 1))
+# Step 1: Create an application with 3 threads, each 1 cycle long.
+app = App(NAME='Nginx', LENGTH=(1, 1, 1))
 
-# Creating a virtual machine called 'webserver' with 1 core, 1 GB of RAM, (2, 2) GPU profile, and OsTimeShared
-# operating system.
-vm = Vm(NAME='webserver', CPU=1, RAM=1024, GPU=(2, 2), OS=OsTimeShared)
-# The application is scheduled for execution in the virtual machine.
-vm.OS.schedule([app])
+# Step 2: Create a VM with 1 core, 1 GB RAM, (2, 2) GPU profile, and OsTimeShared OS.
+vm = Vm(NAME='WebServer', CPU=1, RAM=1024, GPU=(2, 2), OS=OsTimeShared)
+vm.OS.schedule([app])  # Schedule the app in the VM.
 
-# Creating a request for a VM and a user that will request that VM.
-# The request arrives at clock 0 and the user represents the portal of the cloud provider.
+# Step 3: Create a request for the VM at time 0 and a user to make the request.
 request = Request(ARRIVAL=0, VM=vm)
-user = User(NAME='portal', REQUESTS=[request])
+user = User(NAME='Portal', REQUESTS=[request])
 
-# Creating a physical machine with 2 cores (each 2 cycles per simulation time unit)
-# and 2 GB of RAM, and using the VmmSpaceShared virtual machine manager.
-pm = Pm(NAME='hpe gen10', CPU=(2, 2), RAM=2048, GPU=((7, 8),), VMM=VmmSpaceShared)
+# Step 4: Create a PM with 2 cores (2 cycles per time unit each), 2 GB RAM, and VmmSpaceShared manager.
+pm = Pm(NAME='HPE', CPU=(2, 2), RAM=2048, GPU=((7, 8),), VMM=VmmSpaceShared)
 
-# Creating a data center with a single physical machine which uses the PlacementFirstFit placement algorithm.
-datacenter = DataCenter(NAME='boston region', HOSTS=[pm], VMP=VmpFirstFit)
+# Step 5: Create a data center with the PM and VmpFirstFit placement policy.
+datacenter = DataCenter(NAME='Tehran', HOSTS=[pm], VMP=VmpFirstFit)
 
-# Initializing the simulation with the user and data center and then starting the simulation.
-Simulation(NAME='simple', USER=user, DATACENTER=datacenter).run().report()
+# Step 6: Initialize and run the simulation with the user and data center.
+Simulation(NAME='BasicSim', USER=user, DATACENTER=datacenter).run().report()
