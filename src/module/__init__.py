@@ -130,7 +130,7 @@ class Simulation:
         Logger and Clock objects.
         """
         # This object will be used to record events during the simulation.
-        self._tracker: Tracker = Tracker()
+        self.tracker: Tracker = Tracker()
         # Reset global simulation clock.
         cloca.reset()
 
@@ -188,7 +188,7 @@ class Simulation:
                 - 'rejection_ratio': ratio of rejected requests to arrived requests.
                 - 'pending_ratio': ratio of pending requests to arrived requests.
         """
-        stats = self._tracker.stats()
+        stats = self.tracker.stats()
         counts, ratios = stats['counts'], stats['ratios']
 
         result = {
@@ -274,7 +274,7 @@ class Simulation:
         bool
             True if the simulation is complete, False otherwise.
         """
-        return evque.empty() and not self._tracker.has_pending() and self.DATACENTER.VMP.empty()
+        return evque.empty() and not self.tracker.has_pending() and self.DATACENTER.VMP.empty()
 
     def _handle_request_arrive(self, requests: list[model.Request, ...]) -> Simulation:
         """
@@ -287,7 +287,7 @@ class Simulation:
         """
 
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('arrived', [r for r in requests if not r.IGNORED])
+        self.tracker.record('arrived', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
@@ -339,7 +339,7 @@ class Simulation:
         evque.publish : Method used to publish an event to the event queue.
         """
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('accepted', [r for r in requests if not r.IGNORED])
+        self.tracker.record('accepted', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
@@ -364,7 +364,7 @@ class Simulation:
             evque.publish : Method used to publish an event to the event queue.
         """
         requests = [r for r in requests if isinstance(r, model.Request)]
-        self._tracker.record('rejected', [r for r in requests if not r.IGNORED])
+        self.tracker.record('rejected', [r for r in requests if not r.IGNORED])
         for request in requests:
             required_tag = ' [REQUIRED]' if request.REQUIRED else ''
             ignored_tag = ' [IGNORED]' if request.IGNORED else ''
