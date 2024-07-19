@@ -460,6 +460,16 @@ class Vmp(ABC):
         """
         pass
 
+    def migrate(self) -> int:
+        """
+        Migrates selected VMs to suitable target physical machines.
+
+        Returns
+        -------
+        int
+            The number of successful migrations.
+        """
+
 
 @dataclass
 class ControlPlane(ABC):

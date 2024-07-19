@@ -84,3 +84,19 @@ class VmpFirstFit(policy.Vmp):
             # VMs in an idle state are treated as stopped, but other criteria can also be considered.
             stopped_vms.extend(host.VMM.idles())
         return stopped_vms
+
+    def migrate(self) -> int:
+        """
+        Raises NotImplementedError as this method is not implemented.
+
+        Returns
+        -------
+        int
+            The number of successful migrations (not applicable).
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised as this method is not implemented.
+        """
+        raise NotImplementedError()
