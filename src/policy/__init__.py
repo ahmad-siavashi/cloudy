@@ -332,6 +332,41 @@ class Vmp(ABC):
         """
         return self._vm_pm[vm]
 
+    def __setitem__(self, vm: model.Vm, pm: model.Pm):
+        """
+        Set the node (PM) for a given VM instance.
+
+        Parameters
+        ----------
+        vm : model.Vm
+            The VM instance to be placed.
+        pm : model.Pm
+            The PM instance where the VM is to be placed.
+        """
+        self._vm_pm[vm] = pm
+
+    def __delitem__(self, vm: model.Vm):
+        """
+        Remove the VM instance from the placement.
+
+        Parameters
+        ----------
+        vm : model.Vm
+            The VM instance to be removed.
+        """
+        del self._vm_pm[vm]
+
+    def __len__(self) -> int:
+        """
+        Returns the number of VMs currently placed.
+
+        Returns
+        -------
+        int
+            The number of VM instances in the placement.
+        """
+        return len(self._vm_pm)
+
     def empty(self) -> bool:
         """
         Check if there are any virtual machines placed.
@@ -339,9 +374,9 @@ class Vmp(ABC):
         Returns
         -------
         bool
-            True if there are VMs placed, False otherwise.
+            True if there are no VMs placed, False otherwise.
         """
-        return not bool(self._vm_pm)
+        return len(self) == 0
 
     @abstractmethod
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:

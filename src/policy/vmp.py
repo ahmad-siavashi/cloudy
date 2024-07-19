@@ -10,9 +10,9 @@ import policy
 @dataclass
 class VmpFirstFit(policy.Vmp):
     """
-    A class that inherits from the Placement class.
-    It is a placement algorithm that attempts to allocate
-    VMs to the first host that has enough resources.
+    The VmpFirstFit class inherits from the abstract Vmp class and implements
+    a first-fit VM placement algorithm. This algorithm attempts to allocate
+    VMs to the first host that has enough resources to accommodate them.
     """
 
     def allocate(self, vms: list[model.Vm, ...]) -> list[bool, ...]:
@@ -35,7 +35,7 @@ class VmpFirstFit(policy.Vmp):
             for host in self.DATACENTER.HOSTS:
                 if all(host.VMM.has_capacity(vm)):
                     results.extend(host.VMM.allocate([vm]))
-                    self._vm_pm[vm] = host
+                    self[vm] = host
                     evque.publish('vm.allocate', cloca.now(), host, vm)
                     break
             else:
@@ -58,9 +58,9 @@ class VmpFirstFit(policy.Vmp):
         """
         results = []
         for vm in vms:
-            host = self._vm_pm[vm]
+            host = self[vm]
             results.extend(host.VMM.deallocate([vm]))
-            del self._vm_pm[vm]
+            del self[vm]
             evque.publish('vm.deallocate', cloca.now(), host, vm)
         return results
 
