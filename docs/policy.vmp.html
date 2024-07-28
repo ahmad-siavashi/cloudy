@@ -163,6 +163,16 @@
         
 
         
+            <div class="itemName"><code><a href="#__delitem__" class="internal-link" title="policy.Vmp.__delitem__">__delitem__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#__getitem__" class="internal-link" title="policy.Vmp.__getitem__">__getitem__</a></code>
             </div>
         
@@ -173,7 +183,27 @@
         
 
         
+            <div class="itemName"><code><a href="#__len__" class="internal-link" title="policy.Vmp.__len__">__len__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#__post_init__" class="internal-link" title="policy.Vmp.__post_init__">__post<wbr></wbr>_init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__setitem__" class="internal-link" title="policy.Vmp.__setitem__">__setitem__</a></code>
             </div>
         
 
@@ -204,6 +234,16 @@
 
         
             <div class="itemName"><code><a href="#empty" class="internal-link" title="policy.Vmp.empty">empty</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#migrate" class="internal-link" title="policy.Vmp.migrate">migrate</a></code>
             </div>
         
 
@@ -422,13 +462,28 @@
   <tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#__delitem__" class="internal-link" title="policy.Vmp.__delitem__">__delitem__</a></code></td>
+    <td>Remove the VM instance from the placement.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#__getitem__" class="internal-link" title="policy.Vmp.__getitem__">__getitem__</a></code></td>
     <td>Retrieve the node for a given VM instance using the instance as a key.</td>
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#__len__" class="internal-link" title="policy.Vmp.__len__">__len__</a></code></td>
+    <td>Returns the number of VMs currently placed.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#__post_init__" class="internal-link" title="policy.Vmp.__post_init__">__post<wbr></wbr>_init__</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__setitem__" class="internal-link" title="policy.Vmp.__setitem__">__setitem__</a></code></td>
+    <td>Set the node (PM) for a given VM instance.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -444,6 +499,11 @@
     <td>Method</td>
     <td><code><a href="#empty" class="internal-link" title="policy.Vmp.empty">empty</a></code></td>
     <td>Check if there are any virtual machines placed.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#migrate" class="internal-link" title="policy.Vmp.migrate">migrate</a></code></td>
+    <td>Migrates selected VMs to suitable target physical machines.</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -475,6 +535,30 @@
           <div class="basemethod">
   
   
+  <a name="policy.Vmp.__delitem__">
+    
+  </a>
+  <a name="__delitem__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__delitem__</span><span class="function-signature">(self, vm: <code><a href="model.Vm.html" class="internal-link">model.Vm</a></code>)</span>:
+    
+    <a class="headerLink" href="#__delitem__" title="policy.Vmp.__delitem__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Remove the VM instance from the placement.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vm:</span><code><a href="model.Vm.html" class="internal-link">model.Vm</a></code></td><td class="fieldArgDesc">The VM instance to be removed.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="policy.Vmp.__getitem__">
     
   </a>
@@ -499,6 +583,30 @@
 </div><div class="basemethod">
   
   
+  <a name="policy.Vmp.__len__">
+    
+  </a>
+  <a name="__len__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__len__</span><span class="function-signature">(self) -&gt; <code>int</code></span>:
+    
+    <a class="headerLink" href="#__len__" title="policy.Vmp.__len__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Returns the number of VMs currently placed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The number of VM instances in the placement.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="policy.Vmp.__post_init__">
     
   </a>
@@ -519,6 +627,30 @@
   <div class="docstring functionBody">
     
     <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="policy.Vmp.__setitem__">
+    
+  </a>
+  <a name="__setitem__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__setitem__</span><span class="function-signature">(self, vm: <code><a href="model.Vm.html" class="internal-link">model.Vm</a></code>, pm: <code><a href="model.Pm.html" class="internal-link">model.Pm</a></code>)</span>:
+    
+    <a class="headerLink" href="#__setitem__" title="policy.Vmp.__setitem__">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    <div><p>Set the node (PM) for a given VM instance.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">vm:</span><code><a href="model.Vm.html" class="internal-link">model.Vm</a></code></td><td class="fieldArgDesc">The VM instance to be placed.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pm:</span><code><a href="model.Pm.html" class="internal-link">model.Pm</a></code></td><td class="fieldArgDesc">The PM instance where the VM is to be placed.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -600,7 +732,31 @@ each instance is recorded in the returned list of boolean values.</p>
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Check if there are any virtual machines placed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">True if there are VMs placed, False otherwise.</td></tr></table></div>
+    <div><p>Check if there are any virtual machines placed.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>bool</code></td><td class="fieldArgDesc">True if there are no VMs placed, False otherwise.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="policy.Vmp.migrate">
+    
+  </a>
+  <a name="migrate">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">migrate</span><span class="function-signature">(self) -&gt; <code>int</code></span>:
+    
+    <a class="headerLink" href="#migrate" title="policy.Vmp.migrate">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overridden in <code><a href="policy.vmp.VmpFirstFit.html" class="internal-link">policy.vmp.VmpFirstFit</a></code></div>
+    <div><p>Migrates selected VMs to suitable target physical machines.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The number of successful migrations.</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -719,7 +875,7 @@ in a stopped state.</p>
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2024-05-25 05:20:27.
+    23.4.1 at 2024-07-28 16:25:54.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
