@@ -900,13 +900,13 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">The __post_init__ function is a special function that is called after the __init__ function. It allows us to initialize variables that are not passed as arguments to the constructor, but rather are initialized based on other attributes of the class...</div>
-          </li><li id="module.Simulation._tracker">
+          </li><li id="module.Simulation.tracker">
             
-            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>._tracker</div>
-            <div class="url">module.Simulation.html#_tracker</div>
+            <div class="fullName">module<wbr></wbr>.<wbr></wbr>Simulation<wbr></wbr>.tracker</div>
+            <div class="url">module.Simulation.html#tracker</div>
             <div class="type">Attribute</div>
             <div class="kind">Instance Variable</div>
-            <div class="privacy">PRIVATE</div>
+            <div class="privacy">PUBLIC</div>
             <div class="summary"><span class="undocumented">Undocumented</span></div>
           </li><li id="module.Simulation.report">
             
@@ -1244,6 +1244,30 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">Retrieve the node for a given VM instance using the instance as a key.</div>
+          </li><li id="policy.Vmp.__setitem__">
+            
+            <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>.__setitem__</div>
+            <div class="url">policy.Vmp.html#__setitem__</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Set the node (PM) for a given VM instance.</div>
+          </li><li id="policy.Vmp.__delitem__">
+            
+            <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>.__delitem__</div>
+            <div class="url">policy.Vmp.html#__delitem__</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Remove the VM instance from the placement.</div>
+          </li><li id="policy.Vmp.__len__">
+            
+            <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>.__len__</div>
+            <div class="url">policy.Vmp.html#__len__</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Returns the number of VMs currently placed.</div>
           </li><li id="policy.Vmp.empty">
             
             <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>.empty</div>
@@ -1284,6 +1308,14 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">Retrieves a list of stopped virtual machines.</div>
+          </li><li id="policy.Vmp.migrate">
+            
+            <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>.migrate</div>
+            <div class="url">policy.Vmp.html#migrate</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Migrates selected VMs to suitable target physical machines.</div>
           </li><li id="policy.ControlPlane">
             
             <div class="fullName">policy<wbr></wbr>.<wbr></wbr>Control<wbr></wbr>Plane</div>
@@ -1747,7 +1779,7 @@
             <div class="type">Class</div>
             <div class="kind">Class</div>
             <div class="privacy">PUBLIC</div>
-            <div class="summary">A class that inherits from the Placement class. It is a placement algorithm that attempts to allocate VMs to the first host that has enough resources.</div>
+            <div class="summary">The VmpFirstFit class inherits from the abstract Vmp class and implements a first-fit VM placement algorithm. This algorithm attempts to allocate VMs to the first host that has enough resources to accommodate them.</div>
           </li><li id="policy.vmp.VmpFirstFit.allocate">
             
             <div class="fullName">policy<wbr></wbr>.vmp<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>First<wbr></wbr>Fit<wbr></wbr>.allocate</div>
@@ -1772,6 +1804,14 @@
             <div class="kind">Method</div>
             <div class="privacy">PUBLIC</div>
             <div class="summary">Retrieves a list of stopped virtual machines or apps.</div>
+          </li><li id="policy.vmp.VmpFirstFit.migrate">
+            
+            <div class="fullName">policy<wbr></wbr>.vmp<wbr></wbr>.<wbr></wbr>Vmp<wbr></wbr>First<wbr></wbr>Fit<wbr></wbr>.migrate</div>
+            <div class="url">policy.vmp.VmpFirstFit.html#migrate</div>
+            <div class="type">Function</div>
+            <div class="kind">Method</div>
+            <div class="privacy">PUBLIC</div>
+            <div class="summary">Raises NotImplementedError as this method is not implemented.</div>
           </li>
        </ul>
     </div>

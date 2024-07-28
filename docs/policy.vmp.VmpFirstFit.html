@@ -183,6 +183,16 @@
         
 
         
+            <div class="itemName"><code><a href="#migrate" class="internal-link" title="policy.vmp.VmpFirstFit.migrate">migrate</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="#stopped" class="internal-link" title="policy.vmp.VmpFirstFit.stopped">stopped</a></code>
             </div>
         
@@ -199,6 +209,16 @@
         
 
         
+            <div class="itemName"><code><a href="policy.Vmp.html#__delitem__" class="internal-link" title="policy.Vmp.__delitem__">__delitem__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="policy.Vmp.html#__getitem__" class="internal-link" title="policy.Vmp.__getitem__">__getitem__</a></code>
             </div>
         
@@ -209,7 +229,27 @@
         
 
         
+            <div class="itemName"><code><a href="policy.Vmp.html#__len__" class="internal-link" title="policy.Vmp.__len__">__len__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
             <div class="itemName"><code><a href="policy.Vmp.html#__post_init__" class="internal-link" title="policy.Vmp.__post_init__">__post<wbr></wbr>_init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="policy.Vmp.html#__setitem__" class="internal-link" title="policy.Vmp.__setitem__">__setitem__</a></code>
             </div>
         
 
@@ -342,9 +382,9 @@
         </div>
 
         <div class="moduleDocstring">
-          <div><p>A class that inherits from the Placement class.
-It is a placement algorithm that attempts to allocate
-VMs to the first host that has enough resources.</p></div>
+          <div><p>The VmpFirstFit class inherits from the abstract Vmp class and implements
+a first-fit VM placement algorithm. This algorithm attempts to allocate
+VMs to the first host that has enough resources to accommodate them.</p></div>
         </div>
 
         <div id="splitTables">
@@ -364,6 +404,11 @@ VMs to the first host that has enough resources.</p></div>
   </tr><tr class="method">
     
     <td>Method</td>
+    <td><code><a href="#migrate" class="internal-link" title="policy.vmp.VmpFirstFit.migrate">migrate</a></code></td>
+    <td>Raises NotImplementedError as this method is not implemented.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
     <td><code><a href="#stopped" class="internal-link" title="policy.vmp.VmpFirstFit.stopped">stopped</a></code></td>
     <td>Retrieves a list of stopped virtual machines or apps.</td>
   </tr>
@@ -378,13 +423,28 @@ VMs to the first host that has enough resources.</p></div>
   <tr class="basemethod">
     
     <td>Method</td>
+    <td><code><a href="policy.Vmp.html#__delitem__" class="internal-link" title="policy.Vmp.__delitem__">__delitem__</a></code></td>
+    <td>Remove the VM instance from the placement.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
     <td><code><a href="policy.Vmp.html#__getitem__" class="internal-link" title="policy.Vmp.__getitem__">__getitem__</a></code></td>
     <td>Retrieve the node for a given VM instance using the instance as a key.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
+    <td><code><a href="policy.Vmp.html#__len__" class="internal-link" title="policy.Vmp.__len__">__len__</a></code></td>
+    <td>Returns the number of VMs currently placed.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
     <td><code><a href="policy.Vmp.html#__post_init__" class="internal-link" title="policy.Vmp.__post_init__">__post<wbr></wbr>_init__</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="policy.Vmp.html#__setitem__" class="internal-link" title="policy.Vmp.__setitem__">__setitem__</a></code></td>
+    <td>Set the node (PM) for a given VM instance.</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -466,6 +526,30 @@ boolean corresponds to whether or not that VM was successfully allocated.</p><ta
 </div><div class="basemethod">
   
   
+  <a name="policy.vmp.VmpFirstFit.migrate">
+    
+  </a>
+  <a name="migrate">
+    
+  </a>
+  <div class="functionHeader">
+    
+    
+    <span class="py-keyword">def</span> <span class="py-defname">migrate</span><span class="function-signature">(self) -&gt; <code>int</code></span>:
+    
+    <a class="headerLink" href="#migrate" title="policy.vmp.VmpFirstFit.migrate">
+      
+      
+      ¶
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overrides <code><a href="policy.Vmp.html#migrate" class="internal-link">policy.Vmp.migrate</a></code></div>
+    <div><p>Raises NotImplementedError as this method is not implemented.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>int</code></td><td class="fieldArgDesc">The number of successful migrations (not applicable).</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>NotImplementedError</code></td><td>Always raised as this method is not implemented.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
   <a name="policy.vmp.VmpFirstFit.stopped">
     
   </a>
@@ -506,7 +590,7 @@ machine instances and identifies those that are not actively running.</p>
   <div class="container">
     <a href="index.html">API Documentation</a> for cloudy,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    23.4.1 at 2024-05-25 05:20:27.
+    23.4.1 at 2024-07-28 16:25:54.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
