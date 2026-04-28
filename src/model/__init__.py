@@ -124,7 +124,7 @@ class App(Base):
             self.__has_resumed_once = True
 
         thread_idx = 0
-        for core_idx in range(num_cores):
+        for core_idx in range(min(num_cores, num_threads)):
             while remaining_cycles[core_idx] > 0 and not self.is_stopped():
                 cycles_to_spend = min(remaining_cycles[core_idx], self._remained[thread_idx])
                 self._remained[thread_idx] -= cycles_to_spend

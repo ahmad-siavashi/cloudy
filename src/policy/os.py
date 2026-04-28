@@ -41,7 +41,7 @@ class OsTimeShared(policy.Os):
             if not app.has_resumed_once():
                 evque.publish(f'{type(app).__name__.lower()}.start', cloca.now(), self.VM, app)
 
-            available_cycles = [core * duration // num_apps for core in remained_cycles]
+            available_cycles = [core // num_apps for core in remained_cycles]
             consumed_cycles = app.resume(available_cycles)
 
             # Calculate the remaining cycles after the app has consumed some
@@ -58,7 +58,7 @@ class OsTimeShared(policy.Os):
         # Terminate finished apps
         for stopped_app in stopped_apps:
             self.terminate([stopped_app])
-            evque.publish(f'{type(app).__name__.lower()}.stop', cloca.now(), self.VM, stopped_app)
+            evque.publish(f'{type(stopped_app).__name__.lower()}.stop', cloca.now(), self.VM, stopped_app)
 
         # Return the cycles consumed on each core
         return [core * duration - rc for core, rc in zip(cpu, remained_cycles)]
