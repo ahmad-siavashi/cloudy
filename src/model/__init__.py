@@ -55,7 +55,7 @@ class Base(metaclass=BaseMeta):
         return hash(id(self))
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, eq=False)
 class App(Base):
     """
     The App class represent a single application instance in cloud.
@@ -124,7 +124,7 @@ class App(Base):
             self.__has_resumed_once = True
 
         thread_idx = 0
-        for core_idx in range(num_cores):
+        for core_idx in range(min(num_cores, num_threads)):
             while remaining_cycles[core_idx] > 0 and not self.is_stopped():
                 cycles_to_spend = min(remaining_cycles[core_idx], self._remained[thread_idx])
                 self._remained[thread_idx] -= cycles_to_spend
@@ -149,7 +149,7 @@ class App(Base):
         return not any(self._remained)
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, eq=False)
 class Container(App):
     """
     A container is a lightweight and isolated runtime environment that encapsulates an application.
@@ -168,7 +168,7 @@ class Container(App):
     GPU: Optional[tuple[int, int] | float]
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, eq=False)
 class Controller(App):
     """
     The Controller class serves as the central controller for a cluster.
@@ -511,3 +511,4 @@ class Request(Action):
     EXECUTE: Optional[Callable[[], Any]] = None
     ON_SUCCESS: Optional[Callable[[], Any]] = None
     ON_FAILURE: Optional[Callable[[], Any]] = None
+

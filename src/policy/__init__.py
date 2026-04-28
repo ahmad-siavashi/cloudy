@@ -181,7 +181,7 @@ class Vmm(ABC):
         # the list of allocated VMs
         self._guests: list[model.Vm, ...] = []
 
-    def __contain__(self, vm: model.Vm) -> bool:
+    def __contains__(self, vm: model.Vm) -> bool:
         """
         Check if a Vm instance is present in the list of allocated VMs.
 

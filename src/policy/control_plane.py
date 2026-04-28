@@ -602,7 +602,7 @@ class FractionalGPUControlPlaneRoundRobin(ControlPlaneRoundRobin):
 
         # Ensure that the total GPU requirement does not exceed 1.0 (100%)
         if total_requested_gpu > 1.0:
-            AssertionError('GPU requirement must not exceed 1.0')
+            raise AssertionError('GPU requirement must not exceed 1.0')
 
         return total_requested_cpu, total_requested_ram, total_requested_gpu
 
