@@ -204,6 +204,9 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Generated API docs (regenerated on demand via pydoctor)
+/docs/
+
 # PyBuilder
 .pybuilder/
 target/
@@ -322,3 +325,5 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode,git
+# Test suite — kept out of version control by project choice.
+/tests/

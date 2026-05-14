@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudy"
+version = "0.5.0"
+description = "A Pythonic cloud simulator"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Ahmad Siavashi", email = "siavashi@kth.se" }]
+keywords = ["cloud", "simulation", "research", "scheduling", "placement"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: System :: Distributed Computing",
+]
+
+[project.optional-dependencies]
+docs = ["pydoctor"]
+
+[project.urls]
+Homepage = "https://github.com/ahmad-siavashi/cloudy"
+Issues = "https://github.com/ahmad-siavashi/cloudy/issues"
+
+[tool.setuptools.packages.find]
+include = ["cloudy*"]
